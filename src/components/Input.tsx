@@ -4,6 +4,7 @@ interface InputProps {
   id: string;
   label: string;
   type?: string;
+  name?: string;
   placeholder?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -20,6 +21,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   className = "",
   inputClassName = "",
+  name,
 }) => {
   return (
     <div className={`flex flex-col ${className}`}>
@@ -28,6 +30,7 @@ const Input: React.FC<InputProps> = ({
       </label>
       <input
         id={id}
+        name={name}
         type={type}
         placeholder={placeholder}
         value={value}
