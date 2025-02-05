@@ -10,6 +10,7 @@
     "submitCreateAccount": "Create Account",
     "toggleToCreate": "Create an account",
     "toggleToLogin": "Already have an account? Sign in",
-    "loginFailed": "Login failed"
+    "loginFailed": "Login failed",
+    "loginSuccess": "Login successful"
   }
 }
