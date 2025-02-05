@@ -59,3 +59,13 @@ export async function createAccount(email: string, password: string): Promise<Us
     throw error;
   }
 }
+
+export async function signOut() {
+  try {
+    await supabase.auth.signOut();
+    const logout = useAuthStore.getState().logout;
+    logout();
+  } catch (error) {
+    throw error;
+  }
+}
