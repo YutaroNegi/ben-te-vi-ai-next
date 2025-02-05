@@ -13,5 +13,18 @@
     "loginFailed": "Login failed",
     "loginSuccess": "Login successful",
     "description": "Manage your personal finances in an easy and intuitive way. With the help of AI, make your financial decisions easier and more effective."
+  },
+  "Api":{
+    "categoryNameIsRequired": "Category name is required",
+    "errorUpdatingCategory": "Error updating category",
+    "categoryDeleted": "Category deleted",
+    "errorSavingExpense": "Error saving expense",
+    "errorGettingCategories": "Error getting categories",
+    "categoryIdNameAmountRequired": "Category id, name and amount are required",
+    "errorDeletingExpense": "Error deleting expense",
+    "expenseDeleted": "Expense deleted",
+    "userIdCategoryIdNameAmountRequired": "User id, category id, name and amount are required",
+    "errorFetchingExpenses": "Error fetching expenses",
+    "userIdNameRequired": "User id and name are required"
   }
 }
