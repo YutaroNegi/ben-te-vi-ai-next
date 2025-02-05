@@ -10,8 +10,8 @@ export default function AuthPage() {
 
   return (
     <main className="flex flex-col md:flex-row max-h-screen">
-      <div className="hidden md:flex md:flex-col md:flex-1 bg-almond-900 p-4">
-        <div className="relative flex-1">
+      <div className="hidden md:flex md:flex-col md:flex-1 bg-almond-900 p-4 justify-center">
+        <div className="relative flex-1 max-h-[60%]">
           <Image
             src="/ben-te-vi-logo.png"
             alt="Ben-te-vi Logo"
@@ -19,7 +19,7 @@ export default function AuthPage() {
             className="object-contain"
           />
         </div>
-        <p className="mt-4 text-center max-w-[70%] mx-auto">
+        <p className="mt-4 text-center max-w-[60%] mx-auto">
           {t("description")}
         </p>
       </div>
