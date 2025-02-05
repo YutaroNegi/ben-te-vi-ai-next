@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import AuthForm from "@/components/AuthForm/AuthForm";
+import { AuthForm } from "@/components";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
