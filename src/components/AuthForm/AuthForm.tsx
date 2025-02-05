@@ -24,7 +24,7 @@ export default function AuthForm() {
         await signIn(email, password);
         toast.success(t("loginSuccess"));
         return;
-      } catch (error) {
+      } catch {
         toast.error(t("loginFailed"));
         return;
       } finally {
@@ -47,12 +47,6 @@ export default function AuthForm() {
   return (
     <>
       <main className="min-h-screen flex flex-col md:flex-row">
-        {/* Lado esquerdo para logo/imagem (visível a partir de md) */}
-        <div className="hidden md:block md:flex-1 bg-almond-900">
-          {/* TODO: Inserir o logo ou imagem desejada */}
-        </div>
-
-        {/* Lado direito com o formulário */}
         <div className="flex-1 flex flex-col items-center justify-center p-4">
           <h1 className="mb-4 text-[36px] font-extrabold">
             {isLogin ? t("login") : t("createAccount")}

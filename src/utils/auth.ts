@@ -18,7 +18,7 @@ export async function signIn(email: string, password: string): Promise<User> {
       throw "Invalid user data";
     }
 
-    let res = {
+    const res = {
       id: data.user.id,
       email: data.user.email,
     };
@@ -46,7 +46,7 @@ export async function createAccount(email: string, password: string): Promise<Us
       throw "Invalid user data";
     }
 
-    let res = {
+    const res = {
       id: data.user.id,
       email: data.user.email,
     };
