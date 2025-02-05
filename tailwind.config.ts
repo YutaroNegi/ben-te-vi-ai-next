@@ -11,6 +11,9 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        almond: {
+          900: "#E5E0D8"
+        }
       },
     },
   },
