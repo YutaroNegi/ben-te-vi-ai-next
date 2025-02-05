@@ -1,5 +1,7 @@
 import { supabase } from "@/lib/supabaseClient";
 import { User } from "@/types/auth";
+import { useAuthStore } from "@/stores/authStore";
+
 
 export async function signIn(email: string, password: string): Promise<User> {
   try {
@@ -21,6 +23,8 @@ export async function signIn(email: string, password: string): Promise<User> {
       email: data.user.email,
     };
 
+    const login = useAuthStore.getState().login;
+    login(res);
     return res;
   } catch (error) {
     throw error;
@@ -46,6 +50,9 @@ export async function createAccount(email: string, password: string): Promise<Us
       id: data.user.id,
       email: data.user.email,
     };
+
+    const login = useAuthStore.getState().login;
+    login(res);
 
     return res;
   } catch (error) {
