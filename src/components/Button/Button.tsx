@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 interface ButtonProps {
   label: string;
@@ -23,9 +24,11 @@ const Button: React.FC<ButtonProps> = ({
       className={`flex items-center justify-center px-4 py-2 bg-sky-800 hover:bg-sky-950 text-white font-medium rounded transition-colors duration-200 ${className} w-64`}
     >
       {loading ? (
-        <img
+        <Image
           src="/loading.svg"
           alt="Loading"
+          width={20}
+          height={20}
           className="h-5 w-5 animate-spin"
         />
       ) : (
