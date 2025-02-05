@@ -1,0 +1,15 @@
+{
+  "AuthPage": {
+    "login": "LOGIN",
+    "createAccount": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "passwordsDontMatch": "Passwords do not match",
+    "submitLogin": "Login",
+    "submitCreateAccount": "Create Account",
+    "toggleToCreate": "Create an account",
+    "toggleToLogin": "Already have an account? Sign in",
+    "loginFailed": "Login failed"
+  }
+}
