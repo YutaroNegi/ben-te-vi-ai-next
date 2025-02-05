@@ -1,4 +1,6 @@
-import Button from './Button/Button'
-import Input from './Input/Input'
+import AuthForm from "./AuthForm/AuthForm";
+import Button from "./Button/Button";
+import Input from "./Input/Input";
+import Header from "./Header/Header";
 
-export { Button, Input }
+export { AuthForm, Button, Input, Header };
