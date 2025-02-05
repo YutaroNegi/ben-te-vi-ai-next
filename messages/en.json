@@ -11,6 +11,7 @@
     "toggleToCreate": "Create an account",
     "toggleToLogin": "Already have an account? Sign in",
     "loginFailed": "Login failed",
-    "loginSuccess": "Login successful"
+    "loginSuccess": "Login successful",
+    "description": "Manage your personal finances in an easy and intuitive way. With the help of AI, make your financial decisions easier and more effective."
   }
 }
