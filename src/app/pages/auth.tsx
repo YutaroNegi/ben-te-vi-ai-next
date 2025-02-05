@@ -19,7 +19,7 @@ export default function AuthPage() {
             className="object-contain"
           />
         </div>
-        <p className="mt-4 text-center max-w-[60%] mx-auto">
+        <p className="text-[22px] mt-4 text-center max-w-[60%] mx-auto">
           {t("description")}
         </p>
       </div>
