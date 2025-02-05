@@ -10,7 +10,7 @@ function Header() {
     }
   }
   return (
-    <header className="flex items-center justify-between p-4 bg-white shadow-md">
+    <header className="flex items-center justify-between p-4 shadow-md bg-matcha-900">
       <img src="/ben-te-vi-logo.png" alt="Logo do App" className="h-10" />
       <button
         onClick={handleSignOut}
