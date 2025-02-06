@@ -80,7 +80,6 @@ const ExpenseForm = () => {
       onSubmit={handleSubmit}
       className="max-w-3xl mx-auto p-6 border-2 border-yellow-600 rounded-lg"
     >
-      {/* Utilizando CSS Grid para dividir o formulário em duas colunas */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Coluna 1 */}
         <div className="flex flex-col space-y-4">
@@ -95,15 +94,15 @@ const ExpenseForm = () => {
           <Input
             id="amount"
             name="amount"
+            type="number" 
+            step="0.01"
             label={t("amount")}
-            type="number"
             placeholder={t("amount")}
           />
 
           <Select name="category" label={t("category")} options={options} />
         </div>
 
-        {/* Coluna 2 */}
         <div className="flex flex-col space-y-4">
           <Input
             id="description"
@@ -131,7 +130,6 @@ const ExpenseForm = () => {
         </div>
       </div>
 
-      {/* Botão de submissão centralizado */}
       <div className="mt-6 flex justify-center">
         <Button type="submit" label={t("submit")} loading={loading} />
       </div>
