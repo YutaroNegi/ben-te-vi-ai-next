@@ -2,3 +2,31 @@ export interface CategoryOption {
   value: string;
   label: string;
 }
+
+export interface Installment {
+  id: string;
+  expense_id: string;
+  installment_number: number;
+  due_date: string;
+  amount: number;
+  paid: boolean;
+  paid_at?: string | null;
+  expense: {
+    id: string;
+    category_id: string;
+    name: string;
+    description?: string;
+    user_id: string;
+  };
+}
+
+
+export interface ExpenseData {
+  user_id: string;
+  name: string;
+  amount: number;
+  category_id: string
+  description: string | null;
+  date: string;
+  installments: number;
+}
