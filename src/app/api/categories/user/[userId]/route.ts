@@ -1,13 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
-import { useTranslations } from "next-intl";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { userId: string } }
 ) {
-  const t = useTranslations("Api");
   try {
     const { userId } = params;
 
@@ -23,7 +21,7 @@ export async function GET(
     return NextResponse.json(data, { status: 200 });
   } catch (err) {
     return NextResponse.json(
-      { error: t('errorGettingCategories') },
+      { error: 'Error fetching categories.' },
       { status: 500 }
     );
   }
