@@ -1,4 +1,4 @@
 import { signIn, signOut, createAccount } from "./auth";
-import { fetchCategories } from "./expenses";
+import { fetchCategories, registerExpense } from "./expenses";
 
-export { signIn, signOut, createAccount, fetchCategories };
+export { signIn, signOut, createAccount, fetchCategories, registerExpense };
