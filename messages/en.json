@@ -26,5 +26,13 @@
     "userIdCategoryIdNameAmountRequired": "User id, category id, name and amount are required",
     "errorFetchingExpenses": "Error fetching expenses",
     "userIdNameRequired": "User id and name are required"
+  },
+  "ExpenseForm":{
+    "name": "Name",
+    "amount": "Amount",
+    "category": "Category",
+    "description": "Description",
+    "date": "Date",
+    "submit": "Submit"
   }
 }
