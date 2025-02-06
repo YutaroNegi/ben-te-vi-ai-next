@@ -33,6 +33,8 @@
     "category": "Category",
     "description": "Description",
     "date": "Date",
-    "submit": "Submit"
+    "submit": "Submit",
+    "errorFetchingCategories": "Error fetching categories",
+    "installments": "Installments"
   }
 }
