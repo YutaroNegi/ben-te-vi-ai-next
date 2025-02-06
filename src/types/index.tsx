@@ -1,8 +1,10 @@
 import { User, AuthState } from './auth'
-import { CategoryOption } from './expenses'
+import { CategoryOption, ExpenseData, Installment } from './expenses'
 
 export type {
   User,
   AuthState,
-  CategoryOption
+  CategoryOption,
+  ExpenseData,
+  Installment
 }
