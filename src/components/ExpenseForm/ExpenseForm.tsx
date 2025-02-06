@@ -35,7 +35,7 @@ const ExpenseForm = () => {
     if (userId) {
       getCategories();
     }
-  }, []);
+  }, [userId, t]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -78,51 +78,63 @@ const ExpenseForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col border-2 border-yellow-600 w-96 p-4 space-y-4 rounded-lg items-center"
+      className="max-w-3xl mx-auto p-6 border-2 border-yellow-600 rounded-lg"
     >
-      <Input
-        id="name"
-        name="name"
-        label={t("name")}
-        type="text"
-        placeholder={t("name")}
-      />
+      {/* Utilizando CSS Grid para dividir o formulário em duas colunas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Coluna 1 */}
+        <div className="flex flex-col space-y-4">
+          <Input
+            id="name"
+            name="name"
+            label={t("name")}
+            type="text"
+            placeholder={t("name")}
+          />
 
-      <Input
-        id="amount"
-        name="amount"
-        label={t("amount")}
-        type="number"
-        placeholder={t("amount")}
-      />
+          <Input
+            id="amount"
+            name="amount"
+            label={t("amount")}
+            type="number"
+            placeholder={t("amount")}
+          />
 
-      <Select name="category" label={t("category")} options={options} />
+          <Select name="category" label={t("category")} options={options} />
+        </div>
 
-      <Input
-        id="description"
-        name="description"
-        label={t("description")}
-        type="text"
-        placeholder={t("description")}
-      />
+        {/* Coluna 2 */}
+        <div className="flex flex-col space-y-4">
+          <Input
+            id="description"
+            name="description"
+            label={t("description")}
+            type="text"
+            placeholder={t("description")}
+          />
 
-      <InputDate
-        id="date"
-        name="date"
-        label={t("date")}
-        type="date"
-        placeholder={t("date")}
-      />
+          <InputDate
+            id="date"
+            name="date"
+            label={t("date")}
+            type="date"
+            placeholder={t("date")}
+          />
 
-      <Input
-        id="installments"
-        name="installments"
-        label={t("installments")}
-        type="number"
-        placeholder={t("installments")}
-      />
+          <Input
+            id="installments"
+            name="installments"
+            label={t("installments")}
+            type="number"
+            placeholder={t("installments")}
+          />
+        </div>
+      </div>
 
-      <Button type="submit" label={t("submit")} loading={loading} />
+      {/* Botão de submissão centralizado */}
+      <div className="mt-6 flex justify-center">
+        <Button type="submit" label={t("submit")} loading={loading} />
+      </div>
       <ToastContainer />
     </form>
   );
