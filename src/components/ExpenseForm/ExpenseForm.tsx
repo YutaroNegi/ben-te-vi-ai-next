@@ -2,20 +2,19 @@ import { useState, useEffect } from "react";
 import { Button, Input, InputDate, Select } from "@/components";
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/stores/authStore";
-import { fetchCategories } from "@/utils";
-
-interface CategoryOption {
-  value: string;
-  label: string;
-}
+import { fetchCategories, registerExpense } from "@/utils";
+import { CategoryOption } from "@/types";
+import { ToastContainer, toast } from "react-toastify";
 
 const ExpenseForm = () => {
   const userId = useAuthStore((state) => state.user?.id);
   const [options, setOptions] = useState<CategoryOption[]>([]);
+  const [loading, setLoading] = useState(false);
   const t = useTranslations("ExpenseForm");
 
   useEffect(() => {
     async function getCategories() {
+      setLoading(true);
       let optionsData: CategoryOption[] = [];
       try {
         if (!userId) {
@@ -24,7 +23,11 @@ const ExpenseForm = () => {
         optionsData = await fetchCategories(userId);
       } catch (error) {
         console.error(error);
-      }finally{
+        toast.error(
+          t("errorFetchingCategories") || "Erro ao buscar categorias"
+        );
+      } finally {
+        setLoading(false);
         setOptions(optionsData);
       }
     }
@@ -34,8 +37,49 @@ const ExpenseForm = () => {
     }
   }, []);
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!userId) {
+      toast.error("User not found");
+      return;
+    }
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      const name = formData.get("name") as string;
+      const amount = parseFloat(formData.get("amount") as string);
+      const category = formData.get("category") as string;
+      const description = (formData.get("description") as string) || null;
+      const date = formData.get("date") as string;
+      const installments = formData.get("installments")
+        ? parseInt(formData.get("installments") as string, 10)
+        : 1;
+
+      const expenseData = {
+        user_id: userId,
+        name,
+        amount,
+        category_id: category,
+        description,
+        date,
+        installments,
+      };
+
+      await registerExpense(expenseData);
+      toast.success("Expense registered successfully");
+    } catch (error: any) {
+      console.error(error);
+      toast.error(
+        error.message || "An error occurred while registering the expense"
+      );
+    }
+  };
+
   return (
-    <form className="flex flex-col border-2 border-yellow-600 w-96 p-4 space-y-4 rounded-lg items-center">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col border-2 border-yellow-600 w-96 p-4 space-y-4 rounded-lg items-center"
+    >
       <Input
         id="name"
         name="name"
@@ -70,7 +114,16 @@ const ExpenseForm = () => {
         placeholder={t("date")}
       />
 
-      <Button type="submit" label={t("submit")} />
+      <Input
+        id="installments"
+        name="installments"
+        label={t("installments")}
+        type="number"
+        placeholder={t("installments")}
+      />
+
+      <Button type="submit" label={t("submit")} loading={loading} />
+      <ToastContainer />
     </form>
   );
 };
