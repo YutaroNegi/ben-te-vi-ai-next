@@ -5,5 +5,7 @@ import InputDate from "./InputDate/InputDate";
 import Select from "./Select/Select";
 import Header from "./Header/Header";
 import ExpenseForm from "./ExpenseForm/ExpenseForm";
+import Table from "./Table/Table";
+import ViewExpenses from "./ViewExpenses/ViewExpenses";
 
-export { AuthForm, Button, Input, Header, InputDate, Select, ExpenseForm };
+export { AuthForm, Button, Input, Header, InputDate, Select, ExpenseForm, Table, ViewExpenses };
