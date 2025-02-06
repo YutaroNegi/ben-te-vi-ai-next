@@ -1,4 +1,4 @@
-import { CategoryOption } from "@/types";
+import { CategoryOption, ExpenseData, Installment } from "@/types";
 
 export async function fetchCategories(userId: string) {
   try {
@@ -19,15 +19,6 @@ export async function fetchCategories(userId: string) {
   }
 }
 
-interface ExpenseData {
-  user_id: string;
-  name: string;
-  amount: number;
-  category_id: string
-  description: string | null;
-  date: string;
-  installments: number;
-}
 
 export const registerExpense = async (expenseData: ExpenseData) => {
   try {
@@ -48,3 +39,23 @@ export const registerExpense = async (expenseData: ExpenseData) => {
     throw error;
   }
 };
+
+
+
+export async function fetchInstallmentsByUserAndDate(
+  userId: string,
+  startDate: string,
+  endDate: string
+): Promise<Record<string, Installment[]>> {
+  const response = await fetch(
+    `/api/installments/user/${userId}?startDate=${encodeURIComponent(
+      startDate
+    )}&endDate=${encodeURIComponent(endDate)}`
+  );
+
+  if (!response.ok) {
+    throw new Error('Erro ao buscar parcelas.');
+  }
+
+  return response.json();
+}
