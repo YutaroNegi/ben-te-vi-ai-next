@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Header, ExpenseForm } from "@/components";
+import { Header, ExpenseForm, ViewExpenses } from "@/components";
 
 export default function DashbparPage() {
   return (
@@ -9,6 +9,9 @@ export default function DashbparPage() {
       <Header />
       <div className="flex justify-center mt-10">
         <ExpenseForm />
+      </div>
+      <div className="flex justify-center mt-10">
+        <ViewExpenses />
       </div>
     </div>
   );
