@@ -14,7 +14,7 @@
     "loginSuccess": "Login successful",
     "description": "Manage your personal finances in an easy and intuitive way. With the help of AI, make your financial decisions easier and more effective."
   },
-  "Api":{
+  "Api": {
     "categoryNameIsRequired": "Category name is required",
     "errorUpdatingCategory": "Error updating category",
     "categoryDeleted": "Category deleted",
@@ -41,5 +41,35 @@
     "delete": "Delete",
     "newCategoryNamePlaceholder": "Category name...",
     "placeholderCategory": "Select..."
+  },
+  "ExpenseTable": {
+    "expense": "Expense",
+    "installment": "Installment",
+    "value": "Value",
+    "dueDate": "Due Date",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "headers": {
+      "expense": "Despesa",
+      "installment": "Parcela",
+      "value": "Valor",
+      "dueDate": "Vencimento",
+      "actions": "Ações"
+    },
+    "actions": {
+      "edit": "Editar",
+      "delete": "Excluir",
+      "save": "Salvar",
+      "cancel": "Cancelar"
+    },
+    "toast": {
+      "deleted": "Parcela deletada com sucesso!",
+      "errorDeleting": "Erro ao deletar a parcela.",
+      "updated": "Parcela atualizada com sucesso!",
+      "errorUpdating": "Erro ao atualizar a parcela."
+    }
   }
+  
 }
