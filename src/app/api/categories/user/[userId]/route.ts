@@ -1,18 +1,21 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { NextResponse } from "next/server";
+import { supabase } from "@/lib/supabaseClient";
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { userId: string } }
-) {
+export async function GET(request: Request) {
   try {
-    const { userId } = await params;
+    // Parse the userId from the URL path
+    const { pathname } = new URL(request.url);
+    // e.g. "/api/categories/user/abc123"
+    const userId = pathname.split("/").pop();
+
+    if (!userId) {
+      return NextResponse.json({ error: "Missing userId" }, { status: 400 });
+    }
 
     const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .eq('user_id', userId);
+      .from("categories")
+      .select("*")
+      .eq("user_id", userId);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -21,7 +24,7 @@ export async function GET(
     return NextResponse.json(data, { status: 200 });
   } catch {
     return NextResponse.json(
-      { error: 'Error fetching categories.' },
+      { error: "Error fetching categories." },
       { status: 500 }
     );
   }

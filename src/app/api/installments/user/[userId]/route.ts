@@ -4,10 +4,17 @@ import { supabase } from '@/lib/supabaseClient';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { userId: string } }
 ) {
   try {
-    const { userId } = await Promise.resolve(params);
+    const { pathname } = new URL(request.url);
+    const userId = pathname.split('/').pop(); // last segment, e.g. "123"
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'Missing "id" in URL path' },
+        { status: 400 }
+      );
+    }
     
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get('startDate');

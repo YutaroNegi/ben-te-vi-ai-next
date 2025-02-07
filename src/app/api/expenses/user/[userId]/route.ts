@@ -3,11 +3,18 @@ import type { NextRequest } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { userId: string } }
+  request: NextRequest
 ) {
   try {
-    const { userId } = params;
+    const { pathname } = new URL(request.url);
+    const userId = pathname.split("/").pop(); // last segment, e.g. "123"
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'Missing "id" in URL path' },
+        { status: 400 }
+      );
+    }
 
     const date12MonthsAgo = new Date();
     date12MonthsAgo.setFullYear(date12MonthsAgo.getFullYear() - 1);

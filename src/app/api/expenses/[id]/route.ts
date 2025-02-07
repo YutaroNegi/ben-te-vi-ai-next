@@ -1,28 +1,35 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { supabase } from "@/lib/supabaseClient";
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: NextRequest) {
   try {
-    const id = params.id;
+    // 1. Parse the "id" from the URL path
+    const { pathname } = new URL(request.url);
+    const id = pathname.split("/").pop(); // last segment, e.g. "123"
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Missing "id" in URL path' },
+        { status: 400 }
+      );
+    }
+
     const body = await request.json();
     const { category_id, name, description, amount } = body;
 
     if (!category_id || !name || amount === undefined) {
       return NextResponse.json(
-        { error:'error'},
+        { error: "Some required fields are missing" },
         { status: 400 }
       );
     }
 
-    // Atualiza a despesa na tabela "expenses"
+    // 2. Update the "expenses" row
     const { data, error } = await supabase
-      .from('expenses')
+      .from("expenses")
       .update({ category_id, name, description, amount })
-      .eq('id', id)
+      .eq("id", id)
       .select()
       .single();
 
@@ -33,24 +40,30 @@ export async function PUT(
     return NextResponse.json(data, { status: 200 });
   } catch {
     return NextResponse.json(
-      { error: 'error' },
+      { error: "Error updating expense" },
       { status: 500 }
     );
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: NextRequest) {
   try {
-    const id = params.id;
+    // 1. Parse the "id" from the URL path
+    const { pathname } = new URL(request.url);
+    const id = pathname.split("/").pop();
 
-    // Remove a despesa na tabela "expenses"
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Missing "id" in URL path' },
+        { status: 400 }
+      );
+    }
+
+    // 2. Delete the "expenses" row
     const { error } = await supabase
-      .from('expenses')
+      .from("expenses")
       .delete()
-      .eq('id', id)
+      .eq("id", id)
       .select()
       .single();
 
@@ -58,10 +71,10 @@ export async function DELETE(
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ message: 'error' }, { status: 200 });
+    return NextResponse.json({ message: "Expense deleted" }, { status: 200 });
   } catch {
     return NextResponse.json(
-      { error: 'error' },
+      { error: "Error deleting expense" },
       { status: 500 }
     );
   }

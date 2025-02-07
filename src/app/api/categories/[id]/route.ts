@@ -1,19 +1,22 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(request: Request) {
   try {
-    const id = params.id;
+    // Parse `id` from the URL path
+    const { pathname } = new URL(request.url);
+    // e.g. "/api/categories/123", so `id = "123"` if it's the last segment
+    const id = pathname.split("/").pop();
+
+    if (!id) {
+      return NextResponse.json({ error: "Missing ID in path" }, { status: 400 });
+    }
+
     const body = await request.json();
     const { name, description } = body;
 
     if (!name) {
-      const msg = "Category name is required";
-      return NextResponse.json({ error: msg }, { status: 400 });
+      return NextResponse.json({ error: "Category name is required" }, { status: 400 });
     }
 
     const { data, error } = await supabase
@@ -28,18 +31,19 @@ export async function PUT(
     }
 
     return NextResponse.json(data, { status: 200 });
-  } catch  {
-    const msg = "Failed to update category";
-    return NextResponse.json({ error: msg }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: "Failed to update category" }, { status: 500 });
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(request: Request) {
   try {
-    const id = params.id;
+    const { pathname } = new URL(request.url);
+    const id = pathname.split("/").pop();
+
+    if (!id) {
+      return NextResponse.json({ error: "Missing ID in path" }, { status: 400 });
+    }
 
     const { error } = await supabase
       .from("categories")
@@ -51,12 +55,9 @@ export async function DELETE(
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
-    const msg = "Category deleted";
-    return NextResponse.json({ message: msg }, { status: 200 });
+
+    return NextResponse.json({ message: "Category deleted" }, { status: 200 });
   } catch {
-    return NextResponse.json(
-      { error: "Error deleting category." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Error deleting category." }, { status: 500 });
   }
 }

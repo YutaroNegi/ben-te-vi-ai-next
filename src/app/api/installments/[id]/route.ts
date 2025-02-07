@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabaseClient"; // Ajuste se necessário
 
-export async function PUT(
-  request: Request,
-  context: { params: { id: string } }
-) {
+export async function PUT(request: Request) {
   try {
-    const installmentId = context.params.id;
+    const { pathname } = new URL(request.url);
+    const installmentId = pathname.split("/").pop(); // last segment, e.g. "123"
+
+    if (!installmentId) {
+      return NextResponse.json(
+        { error: 'Missing "id" in URL path' },
+        { status: 400 }
+      );
+    }
+
     const data = await request.json();
 
     const { error } = await supabase
@@ -28,13 +34,17 @@ export async function PUT(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  context: { params: { id: string } }
-) {
+export async function DELETE(request: Request) {
   try {
-    const installmentId = context.params.id;
+    const { pathname } = new URL(request.url);
+    const installmentId = pathname.split("/").pop(); // last segment, e.g. "123"
 
+    if (!installmentId) {
+      return NextResponse.json(
+        { error: 'Missing "id" in URL path' },
+        { status: 400 }
+      );
+    }
     const { error } = await supabase
       .from("installments")
       .delete()
