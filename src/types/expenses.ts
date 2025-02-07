@@ -38,3 +38,13 @@ export interface Category {
   description?: string;
   created_at: string;
 }
+
+
+export interface CategoryBody {
+  name: string;
+  description: string;
+}
+
+export interface RegisterCategoryBody extends CategoryBody {
+  user_id: string;
+}
