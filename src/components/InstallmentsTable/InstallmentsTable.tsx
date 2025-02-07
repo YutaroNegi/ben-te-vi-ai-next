@@ -3,14 +3,15 @@
 import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Table } from "@/components";
-import { Category, Installment } from "@/types";
-import { editInstallment, deleteInstallment } from "@/utils";
+import { CategoryOption, Installment } from "@/types";
+import { useExpensesStore } from "@/stores/expenseStore"; // <---
 import { toast } from "react-toastify";
 
 interface InstallmentTableProps {
-  category: Category;
+  // Se você estiver passando CategoryOption ou Category, ajuste aqui
+  category: CategoryOption;
   installments: Installment[];
-  onRefresh: () => void; // Função para recarregar a listagem
+  onRefresh: () => void; // Você pode continuar usando a mesma callback para recarregar do pai
 }
 
 const InstallmentTable: React.FC<InstallmentTableProps> = ({
@@ -20,9 +21,11 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
 }) => {
   const t = useTranslations("ExpenseTable");
 
+  // Store
+  const { editOneInstallment, deleteOneInstallment } = useExpensesStore();
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-
   const [editData, setEditData] = useState<{
     installment_number: number;
     amount: number;
@@ -45,7 +48,6 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     setEditData({
       installment_number: inst.installment_number,
       amount: inst.amount,
-      // Transformar a data em yyyy-mm-dd para o <input type="date">
       due_date: new Date(inst.due_date).toISOString().split("T")[0],
       paid: inst.paid,
     });
@@ -54,9 +56,10 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
   const handleDeleteClick = async (inst: Installment) => {
     setOpenMenuId(null);
     try {
-      await deleteInstallment(inst.id);
-      toast.success(t("toast.deleted")); // Exibe toast de sucesso
-      onRefresh(); // Recarrega a listagem do pai
+      await deleteOneInstallment(inst.id);
+      toast.success(t("toast.deleted"));
+      // onRefresh ou não, dependendo de como você configurou a store
+      onRefresh();
     } catch (error) {
       console.error("Erro ao deletar installment:", error);
       toast.error(t("toast.errorDeleting"));
@@ -71,16 +74,18 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     if (!editingId) return;
 
     try {
-      await editInstallment(editingId, { ...editData });
-      toast.success(t("toast.updated")); // Sucesso
+      await editOneInstallment(editingId, { ...editData });
+      toast.success(t("toast.updated"));
       setEditingId(null);
-      onRefresh(); // Recarrega a tabela
+      // onRefresh para recarregar ou rely no update local da store
+      onRefresh();
     } catch (error) {
       console.error("Erro ao editar installment:", error);
       toast.error(t("toast.errorUpdating"));
     }
   };
 
+  // Montagem da tabela (mesma lógica do seu código)
   const headers = [
     t("headers.expense"),
     t("headers.installment"),
@@ -91,13 +96,9 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
 
   const rows = installments.map((inst) => {
     const isEditing = editingId === inst.id;
-
     if (isEditing) {
       return [
-        // Nome da despesa (apenas exibindo, pois estamos editando a parcela)
         <span key="expenseName">{inst.expense?.name || ""}</span>,
-
-        // installment_number
         <input
           key="installmentNumber"
           type="number"
@@ -110,8 +111,6 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
             }))
           }
         />,
-
-        // amount
         <input
           key="amount"
           type="number"
@@ -125,8 +124,6 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
             }))
           }
         />,
-
-        // due_date
         <input
           key="dueDate"
           type="date"
@@ -139,8 +136,6 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
             }))
           }
         />,
-
-        // Ações
         <div key="actions" className="flex space-x-2">
           <button
             className="px-2 py-1 bg-green-500 text-white rounded"
@@ -164,7 +159,6 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       inst.installment_number.toString(),
       inst.amount.toFixed(2),
       new Date(inst.due_date).toLocaleDateString(),
-      // Menu 3 pontinhos
       <div key="menu" className="relative">
         <button
           className="p-2 bg-gray-200 rounded hover:bg-gray-300"
@@ -195,7 +189,14 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     ];
   });
 
-  return <Table title={category.name} headers={headers} rows={rows} />;
+  return (
+    <Table
+      // Aqui cuidado pois category é do tipo CategoryOption? Ajuste se precisar
+      title={category.label}
+      headers={headers}
+      rows={rows}
+    />
+  );
 };
 
 export default InstallmentTable;
