@@ -45,6 +45,43 @@ export const registerExpense = async (expenseData: ExpenseData) => {
   }
 };
 
+export const editExpense = async (id: string, body: ExpenseData) => {
+  try {
+    const res = await fetch(`/api/expenses/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to update expense");
+    }
+  } catch (error: any) {
+    throw error;
+  }
+}
+
+export const deleteExpense = async (id: string) => {
+  try {
+    const res = await fetch(`/api/expenses/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to delete expense");
+    }
+  } catch (error: any) {
+    throw error;
+  }
+}
+
+
 export async function fetchInstallmentsByUserAndDate(
   userId: string,
   startDate: string,
