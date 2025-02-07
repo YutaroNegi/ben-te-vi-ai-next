@@ -110,10 +110,24 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
   removeCategory: async (id: string) => {
     set({ loading: true, error: null });
     try {
+      // 1. Deletar a categoria na API
       await deleteCategory(id);
-      // Removendo do estado local
-      const updated = get().categories.filter((cat) => cat.value !== id);
-      set({ categories: updated, loading: false });
+
+      // 2. Remover a categoria localmente do array de categories
+      const updatedCategories = get().categories.filter(
+        (cat) => cat.value !== id
+      );
+
+      // 3. Remover também do installmentsByCategory (se existir) para não poluir memória
+      const oldInstallments = get().installmentsByCategory;
+      const newInstallments = { ...oldInstallments };
+      delete newInstallments[id]; // remove só as parcelas daquela categoria
+
+      set({
+        categories: updatedCategories,
+        installmentsByCategory: newInstallments,
+        loading: false,
+      });
     } catch (err: any) {
       set({
         error: err.message || "Falha ao deletar categoria",
