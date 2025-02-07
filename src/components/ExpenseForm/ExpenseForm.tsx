@@ -21,6 +21,8 @@ const ExpenseForm = () => {
   const [options, setOptions] = useState<CategoryOption[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Option | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Hook de traduções
   const t = useTranslations("ExpenseForm");
 
   useEffect(() => {
@@ -34,9 +36,7 @@ const ExpenseForm = () => {
         optionsData = await fetchCategories(userId);
       } catch (error) {
         console.error(error);
-        toast.error(
-          t("errorFetchingCategories") || "Erro ao buscar categorias"
-        );
+        toast.error(t("errorFetchingCategories"));
       } finally {
         setLoading(false);
         setOptions(optionsData);
@@ -56,13 +56,13 @@ const ExpenseForm = () => {
       setOptions(updatedOptions);
     } catch (error) {
       console.error(error);
-      toast.error("Erro ao atualizar categorias");
+      toast.error(t("errorFetchingCategories"));
     } finally {
       setLoading(false);
     }
   };
 
-  // 1) Adicionar nova categoria (agora recebemos o 'name' do componente)
+  // Adicionar nova categoria
   const handleAddCategory = async (name: string) => {
     if (!name) return;
 
@@ -85,6 +85,7 @@ const ExpenseForm = () => {
     }
   };
 
+  // Editar categoria
   const handleEditCategory = async (option: Option, newName: string) => {
     if (!newName) return;
 
@@ -101,7 +102,7 @@ const ExpenseForm = () => {
     }
   };
 
-  // 3) Deletar categoria
+  // Deletar categoria
   const handleDeleteCategory = async (option: Option) => {
     const id = option.value;
     try {
@@ -114,10 +115,12 @@ const ExpenseForm = () => {
     }
   };
 
+  // Selecionar uma categoria no dropdown
   const handleSelectCategory = (option: Option) => {
     setSelectedCategory(option);
   };
 
+  // Submeter formulário
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userId) {
@@ -190,10 +193,13 @@ const ExpenseForm = () => {
             onAdd={handleAddCategory}
             onEdit={handleEditCategory}
             onDelete={handleDeleteCategory}
-            placeholder="Selecione a categoria..."
+            // Usamos a chave "placeholderCategory" ou "selectPlaceholder"
+            // conforme definido no JSON de tradução
+            placeholder={t("placeholderCategory")}
           />
         </div>
 
+        {/* Coluna 2 */}
         <div className="flex flex-col space-y-4">
           <Input
             id="description"
