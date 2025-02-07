@@ -1,18 +1,19 @@
-import React from 'react';
+"use client";
+
+import React from "react";
 
 interface TableProps {
   title: string;
-  headers: string[];
-  rows: string[][];
+  headers: React.ReactNode[];
+  rows: React.ReactNode[][];
 }
 
 const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
   return (
-    <div className="my-4 shadow-lg rounded overflow-hidden">
+    <div className="my-4 shadow-lg rounded">
       <h2 className="bg-matcha-900 text-white text-xl font-bold p-4">
         {title}
       </h2>
-
       <table className="min-w-full border-collapse">
         <thead className="bg-matcha-800">
           <tr>
@@ -23,7 +24,6 @@ const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
             ))}
           </tr>
         </thead>
-
         <tbody className="bg-almond-900">
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
