@@ -1,5 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaEllipsisV, FaPlus, FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
+import { useTranslations } from "next-intl";
+import {
+  FaEllipsisV,
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaCheck,
+  FaTimes,
+} from "react-icons/fa";
 
 export interface Option {
   value: string;
@@ -25,6 +33,8 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   onDelete,
   placeholder = "Selecione...",
 }) => {
+  const t = useTranslations("ExpenseForm");
+
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<Option | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -53,19 +63,20 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
     };
   }, []);
 
-  // Seleciona a opção principal
   const handleSelectOption = (option: Option) => {
     setSelected(option);
     setIsOpen(false);
     if (onSelectOption) onSelectOption(option);
   };
 
+  // Inicia o fluxo para adicionar nova categoria
   const handleStartAdd = () => {
     setIsAdding(true);
     setIsEditing(false);
     setNewCategoryName("");
   };
 
+  // Confirma a adição
   const handleConfirmAdd = () => {
     if (onAdd && newCategoryName.trim() !== "") {
       onAdd(newCategoryName.trim());
@@ -80,6 +91,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
     setIsAdding(false);
   };
 
+  // Inicia o fluxo para editar uma categoria
   const handleStartEdit = (option: Option) => {
     setIsEditing(true);
     setIsAdding(false);
@@ -87,6 +99,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
     setEditCategoryName(option.label);
   };
 
+  // Confirma edição
   const handleConfirmEdit = () => {
     if (onEdit && editOption && editCategoryName.trim() !== "") {
       onEdit(editOption, editCategoryName.trim());
@@ -97,6 +110,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
     setEditOption(null);
   };
 
+  // Cancela edição
   const handleCancelEdit = () => {
     setIsEditing(false);
     setEditCategoryName("");
@@ -111,6 +125,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   return (
     <div className="flex flex-col space-y-1 w-64 relative" ref={dropdownRef}>
       {label && <label className="font-medium text-gray-700">{label}</label>}
+
       <div
         onClick={() => {
           if (!isAdding && !isEditing) {
@@ -125,12 +140,13 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 
       {isOpen && (
         <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1">
+          {/* Se estamos adicionando */}
           {isAdding ? (
             <div className="flex items-center px-4 py-2 border-b border-gray-200">
               <input
                 type="text"
                 className="flex-grow border rounded px-2 py-1 mr-2"
-                placeholder="Nome da categoria..."
+                placeholder={t("newCategoryNamePlaceholder")}
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
               />
@@ -149,13 +165,14 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
               className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={handleStartAdd}
             >
-              <span className="text-gray-700 font-medium">Adicionar novo</span>
+              <span className="text-gray-700 font-medium">{t("addNew")}</span>
               <FaPlus className="text-gray-600 ml-2" />
             </div>
           )}
 
           <hr className="my-1" />
 
+          {/* Se estamos editando */}
           {isEditing && editOption && (
             <div className="flex items-center px-4 py-2 border-b border-gray-200 bg-gray-50">
               <input
@@ -176,6 +193,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
             </div>
           )}
 
+          {/* Lista de opções */}
           {options.map((option) => (
             <div
               key={option.value}
@@ -200,14 +218,14 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
                     onClick={() => handleStartEdit(option)}
                   >
                     <FaEdit className="mr-2" />
-                    Editar
+                    {t("edit")}
                   </div>
                   <div
                     className="cursor-pointer flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                     onClick={() => handleDeleteClick(option)}
                   >
                     <FaTrash className="mr-2" />
-                    Deletar
+                    {t("delete")}
                   </div>
                 </div>
               </div>
