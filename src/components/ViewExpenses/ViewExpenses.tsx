@@ -1,83 +1,59 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAuthStore } from "@/stores/authStore";
-import { fetchInstallmentsByUserAndDate } from "@/utils";
-import { Category, Installment } from "@/types";
+import { useExpensesStore } from "@/stores/expenseStore";
 import { InstallmentTable } from "@/components";
-import { ToastContainer } from "react-toastify"; // Para exibir toasts
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ViewExpenses = () => {
   const userId = useAuthStore((state) => state.user?.id);
 
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [installmentsByCategory, setInstallmentsByCategory] = useState<
-    Record<string, Installment[]>
-  >({});
+  // Agora pegamos tudo do store
+  const {
+    categories,
+    installmentsByCategory,
+    loading,
+    fetchCategories,
+    fetchInstallments,
 
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [loading, setLoading] = useState<boolean>(false);
+    // Adicionado no store
+    selectedDate,
+    setSelectedDate,
+  } = useExpensesStore();
 
-  // Função que carrega as parcelas
-  const loadInstallments = async () => {
-    if (!userId) return;
-    try {
-      setLoading(true);
-
-      const year = selectedDate.getFullYear();
-      const month = selectedDate.getMonth();
-      const startDate = new Date(year, month, 1).toISOString();
-      const endDate = new Date(year, month + 1, 1).toISOString();
-
-      const grouped = await fetchInstallmentsByUserAndDate(
-        userId,
-        startDate,
-        endDate
-      );
-      setInstallmentsByCategory(grouped);
-      setLoading(false);
-    } catch (err) {
-      console.error(err);
-      setLoading(false);
-    }
-  };
-
+  // Carrega categories 1x
   useEffect(() => {
-    if (!userId) return;
-    // Carrega as categorias
-    setLoading(true);
-    fetch(`/api/categories/user/${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCategories(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Erro ao buscar categorias:", error);
-        setLoading(false);
-      });
-  }, [userId]);
+    if (userId) {
+      fetchCategories(userId).catch(console.error);
+    }
+  }, [userId, fetchCategories]);
 
-  // Sempre que mudar userId ou selectedDate, recarrega parcelas
+  // Carrega installments sempre que selectedDate ou userId mudar
   useEffect(() => {
     loadInstallments();
   }, [userId, selectedDate]);
 
+  const loadInstallments = async () => {
+    if (!userId) return;
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth();
+    const startDate = new Date(year, month, 1).toISOString();
+    const endDate = new Date(year, month + 1, 1).toISOString();
+    await fetchInstallments(userId, startDate, endDate);
+  };
+
   const handlePrevMonth = () => {
-    setSelectedDate((prevDate) => {
-      const year = prevDate.getFullYear();
-      const month = prevDate.getMonth();
-      return new Date(year, month - 1, 1);
-    });
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth();
+    setSelectedDate(new Date(year, month - 1, 1));
   };
 
   const handleNextMonth = () => {
-    setSelectedDate((prevDate) => {
-      const year = prevDate.getFullYear();
-      const month = prevDate.getMonth();
-      return new Date(year, month + 1, 1);
-    });
+    const year = selectedDate.getFullYear();
+    const month = selectedDate.getMonth();
+    setSelectedDate(new Date(year, month + 1, 1));
   };
 
   return (
@@ -110,9 +86,9 @@ const ViewExpenses = () => {
       <div className="flex space-x-4 overflow-x-auto">
         {categories.map((category) => (
           <InstallmentTable
-            key={category.id}
+            key={category.value}
             category={category}
-            installments={installmentsByCategory[category.id] || []}
+            installments={installmentsByCategory[category.value] || []}
             onRefresh={loadInstallments}
           />
         ))}
