@@ -1,4 +1,10 @@
-import { CategoryOption, ExpenseData, Installment } from "@/types";
+import {
+  CategoryOption,
+  ExpenseData,
+  Installment,
+  CategoryBody,
+  RegisterCategoryBody,
+} from "@/types";
 
 export async function fetchCategories(userId: string) {
   try {
@@ -18,7 +24,6 @@ export async function fetchCategories(userId: string) {
     return optionsData;
   }
 }
-
 
 export const registerExpense = async (expenseData: ExpenseData) => {
   try {
@@ -40,8 +45,6 @@ export const registerExpense = async (expenseData: ExpenseData) => {
   }
 };
 
-
-
 export async function fetchInstallmentsByUserAndDate(
   userId: string,
   startDate: string,
@@ -54,15 +57,10 @@ export async function fetchInstallmentsByUserAndDate(
   );
 
   if (!response.ok) {
-    throw new Error('Erro ao buscar parcelas.');
+    throw new Error("Erro ao buscar parcelas.");
   }
 
   return response.json();
-}
-
-interface CategoryBody {
-  name: string;
-  description: string;
 }
 
 export async function editCategory(id: string, body: CategoryBody) {
@@ -85,7 +83,7 @@ export async function editCategory(id: string, body: CategoryBody) {
   }
 }
 
-export async function registerCategory(body: CategoryBody) {
+export async function registerCategory(body: RegisterCategoryBody) {
   try {
     const res = await fetch(`/api/categories/register`, {
       method: "POST",
@@ -107,7 +105,7 @@ export async function registerCategory(body: CategoryBody) {
   }
 }
 
-export async function deleteCategory(id: string) { 
+export async function deleteCategory(id: string) {
   try {
     const res = await fetch(`/api/categories/${id}`, {
       method: "DELETE",
