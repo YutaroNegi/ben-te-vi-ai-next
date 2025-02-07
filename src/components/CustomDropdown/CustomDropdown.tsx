@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { FaEllipsisV, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import React, { useState, useRef, useEffect } from "react";
+import { FaEllipsisV, FaPlus, FaEdit, FaTrash, FaCheck, FaTimes } from "react-icons/fa";
 
 export interface Option {
   value: string;
@@ -10,8 +10,8 @@ interface CustomDropdownProps {
   label?: string;
   options: Option[];
   onSelectOption?: (option: Option) => void;
-  onAdd?: () => void;
-  onEdit?: (option: Option) => void;
+  onAdd?: (newName: string) => void;
+  onEdit?: (option: Option, newName: string) => void;
   onDelete?: (option: Option) => void;
   placeholder?: string;
 }
@@ -23,11 +23,18 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   onAdd,
   onEdit,
   onDelete,
-  placeholder = 'Selecione...',
+  placeholder = "Selecione...",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<Option | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const [isAdding, setIsAdding] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [editOption, setEditOption] = useState<Option | null>(null);
+  const [editCategoryName, setEditCategoryName] = useState("");
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -36,39 +43,80 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
+        setIsAdding(false);
+        setIsEditing(false);
       }
     }
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
+  // Seleciona a opção principal
   const handleSelectOption = (option: Option) => {
     setSelected(option);
     setIsOpen(false);
     if (onSelectOption) onSelectOption(option);
   };
 
-  const handleAddClick = () => {
-    if (onAdd) onAdd();
+  const handleStartAdd = () => {
+    setIsAdding(true);
+    setIsEditing(false);
+    setNewCategoryName("");
+  };
+
+  const handleConfirmAdd = () => {
+    if (onAdd && newCategoryName.trim() !== "") {
+      onAdd(newCategoryName.trim());
+    }
+    setNewCategoryName("");
+    setIsAdding(false);
     setIsOpen(false);
   };
 
-  const handleEditClick = (option: Option) => {
-    if (onEdit) onEdit(option);
+  const handleCancelAdd = () => {
+    setNewCategoryName("");
+    setIsAdding(false);
+  };
+
+  const handleStartEdit = (option: Option) => {
+    setIsEditing(true);
+    setIsAdding(false);
+    setEditOption(option);
+    setEditCategoryName(option.label);
+  };
+
+  const handleConfirmEdit = () => {
+    if (onEdit && editOption && editCategoryName.trim() !== "") {
+      onEdit(editOption, editCategoryName.trim());
+    }
+    setIsEditing(false);
+    setIsOpen(false);
+    setEditCategoryName("");
+    setEditOption(null);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setEditCategoryName("");
+    setEditOption(null);
   };
 
   const handleDeleteClick = (option: Option) => {
     if (onDelete) onDelete(option);
+    setIsOpen(false);
   };
 
   return (
-    <div className="flex flex-col space-y-1 w-64" ref={dropdownRef}>
+    <div className="flex flex-col space-y-1 w-64 relative" ref={dropdownRef}>
       {label && <label className="font-medium text-gray-700">{label}</label>}
-
       <div
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => {
+          if (!isAdding && !isEditing) {
+            setIsOpen((prev) => !prev);
+          }
+        }}
         className="cursor-pointer relative flex justify-between items-center px-4 py-2 border border-gray-300 rounded-full text-left focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         {selected ? selected.label : placeholder}
@@ -76,53 +124,95 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       </div>
 
       {isOpen && (
-        <div className="relative">
-          <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1">
+        <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1">
+          {isAdding ? (
+            <div className="flex items-center px-4 py-2 border-b border-gray-200">
+              <input
+                type="text"
+                className="flex-grow border rounded px-2 py-1 mr-2"
+                placeholder="Nome da categoria..."
+                value={newCategoryName}
+                onChange={(e) => setNewCategoryName(e.target.value)}
+              />
+              <button
+                className="text-green-600 mr-2"
+                onClick={handleConfirmAdd}
+              >
+                <FaCheck />
+              </button>
+              <button className="text-red-600" onClick={handleCancelAdd}>
+                <FaTimes />
+              </button>
+            </div>
+          ) : (
             <div
               className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={handleAddClick}
+              onClick={handleStartAdd}
             >
               <span className="text-gray-700 font-medium">Adicionar novo</span>
               <FaPlus className="text-gray-600 ml-2" />
             </div>
+          )}
 
-            <hr className="my-1" />
+          <hr className="my-1" />
 
-            {options.map((option) => (
-              <div
-                key={option.value}
-                className="group flex items-center justify-between px-4 py-2 hover:bg-gray-100"
+          {isEditing && editOption && (
+            <div className="flex items-center px-4 py-2 border-b border-gray-200 bg-gray-50">
+              <input
+                type="text"
+                className="flex-grow border rounded px-2 py-1 mr-2"
+                value={editCategoryName}
+                onChange={(e) => setEditCategoryName(e.target.value)}
+              />
+              <button
+                className="text-green-600 mr-2"
+                onClick={handleConfirmEdit}
               >
-                <div
-                  className="cursor-pointer text-gray-700 text-left w-full"
-                  onClick={() => handleSelectOption(option)}
-                >
-                  {option.label}
+                <FaCheck />
+              </button>
+              <button className="text-red-600" onClick={handleCancelEdit}>
+                <FaTimes />
+              </button>
+            </div>
+          )}
+
+          {options.map((option) => (
+            <div
+              key={option.value}
+              className="group flex items-center justify-between px-4 py-2 hover:bg-gray-100"
+            >
+              <div
+                className="cursor-pointer text-gray-700 text-left w-full"
+                onClick={() => handleSelectOption(option)}
+              >
+                {option.label}
+              </div>
+
+              {/* Ícone de menu (3 pontinhos) */}
+              <div className="relative flex items-center">
+                <div className="cursor-pointer p-1 ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                  <FaEllipsisV />
                 </div>
-                <div className="relative">
-                  <div className="cursor-pointer p-1 ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <FaEllipsisV />
+
+                <div className="hidden group-hover:flex flex-col absolute top-0 left-full ml-2 bg-white border border-gray-200 rounded shadow-lg z-20">
+                  <div
+                    className="cursor-pointer flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => handleStartEdit(option)}
+                  >
+                    <FaEdit className="mr-2" />
+                    Editar
                   </div>
-                  <div className="hidden group-hover:block absolute right-0 mt-2 bg-white border border-gray-200 rounded shadow-lg">
-                    <div
-                      className="cursor-pointer flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full"
-                      onClick={() => handleEditClick(option)}
-                    >
-                      <FaEdit className="mr-2" />
-                      Editar
-                    </div>
-                    <div
-                      className="cursor-pointer flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100 w-full"
-                      onClick={() => handleDeleteClick(option)}
-                    >
-                      <FaTrash className="mr-2" />
-                      Deletar
-                    </div>
+                  <div
+                    className="cursor-pointer flex items-center px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                    onClick={() => handleDeleteClick(option)}
+                  >
+                    <FaTrash className="mr-2" />
+                    Deletar
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
