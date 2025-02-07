@@ -31,6 +31,7 @@ const ExpenseForm = () => {
   } = useExpensesStore();
 
   const [selectedCategory, setSelectedCategory] = useState<Option | null>(null);
+  const [localLoading, setLocalLoading] = useState(false);
 
   useEffect(() => {
     if (userId) {
@@ -50,6 +51,7 @@ const ExpenseForm = () => {
     }
 
     try {
+      setLocalLoading(true);
       const formData = new FormData(e.currentTarget);
       const name = formData.get("name") as string;
       const amount = parseFloat(formData.get("amount") as string);
@@ -88,6 +90,8 @@ const ExpenseForm = () => {
     } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Erro ao registrar despesa");
+    } finally {
+      setLocalLoading(false);
     }
   };
 
@@ -194,7 +198,7 @@ const ExpenseForm = () => {
       </div>
 
       <div className="mt-6 flex justify-center">
-        <Button type="submit" label={t("submit")} loading={loading} />
+        <Button type="submit" label={t("submit")} loading={localLoading} />
       </div>
       <ToastContainer />
     </form>
