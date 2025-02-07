@@ -1,124 +1,45 @@
-import { useState, useEffect } from "react";
-import { Button, Input, InputDate } from "@/components"; 
-import { useTranslations } from "next-intl";
-import { useAuthStore } from "@/stores/authStore";
-import {
-  fetchCategories,
-  registerExpense,
-  editCategory,
-  deleteCategory,
-  registerCategory,
-} from "@/utils";
-import { CategoryOption } from "@/types";
-import { ToastContainer, toast } from "react-toastify";
+"use client";
 
+import { useState, useEffect } from "react";
+import { Button, Input, InputDate } from "@/components";
 import CustomDropdown, {
   Option,
 } from "@/components/CustomDropdown/CustomDropdown";
+import { useAuthStore } from "@/stores/authStore";
+import { useExpensesStore } from "@/stores/expenseStore"; // <--- Importamos a store
+import { registerExpense } from "@/utils";
+import { CategoryOption } from "@/types";
+import { ToastContainer, toast } from "react-toastify";
+import { useTranslations } from "next-intl";
 
 const ExpenseForm = () => {
   const userId = useAuthStore((state) => state.user?.id);
-  const [options, setOptions] = useState<CategoryOption[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<Option | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  // Hook de traduções
   const t = useTranslations("ExpenseForm");
 
+  // Store
+  const {
+    categories,
+    fetchCategories,
+    addCategory,
+    updateCategory,
+    removeCategory,
+
+    // Precisamos também do selectedDate e do fetchInstallments
+    selectedDate,
+    fetchInstallments,
+    loading,
+  } = useExpensesStore();
+
+  const [selectedCategory, setSelectedCategory] = useState<Option | null>(null);
+
   useEffect(() => {
-    async function getCategories() {
-      setLoading(true);
-      let optionsData: CategoryOption[] = [];
-      try {
-        if (!userId) {
-          throw new Error("User not found");
-        }
-        optionsData = await fetchCategories(userId);
-      } catch (error) {
-        console.error(error);
-        toast.error(t("errorFetchingCategories"));
-      } finally {
-        setLoading(false);
-        setOptions(optionsData);
-      }
-    }
-
     if (userId) {
-      getCategories();
-    }
-  }, [userId, t]);
-
-  const refreshCategories = async () => {
-    if (!userId) return;
-    setLoading(true);
-    try {
-      const updatedOptions = await fetchCategories(userId);
-      setOptions(updatedOptions);
-    } catch (error) {
-      console.error(error);
-      toast.error(t("errorFetchingCategories"));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Adicionar nova categoria
-  const handleAddCategory = async (name: string) => {
-    if (!name) return;
-
-    if (!userId) {
-      toast.error("User not found");
-      return;
-    }
-    try {
-      const payload = {
-        user_id: userId,
-        name,
-        description: "",
-      };
-      await registerCategory(payload);
-      toast.success("Categoria adicionada com sucesso!");
-      refreshCategories();
-    } catch (error) {
-      console.error(error);
-      toast.error("Falha ao adicionar categoria");
-    }
-  };
-
-  // Editar categoria
-  const handleEditCategory = async (option: Option, newName: string) => {
-    if (!newName) return;
-
-    try {
-      await editCategory(option.value, {
-        name: newName,
-        description: "",
+      fetchCategories(userId).catch((err) => {
+        console.error(err);
+        toast.error(t("errorFetchingCategories"));
       });
-      toast.success("Categoria editada com sucesso!");
-      refreshCategories();
-    } catch (error) {
-      console.error(error);
-      toast.error("Falha ao editar categoria");
     }
-  };
-
-  // Deletar categoria
-  const handleDeleteCategory = async (option: Option) => {
-    const id = option.value;
-    try {
-      await deleteCategory(id);
-      toast.success("Categoria deletada com sucesso!");
-      refreshCategories();
-    } catch (error) {
-      console.error(error);
-      toast.error("Falha ao deletar categoria");
-    }
-  };
-
-  // Selecionar uma categoria no dropdown
-  const handleSelectCategory = (option: Option) => {
-    setSelectedCategory(option);
-  };
+  }, [userId, fetchCategories, t]);
 
   // Submeter formulário
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -143,7 +64,8 @@ const ExpenseForm = () => {
         return;
       }
 
-      const expenseData = {
+      // 1) Registrar despesa
+      await registerExpense({
         user_id: userId,
         name,
         amount,
@@ -151,14 +73,63 @@ const ExpenseForm = () => {
         description,
         date,
         installments,
-      };
+      });
 
-      await registerExpense(expenseData);
       toast.success("Despesa registrada com sucesso!");
+
+      // 2) Chamamos fetchInstallments p/ recarregar a listagem
+      //    do mesmo mês que o ViewExpenses está mostrando:
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+      const startDate = new Date(year, month, 1).toISOString();
+      const endDate = new Date(year, month + 1, 1).toISOString();
+
+      await fetchInstallments(userId, startDate, endDate);
     } catch (error: any) {
       console.error(error);
       toast.error(error.message || "Erro ao registrar despesa");
     }
+  };
+
+  // Resto do formulário...
+  const handleAddCategory = async (name: string) => {
+    if (!name) return;
+    if (!userId) {
+      toast.error("User not found");
+      return;
+    }
+    try {
+      await addCategory(userId, name);
+      toast.success("Categoria adicionada com sucesso!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Falha ao adicionar categoria");
+    }
+  };
+
+  const handleEditCategory = async (option: Option, newName: string) => {
+    if (!newName) return;
+    try {
+      await updateCategory(option.value, { name: newName, description: "" });
+      toast.success("Categoria editada com sucesso!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Falha ao editar categoria");
+    }
+  };
+
+  const handleDeleteCategory = async (option: Option) => {
+    try {
+      await removeCategory(option.value);
+      toast.success("Categoria deletada com sucesso!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Falha ao deletar categoria");
+    }
+  };
+
+  const handleSelectCategory = (option: Option) => {
+    setSelectedCategory(option);
   };
 
   return (
@@ -176,7 +147,6 @@ const ExpenseForm = () => {
             type="text"
             placeholder={t("name")}
           />
-
           <Input
             id="amount"
             name="amount"
@@ -188,13 +158,11 @@ const ExpenseForm = () => {
 
           <CustomDropdown
             label={t("category")}
-            options={options}
+            options={categories}
             onSelectOption={handleSelectCategory}
             onAdd={handleAddCategory}
             onEdit={handleEditCategory}
             onDelete={handleDeleteCategory}
-            // Usamos a chave "placeholderCategory" ou "selectPlaceholder"
-            // conforme definido no JSON de tradução
             placeholder={t("placeholderCategory")}
           />
         </div>
@@ -208,7 +176,6 @@ const ExpenseForm = () => {
             type="text"
             placeholder={t("description")}
           />
-
           <InputDate
             id="date"
             name="date"
@@ -216,7 +183,6 @@ const ExpenseForm = () => {
             type="date"
             placeholder={t("date")}
           />
-
           <Input
             id="installments"
             name="installments"
