@@ -1,5 +1,12 @@
-import { User, AuthState } from './auth'
-import { CategoryOption, ExpenseData, Installment, Category } from './expenses'
+import { User, AuthState } from "./auth";
+import {
+  CategoryOption,
+  ExpenseData,
+  Installment,
+  Category,
+  CategoryBody,
+  RegisterCategoryBody,
+} from "./expenses";
 
 export type {
   User,
@@ -7,5 +14,7 @@ export type {
   CategoryOption,
   ExpenseData,
   Installment,
-  Category
-}
+  Category,
+  CategoryBody,
+  RegisterCategoryBody,
+};
