@@ -59,3 +59,66 @@ export async function fetchInstallmentsByUserAndDate(
 
   return response.json();
 }
+
+interface CategoryBody {
+  name: string;
+  description: string;
+}
+
+export async function editCategory(id: string, body: CategoryBody) {
+  try {
+    const res = await fetch(`/api/categories/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to update category");
+    }
+  } catch (error: any) {
+    throw error;
+  }
+}
+
+export async function registerCategory(body: CategoryBody) {
+  try {
+    const res = await fetch(`/api/categories/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to register category");
+    }
+
+    return data;
+  } catch (error: any) {
+    throw error;
+  }
+}
+
+export async function deleteCategory(id: string) { 
+  try {
+    const res = await fetch(`/api/categories/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error || "Failed to delete category");
+    }
+  } catch (error: any) {
+    throw error;
+  }
+}
