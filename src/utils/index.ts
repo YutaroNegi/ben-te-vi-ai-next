@@ -6,6 +6,10 @@ import {
   deleteCategory,
   editCategory,
   registerCategory,
+  deleteExpense,
+  editExpense,
+  deleteInstallment,
+  editInstallment,
 } from "./expenses";
 
 export {
@@ -18,4 +22,8 @@ export {
   deleteCategory,
   editCategory,
   registerCategory,
+  deleteExpense,
+  editExpense,
+  deleteInstallment,
+  editInstallment,
 };
