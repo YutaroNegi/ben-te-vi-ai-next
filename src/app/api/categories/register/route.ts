@@ -1,17 +1,15 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
-import { useTranslations } from 'next-intl';
 
 export async function POST(request: NextRequest) {
-  const t = useTranslations("Api");
   try {
     const body = await request.json();
     const { user_id, name, description } = body;
 
     if (!user_id || !name) {
-      
-      return NextResponse.json({ error: t('userIdNameRequired')}, { status: 400 });
+      const msg = 'Missing required fields';
+      return NextResponse.json({ error: msg}, { status: 400 });
     }
 
     const { data, error } = await supabase
@@ -25,6 +23,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(data, { status: 201 });
   } catch (err) {
-    return NextResponse.json({ error: t('errorSavingExpense') }, { status: 500 });
+    const msg = 'Failed to register category';
+    return NextResponse.json({ error: msg}, { status: 500 });
   }
 }
