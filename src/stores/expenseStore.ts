@@ -59,9 +59,9 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         categories: data,
         loading: false,
       });
-    } catch (err: any) {
+    } catch  {
       set({
-        error: err.message || "Erro ao buscar categorias",
+        error: "Erro ao buscar categorias",
         loading: false,
       });
     }
@@ -78,9 +78,9 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
       // Depois de criar, buscamos novamente para atualizar a lista
       await get().fetchCategories(userId);
       set({ loading: false });
-    } catch (err: any) {
+    } catch  {
       set({
-        error: err.message || "Falha ao adicionar categoria",
+        error: "Falha ao adicionar categoria",
         loading: false,
       });
     }
@@ -100,9 +100,9 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         cat.value === id ? { value: id, label: body.name } : cat
       );
       set({ categories: updated, loading: false });
-    } catch (err: any) {
+    } catch  {
       set({
-        error: err.message || "Falha ao editar categoria",
+        error: "Falha ao editar categoria",
         loading: false,
       });
     }
@@ -128,9 +128,9 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         installmentsByCategory: newInstallments,
         loading: false,
       });
-    } catch (err: any) {
+    } catch  {
       set({
-        error: err.message || "Falha ao deletar categoria",
+        error: "Falha ao deletar categoria",
         loading: false,
       });
     }
@@ -153,9 +153,9 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         endDate
       );
       set({ installmentsByCategory: grouped, loading: false });
-    } catch (error: any) {
+    } catch {
       set({
-        error: error.message || "Erro ao buscar parcelas",
+        error: "Erro ao buscar parcelas",
         loading: false,
       });
     }
@@ -190,8 +190,8 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
           },
         });
       }
-    } catch (err: any) {
-      set({ error: err.message || "Erro ao editar parcela", loading: false });
+    } catch  {
+      set({ error: "Erro ao editar parcela", loading: false });
     }
   },
   deleteOneInstallment: async (id: string) => {
@@ -220,8 +220,8 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
           },
         });
       }
-    } catch (err: any) {
-      set({ error: err.message || "Erro ao deletar parcela", loading: false });
+    } catch  {
+      set({ error: "Erro ao deletar parcela", loading: false });
     }
   },
 

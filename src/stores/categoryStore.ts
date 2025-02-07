@@ -69,18 +69,7 @@ export const useCategoryStore = create<CategoryStoreState>((set, get) => ({
     set({ loadingCategories: true });
     try {
       await editCategory(categoryId, { name: newName, description: "" });
-      toast.success("Categoria editada com sucesso!");
-
-      // Para não perdermos o userId, podemos pegar do store (se estiver salvo)
-      // ou simplesmente refazer com o userId de quem chamou a função
-      // mas aqui vamos exemplificar pegando do state atual, se necessário
-      // (você pode passar o userId como parâmetro também)
-      const userId = "pegarUserIdDeAlgumLugar";
-      // await get().fetchCategoriesForUser(userId);
-
-      // Se você não tiver o userId salvo no store,
-      // passe como parâmetro nessa função ou implemente conforme seu fluxo.
-      // Exemplo: setCategories(... com patch local do array)
+      toast.success("Category successfully edited!");
     } catch (error) {
       console.error(error);
       toast.error("Falha ao editar categoria");
@@ -99,10 +88,8 @@ export const useCategoryStore = create<CategoryStoreState>((set, get) => ({
       toast.success("Categoria deletada com sucesso!");
 
       // Novamente, refaz o fetch se necessário
-      const userId = "pegarUserIdDeAlgumLugar";
       // await get().fetchCategoriesForUser(userId);
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error("Falha ao deletar categoria");
     } finally {
       set({ loadingCategories: false });

@@ -23,8 +23,8 @@ export async function PUT(
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: "Error" }, { status: 500 });
   }
 }
 
@@ -44,7 +44,7 @@ export async function DELETE(
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: "Error" }, { status: 500 });
   }
 }

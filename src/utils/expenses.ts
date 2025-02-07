@@ -14,12 +14,14 @@ export async function fetchCategories(userId: string) {
     }
     const data = await res.json();
 
-    const optionsData: CategoryOption[] = data.map((cat: any) => ({
-      value: cat.id,
-      label: cat.name,
-    }));
+    const optionsData: CategoryOption[] = data.map(
+      (cat: { id: string; name: string }) => ({
+        value: cat.id,
+        label: cat.name,
+      })
+    );
     return optionsData;
-  } catch (error) {
+  } catch {
     const optionsData: CategoryOption[] = [];
     return optionsData;
   }
@@ -40,8 +42,8 @@ export const registerExpense = async (expenseData: ExpenseData) => {
     if (!res.ok) {
       throw new Error(data.error || "Failed to register expense");
     }
-  } catch (error: any) {
-    throw error;
+  } catch {
+    throw new Error("Failed to register expense");
   }
 };
 
@@ -60,10 +62,10 @@ export const editExpense = async (id: string, body: ExpenseData) => {
     if (!res.ok) {
       throw new Error(data.error || "Failed to update expense");
     }
-  } catch (error: any) {
-    throw error;
+  } catch {
+    throw new Error("Failed to update expense");
   }
-}
+};
 
 export const deleteExpense = async (id: string) => {
   try {
@@ -76,13 +78,15 @@ export const deleteExpense = async (id: string) => {
     if (!res.ok) {
       throw new Error(data.error || "Failed to delete expense");
     }
-  } catch (error: any) {
-    throw error;
+  } catch {
+    throw new Error("Failed to delete expense");
   }
-}
+};
 
-
-export const editInstallment = async (id: string, body: Partial<Installment>) => {
+export const editInstallment = async (
+  id: string,
+  body: Partial<Installment>
+) => {
   try {
     const res = await fetch(`/api/installments/${id}`, {
       method: "PUT",
@@ -97,8 +101,8 @@ export const editInstallment = async (id: string, body: Partial<Installment>) =>
       throw new Error(data.error || "Failed to update installment");
     }
     return data;
-  } catch (error: any) {
-    throw error;
+  } catch {
+    throw new Error("Failed to update installment");
   }
 };
 
@@ -113,12 +117,10 @@ export const deleteInstallment = async (id: string) => {
       throw new Error(data.error || "Failed to delete installment");
     }
     return data;
-  } catch (error: any) {
-    throw error;
+  } catch {
+    throw new Error("Failed to delete installment");
   }
 };
-
-
 
 export async function fetchInstallmentsByUserAndDate(
   userId: string,
@@ -153,8 +155,8 @@ export async function editCategory(id: string, body: CategoryBody) {
     if (!res.ok) {
       throw new Error(data.error || "Failed to update category");
     }
-  } catch (error: any) {
-    throw error;
+  } catch {
+    throw new Error("Failed to update category");
   }
 }
 
@@ -175,8 +177,8 @@ export async function registerCategory(body: RegisterCategoryBody) {
     }
 
     return data;
-  } catch (error: any) {
-    throw error;
+  } catch {
+    throw new Error("Failed to register category");
   }
 }
 
@@ -191,7 +193,7 @@ export async function deleteCategory(id: string) {
     if (!res.ok) {
       throw new Error(data.error || "Failed to delete category");
     }
-  } catch (error: any) {
-    throw error;
+  } catch {
+    throw new Error("Failed to delete category");
   }
 }

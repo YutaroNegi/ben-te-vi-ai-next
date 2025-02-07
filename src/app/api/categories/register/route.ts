@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(data, { status: 201 });
-  } catch (err) {
+  } catch {
     const msg = 'Failed to register category';
     return NextResponse.json({ error: msg}, { status: 500 });
   }

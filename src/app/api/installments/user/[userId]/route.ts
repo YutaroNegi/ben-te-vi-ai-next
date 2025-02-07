@@ -1,4 +1,3 @@
-// src/app/api/installments/user/[userId]/route.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
@@ -32,8 +31,13 @@ export async function GET(
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    const grouped: Record<string, any[]> = {};
-    (data as any[]).forEach((inst) => {
+    const grouped: Record<string, unknown[]> = {};
+    interface Installment {
+      expense: {
+        category_id: string;
+      };
+    }
+    data.forEach((inst: Installment) => {
       const catId = inst.expense?.category_id;
       if (catId) {
         if (!grouped[catId]) {
@@ -44,7 +48,7 @@ export async function GET(
     });
 
     return NextResponse.json(grouped, { status: 200 });
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       { error: 'Erro fetching installments.' },
       { status: 500 }

@@ -75,9 +75,9 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(expense, { status: 201 });
-  } catch (error: any) {
+  } catch {
     return NextResponse.json(
-      { error: error.message || "Error saving expense" },
+      { error: "Error saving expense" },
       { status: 500 }
     );
   }

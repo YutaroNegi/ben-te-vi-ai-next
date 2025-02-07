@@ -1,13 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { supabase } from '@/lib/supabaseClient';
-import { useTranslations } from "next-intl";
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const t = useTranslations("Api");
   try {
     const id = params.id;
     const body = await request.json();
@@ -15,7 +13,7 @@ export async function PUT(
 
     if (!category_id || !name || amount === undefined) {
       return NextResponse.json(
-        { error: t("categoryIdNameAmountRequired") },
+        { error:'error'},
         { status: 400 }
       );
     }
@@ -33,9 +31,9 @@ export async function PUT(
     }
 
     return NextResponse.json(data, { status: 200 });
-  } catch (err) {
+  } catch {
     return NextResponse.json(
-      { error: t('errorUpdatingExpense') },
+      { error: 'error' },
       { status: 500 }
     );
   }
@@ -45,12 +43,11 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  const t = useTranslations("Api");
   try {
     const id = params.id;
 
     // Remove a despesa na tabela "expenses"
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('expenses')
       .delete()
       .eq('id', id)
@@ -61,10 +58,10 @@ export async function DELETE(
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    return NextResponse.json({ message: t('expenseDeleted') }, { status: 200 });
-  } catch (err) {
+    return NextResponse.json({ message: 'error' }, { status: 200 });
+  } catch {
     return NextResponse.json(
-      { error: t('errorDeletingExpense') },
+      { error: 'error' },
       { status: 500 }
     );
   }

@@ -8,7 +8,6 @@ import CustomDropdown, {
 import { useAuthStore } from "@/stores/authStore";
 import { useExpensesStore } from "@/stores/expenseStore"; // <--- Importamos a store
 import { registerExpense } from "@/utils";
-import { CategoryOption } from "@/types";
 import { ToastContainer, toast } from "react-toastify";
 import { useTranslations } from "next-intl";
 
@@ -27,7 +26,6 @@ const ExpenseForm = () => {
     // Precisamos também do selectedDate e do fetchInstallments
     selectedDate,
     fetchInstallments,
-    loading,
   } = useExpensesStore();
 
   const [selectedCategory, setSelectedCategory] = useState<Option | null>(null);
@@ -87,9 +85,8 @@ const ExpenseForm = () => {
       const endDate = new Date(year, month + 1, 1).toISOString();
 
       await fetchInstallments(userId, startDate, endDate);
-    } catch (error: any) {
-      console.error(error);
-      toast.error(error.message || "Erro ao registrar despesa");
+    } catch {
+      toast.error("Error saving expense");
     } finally {
       setLocalLoading(false);
     }

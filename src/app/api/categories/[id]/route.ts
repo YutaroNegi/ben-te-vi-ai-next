@@ -28,7 +28,7 @@ export async function PUT(
     }
 
     return NextResponse.json(data, { status: 200 });
-  } catch (err) {
+  } catch  {
     const msg = "Failed to update category";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
@@ -41,7 +41,7 @@ export async function DELETE(
   try {
     const id = params.id;
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("categories")
       .delete()
       .eq("id", id)
@@ -53,7 +53,7 @@ export async function DELETE(
     }
     const msg = "Category deleted";
     return NextResponse.json({ message: msg }, { status: 200 });
-  } catch (err) {
+  } catch {
     return NextResponse.json(
       { error: "Error deleting category." },
       { status: 500 }
