@@ -1,0 +1,38 @@
+CREATE TABLE categories (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(), -- ou uuid_generate_v4() se preferir
+    user_id UUID NOT NULL,  -- referência para o usuário dono da categoria
+    name TEXT NOT NULL,     -- nome da categoria
+    description TEXT,       -- descrição opcional
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    
+    CONSTRAINT fk_categories_user
+        FOREIGN KEY(user_id) REFERENCES auth.users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE expenses (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL,        -- usuário que registrou a despesa
+    category_id UUID NOT NULL,    -- categoria associada à despesa
+    name TEXT NOT NULL,           -- nome ou título da despesa
+    description TEXT,             -- descrição detalhada (opcional)
+    amount NUMERIC(12,2) NOT NULL,  -- valor da despesa; ajuste a precisão conforme necessário
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    
+    CONSTRAINT fk_expenses_user
+        FOREIGN KEY(user_id) REFERENCES auth.users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_expenses_category
+        FOREIGN KEY(category_id) REFERENCES categories(id) ON DELETE SET NULL  -- ou CASCADE, conforme sua lógica de negócio
+);
+
+CREATE TABLE installments (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    expense_id UUID NOT NULL,   -- referência à despesa original
+    installment_number INT NOT NULL,  -- número da parcela (ex: 1, 2, 3, ...)
+    due_date DATE NOT NULL,     -- data de vencimento da parcela
+    amount NUMERIC(12,2) NOT NULL,  -- valor da parcela
+    paid BOOLEAN NOT NULL DEFAULT false,  -- status de pagamento
+    paid_at TIMESTAMPTZ,        -- data em que a parcela foi paga, se aplicável
+    
+    CONSTRAINT fk_installments_expense
+        FOREIGN KEY(expense_id) REFERENCES expenses(id) ON DELETE CASCADE
+);
