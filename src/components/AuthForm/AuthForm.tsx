@@ -22,7 +22,7 @@ export default function AuthForm() {
     if (isLogin) {
       try {
         await signIn(email, password);
-        toast.success(t("loginSuccess"));
+        // toast.success(t("loginSuccess"));
         return;
       } catch {
         toast.error(t("loginFailed"));
@@ -99,8 +99,7 @@ export default function AuthForm() {
         </div>
       </main>
 
-      {/* ToastContainer para exibir os toasts */}
-      <ToastContainer position="top-right" autoClose={5000} hideProgressBar />
+      <ToastContainer position="top-right" />
     </>
   );
 }
