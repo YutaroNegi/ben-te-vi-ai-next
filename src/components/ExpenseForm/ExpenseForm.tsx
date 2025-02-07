@@ -1,14 +1,25 @@
 import { useState, useEffect } from "react";
-import { Button, Input, InputDate, Select } from "@/components";
+import { Button, Input, InputDate } from "@/components"; 
 import { useTranslations } from "next-intl";
 import { useAuthStore } from "@/stores/authStore";
-import { fetchCategories, registerExpense } from "@/utils";
+import {
+  fetchCategories,
+  registerExpense,
+  editCategory,
+  deleteCategory,
+  registerCategory,
+} from "@/utils";
 import { CategoryOption } from "@/types";
 import { ToastContainer, toast } from "react-toastify";
+
+import CustomDropdown, {
+  Option,
+} from "@/components/CustomDropdown/CustomDropdown";
 
 const ExpenseForm = () => {
   const userId = useAuthStore((state) => state.user?.id);
   const [options, setOptions] = useState<CategoryOption[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<Option | null>(null);
   const [loading, setLoading] = useState(false);
   const t = useTranslations("ExpenseForm");
 
@@ -37,6 +48,76 @@ const ExpenseForm = () => {
     }
   }, [userId, t]);
 
+  const refreshCategories = async () => {
+    if (!userId) return;
+    setLoading(true);
+    try {
+      const updatedOptions = await fetchCategories(userId);
+      setOptions(updatedOptions);
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao atualizar categorias");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 1) Adicionar nova categoria (agora recebemos o 'name' do componente)
+  const handleAddCategory = async (name: string) => {
+    if (!name) return;
+
+    if (!userId) {
+      toast.error("User not found");
+      return;
+    }
+    try {
+      const payload = {
+        user_id: userId,
+        name,
+        description: "",
+      };
+      await registerCategory(payload);
+      toast.success("Categoria adicionada com sucesso!");
+      refreshCategories();
+    } catch (error) {
+      console.error(error);
+      toast.error("Falha ao adicionar categoria");
+    }
+  };
+
+  const handleEditCategory = async (option: Option, newName: string) => {
+    if (!newName) return;
+
+    try {
+      await editCategory(option.value, {
+        name: newName,
+        description: "",
+      });
+      toast.success("Categoria editada com sucesso!");
+      refreshCategories();
+    } catch (error) {
+      console.error(error);
+      toast.error("Falha ao editar categoria");
+    }
+  };
+
+  // 3) Deletar categoria
+  const handleDeleteCategory = async (option: Option) => {
+    const id = option.value;
+    try {
+      await deleteCategory(id);
+      toast.success("Categoria deletada com sucesso!");
+      refreshCategories();
+    } catch (error) {
+      console.error(error);
+      toast.error("Falha ao deletar categoria");
+    }
+  };
+
+  const handleSelectCategory = (option: Option) => {
+    setSelectedCategory(option);
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!userId) {
@@ -48,30 +129,32 @@ const ExpenseForm = () => {
       const formData = new FormData(e.currentTarget);
       const name = formData.get("name") as string;
       const amount = parseFloat(formData.get("amount") as string);
-      const category = formData.get("category") as string;
       const description = (formData.get("description") as string) || null;
       const date = formData.get("date") as string;
       const installments = formData.get("installments")
         ? parseInt(formData.get("installments") as string, 10)
         : 1;
 
+      if (!selectedCategory) {
+        toast.error("Selecione uma categoria antes de enviar!");
+        return;
+      }
+
       const expenseData = {
         user_id: userId,
         name,
         amount,
-        category_id: category,
+        category_id: selectedCategory.value,
         description,
         date,
         installments,
       };
 
       await registerExpense(expenseData);
-      toast.success("Expense registered successfully");
+      toast.success("Despesa registrada com sucesso!");
     } catch (error: any) {
       console.error(error);
-      toast.error(
-        error.message || "An error occurred while registering the expense"
-      );
+      toast.error(error.message || "Erro ao registrar despesa");
     }
   };
 
@@ -94,13 +177,21 @@ const ExpenseForm = () => {
           <Input
             id="amount"
             name="amount"
-            type="number" 
+            type="number"
             step="0.01"
             label={t("amount")}
             placeholder={t("amount")}
           />
 
-          <Select name="category" label={t("category")} options={options} />
+          <CustomDropdown
+            label={t("category")}
+            options={options}
+            onSelectOption={handleSelectCategory}
+            onAdd={handleAddCategory}
+            onEdit={handleEditCategory}
+            onDelete={handleDeleteCategory}
+            placeholder="Selecione a categoria..."
+          />
         </div>
 
         <div className="flex flex-col space-y-4">
