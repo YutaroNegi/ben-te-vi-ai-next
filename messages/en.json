@@ -27,7 +27,7 @@
     "errorFetchingExpenses": "Error fetching expenses",
     "userIdNameRequired": "User id and name are required"
   },
-  "ExpenseForm":{
+  "ExpenseForm": {
     "name": "Name",
     "amount": "Amount",
     "category": "Category",
@@ -35,6 +35,11 @@
     "date": "Date",
     "submit": "Submit",
     "errorFetchingCategories": "Error fetching categories",
-    "installments": "Installments"
+    "installments": "Installments",
+    "addNew": "Add new",
+    "edit": "Edit",
+    "delete": "Delete",
+    "newCategoryNamePlaceholder": "Category name...",
+    "placeholderCategory": "Select..."
   }
 }
