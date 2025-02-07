@@ -7,5 +7,17 @@ import Header from "./Header/Header";
 import ExpenseForm from "./ExpenseForm/ExpenseForm";
 import Table from "./Table/Table";
 import ViewExpenses from "./ViewExpenses/ViewExpenses";
+import InstallmentTable from "./InstallmentsTable/InstallmentsTable";
 
-export { AuthForm, Button, Input, Header, InputDate, Select, ExpenseForm, Table, ViewExpenses };
+export {
+  AuthForm,
+  Button,
+  Input,
+  Header,
+  InputDate,
+  Select,
+  ExpenseForm,
+  Table,
+  ViewExpenses,
+  InstallmentTable,
+};
