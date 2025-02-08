@@ -26,10 +26,17 @@ const Input: React.FC<InputProps> = ({
   name,
 }) => {
   return (
-    <div className={`flex flex-col ${className}`}>
-      <label htmlFor={id} className="mb-2 font-medium">
+    <div
+      className={`flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 ${className}`}
+    >
+      {/* Label integrado ocupando 30% da largura */}
+      <span
+        className="flex items-center justify-center bg-matcha-900 text-white px-5"
+        style={{ width: "30%" }}
+      >
         {label}
-      </label>
+      </span>
+      {/* Input ocupando os 70% restantes */}
       <input
         id={id}
         name={name}
@@ -38,7 +45,7 @@ const Input: React.FC<InputProps> = ({
         value={value}
         onChange={onChange}
         step={step}
-        className={`px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring focus:border-blue-300 w-64 ${inputClassName} text-black`}
+        className={`px-4 py-2 outline-none w-[70%] ${inputClassName} text-black`}
       />
     </div>
   );
