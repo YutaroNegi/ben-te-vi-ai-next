@@ -105,7 +105,7 @@ const ViewExpenses = () => {
   const visibleCategories = categories.slice(startIndex, endIndex);
 
   return (
-    <div className="p-4">
+    <div className="p-0 m-0">
       <ToastContainer />
 
       {/* Navegador de mês */}

@@ -136,9 +136,9 @@ const ExpenseForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-3xl mx-auto p-6 border-2 border-yellow-600 rounded-lg"
+      className="max-w-3xl m-0 p-3 border-2 border-yellow-600 rounded-lg text-sm"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Coluna 1 */}
         <div className="flex flex-col space-y-4">
           <Input
@@ -194,7 +194,7 @@ const ExpenseForm = () => {
         </div>
       </div>
 
-      <div className="mt-6 flex justify-center">
+      <div className="mt-4 flex justify-center">
         <Button type="submit" label={t("submit")} loading={localLoading} />
       </div>
       <ToastContainer />
