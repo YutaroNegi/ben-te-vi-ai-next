@@ -4,14 +4,13 @@ import React, { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Table } from "@/components";
 import { CategoryOption, Installment } from "@/types";
-import { useExpensesStore } from "@/stores/expenseStore"; // <---
+import { useExpensesStore } from "@/stores/expenseStore";
 import { toast } from "react-toastify";
 
 interface InstallmentTableProps {
-  // Se você estiver passando CategoryOption ou Category, ajuste aqui
   category: CategoryOption;
   installments: Installment[];
-  onRefresh: () => void; // Você pode continuar usando a mesma callback para recarregar do pai
+  onRefresh: () => void;
 }
 
 const InstallmentTable: React.FC<InstallmentTableProps> = ({
@@ -21,7 +20,10 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
 }) => {
   const t = useTranslations("ExpenseTable");
 
-  // Store
+  // Calcula o total dos valores das parcelas desta categoria
+  const totalAmount = installments.reduce((sum, inst) => sum + inst.amount, 0);
+
+  // Acesso à store para editar e deletar installments
   const { editOneInstallment, deleteOneInstallment } = useExpensesStore();
 
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -58,7 +60,6 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     try {
       await deleteOneInstallment(inst.id);
       toast.success(t("toast.deleted"));
-      // onRefresh ou não, dependendo de como você configurou a store
       onRefresh();
     } catch (error) {
       console.error("Erro ao deletar installment:", error);
@@ -77,7 +78,6 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       await editOneInstallment(editingId, { ...editData });
       toast.success(t("toast.updated"));
       setEditingId(null);
-      // onRefresh para recarregar ou rely no update local da store
       onRefresh();
     } catch (error) {
       console.error("Erro ao editar installment:", error);
@@ -85,7 +85,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     }
   };
 
-  // Montagem da tabela (mesma lógica do seu código)
+  // Definição dos cabeçalhos da tabela
   const headers = [
     t("headers.expense"),
     t("headers.installment"),
@@ -94,6 +94,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     t("headers.actions"),
   ];
 
+  // Mapeia as linhas (rows) da tabela, com tratamento para edição
   const rows = installments.map((inst) => {
     const isEditing = editingId === inst.id;
     if (isEditing) {
@@ -153,7 +154,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       ];
     }
 
-    // Linha normal
+    // Linha padrão (não em edição)
     return [
       inst.expense?.name || "",
       inst.installment_number.toString(),
@@ -191,8 +192,11 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
 
   return (
     <Table
-      // Aqui cuidado pois category é do tipo CategoryOption? Ajuste se precisar
-      title={category.label}
+      // Exibe no título o nome da categoria seguido do total formatado
+      title={`${category.label} - ${totalAmount.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      })}`}
       headers={headers}
       rows={rows}
     />
