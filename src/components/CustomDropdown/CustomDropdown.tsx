@@ -123,19 +123,32 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   };
 
   return (
-    <div className="flex flex-col space-y-1 w-64 relative" ref={dropdownRef}>
-      {label && <label className="font-medium text-gray-700">{label}</label>}
-
+    <div className="w-64 relative" ref={dropdownRef}>
+      {/* Dropdown integrado com label */}
       <div
         onClick={() => {
           if (!isAdding && !isEditing) {
             setIsOpen((prev) => !prev);
           }
         }}
-        className="cursor-pointer relative flex justify-between items-center px-4 py-2 border border-gray-300 rounded-full text-left focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="cursor-pointer relative flex items-center border border-gray-300 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 bg-matcha-900"
       >
-        {selected ? selected.label : placeholder}
-        <span className="ml-2 text-gray-500">▼</span>
+        {label && (
+          <span
+            className="flex items-center justify-center text-white px-4"
+            style={{ width: "30%" }}
+          >
+            {label}
+          </span>
+        )}
+        <div
+          className={`flex items-center justify-between px-4 py-2 bg-white ${
+            label ? "w-[70%]" : "w-full"
+          } text-left`}
+        >
+          <span>{selected ? selected.label : placeholder}</span>
+          <span className="ml-2 text-gray-500">▼</span>
+        </div>
       </div>
 
       {isOpen && (
