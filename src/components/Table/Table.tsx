@@ -11,7 +11,7 @@ interface TableProps {
 const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
   return (
     <div className="my-4 shadow-lg rounded">
-      <h2 className="bg-matcha-900 text-white text-base font-bold p-2">
+      <h2 className="bg-matcha-900 text-white text-sm font-bold p-2">
         {title}
       </h2>
       <table className="min-w-full border-collapse">
