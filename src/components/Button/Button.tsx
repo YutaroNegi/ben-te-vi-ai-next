@@ -21,7 +21,7 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={!loading ? onClick : undefined}
       disabled={loading}
-      className={`flex items-center justify-center px-4 py-2 bg-sky-800 hover:bg-sky-950 text-white font-medium rounded-full transition-colors duration-200 ${className} w-32`}
+      className={`flex items-center justify-center px-4 py-2 bg-bentenavi-900 hover:bg-bentenavi-900 text-white font-medium rounded-full transition-colors duration-200 ${className} w-32`}
     >
       {loading ? (
         <Image
