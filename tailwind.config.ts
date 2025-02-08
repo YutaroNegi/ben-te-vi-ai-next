@@ -17,6 +17,12 @@ export default {
         matcha: {
           800: "#98B484",
           900: "#809671"
+        },
+        bentevi:{
+          900: "#e9d045"
+        },
+        bentenavi:{
+          900: "#5c6092"
         }
       },
     },
