@@ -11,6 +11,8 @@ interface InputProps {
   className?: string;
   inputClassName?: string;
   step?: string;
+  labelClassName?: string;
+  labelTextClassName?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,16 +24,18 @@ const Input: React.FC<InputProps> = ({
   onChange,
   className = "",
   inputClassName = "",
+  labelClassName = "bg-matcha-900",
+  labelTextClassName = "text-white",
   step,
   name,
 }) => {
   return (
     <div
-      className={`flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 ${className}`}
+      className={`flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 ${className} text-xs`}
     >
       {/* Label integrado ocupando 30% da largura */}
       <span
-        className="flex items-center justify-center bg-matcha-900 text-white px-5"
+        className={`flex items-center justify-center ${labelClassName} ${labelTextClassName} px-5`}
         style={{ width: "30%" }}
       >
         {label}
