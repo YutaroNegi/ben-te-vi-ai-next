@@ -6,7 +6,7 @@ interface InputDateProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const InputDate: React.FC<InputDateProps> = ({ label, ...props }) => {
   return (
-    <div className="flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300">
+    <div className="flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 text-xs">
       {label && (
         <span
           className="flex items-center justify-center bg-matcha-900 text-white px-4"
