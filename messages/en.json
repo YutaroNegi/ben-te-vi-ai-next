@@ -52,11 +52,11 @@
     "save": "Save",
     "cancel": "Cancel",
     "headers": {
-      "expense": "Despesa",
-      "installment": "Parcela",
-      "value": "Valor",
-      "dueDate": "Vencimento",
-      "actions": "Ações"
+      "expense": "Name",
+      "installment": "%",
+      "value": "$",
+      "dueDate": "Date",
+      "actions": "Action"
     },
     "actions": {
       "edit": "Editar",
@@ -65,10 +65,10 @@
       "cancel": "Cancelar"
     },
     "toast": {
-      "deleted": "Parcela deletada com sucesso!",
-      "errorDeleting": "Erro ao deletar a parcela.",
-      "updated": "Parcela atualizada com sucesso!",
-      "errorUpdating": "Erro ao atualizar a parcela."
+      "deleted": "Installment deleted successfully!",
+      "errorDeleting": "Error deleting installment.",
+      "updated": "Installment updated successfully!",
+      "errorUpdating": "Error updating installment."
     }
   }
   
