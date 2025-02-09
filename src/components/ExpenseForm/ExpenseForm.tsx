@@ -6,7 +6,7 @@ import CustomDropdown, {
   Option,
 } from "@/components/CustomDropdown/CustomDropdown";
 import { useAuthStore } from "@/stores/authStore";
-import { useExpensesStore } from "@/stores/expenseStore"; // <--- Importamos a store
+import { useExpensesStore } from "@/stores/expenseStore";
 import { registerExpense } from "@/utils";
 import { ToastContainer, toast } from "react-toastify";
 import { useTranslations } from "next-intl";
@@ -136,7 +136,7 @@ const ExpenseForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-3xl m-0 p-3 border-2 border-yellow-600 rounded-lg text-sm"
+      className="max-w-3xl m-0 p-5 border-2 border-chocolate-800 rounded-lg text-sm"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Coluna 1 */}
