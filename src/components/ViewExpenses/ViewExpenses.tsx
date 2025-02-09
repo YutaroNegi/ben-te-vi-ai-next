@@ -112,11 +112,11 @@ const ViewExpenses = () => {
       <div className="flex items-center justify-center mb-4">
         <button
           onClick={handlePrevMonth}
-          className="p-2 bg-gray-300 rounded-l hover:bg-gray-400 transition-colors"
+          className="p-2 bg-bentenavi-900 text-white rounded-l hover:bg-gray-400 transition-colors"
         >
           &#8592;
         </button>
-        <div className="px-4 py-2 bg-gray-200">
+        <div className="px-4 py-2 bg-bentenavi-900 text-white">
           {selectedDate.toLocaleString("default", {
             month: "long",
             year: "numeric",
@@ -124,7 +124,7 @@ const ViewExpenses = () => {
         </div>
         <button
           onClick={handleNextMonth}
-          className="p-2 bg-gray-300 rounded-r hover:bg-gray-400 transition-colors"
+          className="p-2 bg-bentenavi-900 text-white rounded-r hover:bg-gray-400 transition-colors"
         >
           &#8594;
         </button>
@@ -134,13 +134,13 @@ const ViewExpenses = () => {
 
       {/* Controles do carrossel */}
       {categories.length > 0 && (
-        <div className="flex items-center justify-center space-x-4 mb-4">
+        <div className="flex items-center justify-center space-x-4 mb-4 ">
           <button
             onClick={handlePrevSlideCarousel}
             disabled={currentSlide === 0}
             className={`px-3 py-1 rounded ${
               currentSlide === 0
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "bg-bentenavi-900 text-white text-gray-500 cursor-not-allowed"
                 : "bg-matcha-900 text-white hover:bg-matcha-700"
             }`}
           >
@@ -156,7 +156,7 @@ const ViewExpenses = () => {
             disabled={currentSlide === totalSlides - 1}
             className={`px-3 py-1 rounded ${
               currentSlide === totalSlides - 1 || totalSlides === 0
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                ? "bg-bentenavi-900 text-white text-gray-500 cursor-not-allowed"
                 : "bg-matcha-900 text-white hover:bg-matcha-700"
             }`}
           >
