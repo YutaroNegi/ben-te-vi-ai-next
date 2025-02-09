@@ -148,7 +148,7 @@ const ViewExpenses = () => {
           </button>
 
           <div>
-            Slide {currentSlide + 1} de {totalSlides}
+            {currentSlide + 1} / {totalSlides}
           </div>
 
           <button
