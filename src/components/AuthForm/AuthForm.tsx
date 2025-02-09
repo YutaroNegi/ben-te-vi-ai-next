@@ -62,6 +62,8 @@ export default function AuthForm() {
               label={t("email")}
               type="email"
               placeholder={t("email")}
+              labelClassName="bg-bentevi-800"
+              labelTextClassName="text-chocolate-900"
             />
             <Input
               id="password"
@@ -69,6 +71,8 @@ export default function AuthForm() {
               label={t("password")}
               type="password"
               placeholder={t("password")}
+              labelClassName="bg-bentevi-800"
+              labelTextClassName="text-chocolate-900"
             />
 
             {!isLogin && (
