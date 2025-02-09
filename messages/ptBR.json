@@ -1,0 +1,75 @@
+{
+  "AuthPage": {
+    "login": "LOGIN",
+    "createAccount": "Create Account",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "passwordsDontMatch": "Passwords do not match",
+    "submitLogin": "Login",
+    "submitCreateAccount": "Create Account",
+    "toggleToCreate": "Create an account",
+    "toggleToLogin": "Already have an account? Sign in",
+    "loginFailed": "Login failed",
+    "loginSuccess": "Login successful",
+    "description": "Manage your personal finances in an easy and intuitive way. With the help of AI, make your financial decisions easier and more effective."
+  },
+  "Api": {
+    "categoryNameIsRequired": "Category name is required",
+    "errorUpdatingCategory": "Error updating category",
+    "categoryDeleted": "Category deleted",
+    "errorSavingExpense": "Error saving expense",
+    "errorGettingCategories": "Error getting categories",
+    "categoryIdNameAmountRequired": "Category id, name and amount are required",
+    "errorDeletingExpense": "Error deleting expense",
+    "expenseDeleted": "Expense deleted",
+    "userIdCategoryIdNameAmountRequired": "User id, category id, name and amount are required",
+    "errorFetchingExpenses": "Error fetching expenses",
+    "userIdNameRequired": "User id and name are required"
+  },
+  "ExpenseForm": {
+    "name": "Name",
+    "amount": "Amount",
+    "category": "Category",
+    "description": "Description",
+    "date": "Date",
+    "submit": "Submit",
+    "errorFetchingCategories": "Error fetching categories",
+    "installments": "Installments",
+    "addNew": "Add new",
+    "edit": "Edit",
+    "delete": "Delete",
+    "newCategoryNamePlaceholder": "Category name...",
+    "placeholderCategory": "Select..."
+  },
+  "ExpenseTable": {
+    "expense": "Expense",
+    "installment": "Installment",
+    "value": "Value",
+    "dueDate": "Due Date",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "headers": {
+      "expense": "Name",
+      "installment": "%",
+      "value": "$",
+      "dueDate": "Date",
+      "actions": "Action"
+    },
+    "actions": {
+      "edit": "Editar",
+      "delete": "Excluir",
+      "save": "Salvar",
+      "cancel": "Cancelar"
+    },
+    "toast": {
+      "deleted": "Installment deleted successfully!",
+      "errorDeleting": "Error deleting installment.",
+      "updated": "Installment updated successfully!",
+      "errorUpdating": "Error updating installment."
+    }
+  }
+  
+}
