@@ -18,7 +18,7 @@ const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
         <thead className="bg-matcha-800">
           <tr>
             {headers.map((header, index) => (
-              <th key={index} className="border p-1 text-white text-sm">
+              <th key={index} className="p-2 text-white text-sm min-w-[50px] text-center">
                 {header}
               </th>
             ))}
@@ -28,7 +28,7 @@ const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, cellIndex) => (
-                <td key={cellIndex} className="border p-1 text-black text-sm">
+                <td key={cellIndex} className="border p-2 text-black text-sm min-w-[50px] text-center">
                   {cell}
                 </td>
               ))}
