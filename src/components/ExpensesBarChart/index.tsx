@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { LoadingSpinner } from "@/components";
 
 const ExpensesBarChart: React.FC = () => {
   const { selectedDate, installmentsByCategory, categories, loading } =
@@ -19,7 +20,7 @@ const ExpensesBarChart: React.FC = () => {
 
   // Enquanto os dados estiverem sendo carregados, mostra uma mensagem de espera
   if (loading) {
-    return <div>Carregando...</div>;
+    return <LoadingSpinner />;
   }
 
   // Obtém o ano e mês da data selecionada

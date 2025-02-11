@@ -11,6 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { LoadingSpinner } from "@/components";
 
 const COLORS = [
   "#98B484",
@@ -37,7 +38,7 @@ const ExpensePieChart: React.FC = () => {
     .filter((item) => item.value > 0);
 
   if (loading) {
-    return <div>Carregando...</div>;
+    return <LoadingSpinner />;
   }
 
   if (data.length === 0) {
