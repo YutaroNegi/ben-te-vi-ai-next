@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useExpensesStore } from "@/stores/expenseStore";
-import { InstallmentTable } from "@/components";
+import { InstallmentTable, LoadingSpinner } from "@/components";
+
 import "react-toastify/dist/ReactToastify.css";
 
 const ViewExpenses = () => {
@@ -95,7 +96,7 @@ const ViewExpenses = () => {
         </button>
       </div>
 
-      {loading && <p className="text-center">Carregando...</p>}
+      {loading && <p className="text-center"><LoadingSpinner/></p>}
 
       {categories.length > 0 && (
         <>
@@ -150,7 +151,9 @@ const ViewExpenses = () => {
                   <div className="min-w-[300px] max-w-[300px]">
                     <InstallmentTable
                       category={category}
-                      installments={installmentsByCategory[category.value] || []}
+                      installments={
+                        installmentsByCategory[category.value] || []
+                      }
                       onRefresh={loadInstallments}
                     />
                   </div>
