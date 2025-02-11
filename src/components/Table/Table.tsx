@@ -6,9 +6,15 @@ interface TableProps {
   title: string;
   headers: React.ReactNode[];
   rows: React.ReactNode[][];
+  columnWidths?: string[];
 }
 
-const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
+const Table: React.FC<TableProps> = ({
+  title,
+  headers,
+  rows,
+  columnWidths,
+}) => {
   return (
     <div className="my-4 shadow-lg rounded">
       <h2 className="bg-matcha-900 text-white text-sm font-bold p-2">
@@ -18,7 +24,11 @@ const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
         <thead className="bg-matcha-800">
           <tr>
             {headers.map((header, index) => (
-              <th key={index} className="p-2 text-white text-xs min-w-[60px] max-w-[60px] text-center">
+              <th
+                key={index}
+                style={{ width: columnWidths?.[index] }}
+                className="p-2 text-white text-xs text-center"
+              >
                 {header}
               </th>
             ))}
@@ -28,7 +38,11 @@ const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, cellIndex) => (
-                <td key={cellIndex} className="border p-2 text-black text-xs min-w-[60px] max-w-[60px] text-clip">
+                <td
+                  key={cellIndex}
+                  style={{ width: columnWidths?.[cellIndex] }}
+                  className="border p-2 text-black text-xs text-clip"
+                >
                   {cell}
                 </td>
               ))}
