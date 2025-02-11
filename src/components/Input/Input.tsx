@@ -14,6 +14,7 @@ interface InputProps {
   step?: string;
   labelClassName?: string;
   labelTextClassName?: string;
+  /** Ativa máscara de milhar no padrão brasileiro */
   maskMilharBr?: boolean;
 }
 
@@ -51,8 +52,6 @@ const Input: React.FC<InputProps> = ({
           value={value}
           thousandSeparator="."
           decimalSeparator=","
-          // onValueChange recebe um objeto com os valores formatados e brutos.
-          // Aqui criamos um evento sintético para manter a assinatura do onChange.
           onValueChange={(values: NumberFormatValues) => {
             const syntheticEvent = {
               target: {
@@ -60,8 +59,10 @@ const Input: React.FC<InputProps> = ({
                 name,
                 value: values.formattedValue,
               },
-            } as React.ChangeEvent<HTMLInputElement>;
-            onChange && onChange(syntheticEvent);
+            };
+            if (onChange) {
+              onChange(syntheticEvent as React.ChangeEvent<HTMLInputElement>);
+            }
           }}
           {...(step ? { step } : {})}
           className={`px-4 py-2 outline-none w-[70%] ${inputClassName} text-black`}
