@@ -38,7 +38,8 @@ const ViewExpenses = () => {
 
   useEffect(() => {
     loadInstallments();
-  }, [userId, selectedDate, loadInstallments]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId, selectedDate]);
 
 
 
