@@ -40,7 +40,16 @@
     "edit": "Editar",
     "delete": "Excluir",
     "newCategoryNamePlaceholder": "Nome da categoria...",
-    "placeholderCategory": "Selecione..."
+    "placeholderCategory": "Selecione...",
+    "userNotFound": "Usuário não encontrado",
+    "selectCategoryBeforeSubmit": "Selecione uma categoria antes de enviar!",
+    "expenseRegisteredSuccess": "Despesa registrada com sucesso!",
+    "categoryAddSuccess": "Categoria adicionada com sucesso!",
+    "categoryAddFail": "Falha ao adicionar categoria",
+    "categoryEditSuccess": "Categoria editada com sucesso!",
+    "categoryEditFail": "Falha ao editar categoria",
+    "categoryDeleteSuccess": "Categoria deletada com sucesso!",
+    "categoryDeleteFail": "Falha ao deletar categoria"
   },
   "ExpenseTable": {
     "expense": "Despesa",

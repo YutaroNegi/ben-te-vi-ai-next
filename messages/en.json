@@ -40,7 +40,16 @@
     "edit": "Edit",
     "delete": "Delete",
     "newCategoryNamePlaceholder": "Category name...",
-    "placeholderCategory": "Select..."
+    "placeholderCategory": "Select...",
+    "userNotFound": "User not found",
+    "selectCategoryBeforeSubmit": "Select a category before submitting!",
+    "expenseRegisteredSuccess": "Expense registered successfully!",
+    "categoryAddSuccess": "Category added successfully!",
+    "categoryAddFail": "Failed to add category",
+    "categoryEditSuccess": "Category edited successfully!",
+    "categoryEditFail": "Failed to edit category",
+    "categoryDeleteSuccess": "Category deleted successfully!",
+    "categoryDeleteFail": "Failed to delete category"
   },
   "ExpenseTable": {
     "expense": "Expense",
@@ -59,10 +68,10 @@
       "actions": "Action"
     },
     "actions": {
-      "edit": "Editar",
-      "delete": "Excluir",
-      "save": "Salvar",
-      "cancel": "Cancelar"
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel"
     },
     "toast": {
       "deleted": "Installment deleted successfully!",
@@ -71,5 +80,4 @@
       "errorUpdating": "Error updating installment."
     }
   }
-  
 }
