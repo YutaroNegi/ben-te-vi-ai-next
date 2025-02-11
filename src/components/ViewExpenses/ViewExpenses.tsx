@@ -27,11 +27,6 @@ const ViewExpenses = () => {
     }
   }, [userId, fetchCategories]);
 
-  // Carrega os installments sempre que selectedDate ou userId mudar
-  useEffect(() => {
-    loadInstallments();
-  }, [userId, selectedDate]);
-
   const loadInstallments = async () => {
     if (!userId) return;
     const year = selectedDate.getFullYear();
@@ -40,6 +35,12 @@ const ViewExpenses = () => {
     const endDate = new Date(year, month + 1, 1).toISOString();
     await fetchInstallments(userId, startDate, endDate);
   };
+
+  useEffect(() => {
+    loadInstallments();
+  }, [userId, selectedDate, loadInstallments]);
+
+
 
   const handlePrevMonth = () => {
     const year = selectedDate.getFullYear();
