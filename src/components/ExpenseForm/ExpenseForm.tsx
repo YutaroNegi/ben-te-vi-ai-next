@@ -12,18 +12,17 @@ import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
 
 const ExpenseForm = () => {
-  const userId = useAuthStore((state) => state.user?.id);
   const t = useTranslations("ExpenseForm");
+  const tApi = useTranslations("Api");
 
-  // Store
+  const userId = useAuthStore((state) => state.user?.id);
+
   const {
     categories,
     fetchCategories,
     addCategory,
     updateCategory,
     removeCategory,
-
-    // Precisamos também do selectedDate e do fetchInstallments
     selectedDate,
     fetchInstallments,
   } = useExpensesStore();
@@ -40,11 +39,11 @@ const ExpenseForm = () => {
     }
   }, [userId, fetchCategories, t]);
 
-  // Submeter formulário
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!userId) {
-      toast.error("User not found");
+      toast.error(t("userNotFound")); // New translation key: "userNotFound"
       return;
     }
 
@@ -60,11 +59,11 @@ const ExpenseForm = () => {
         : 1;
 
       if (!selectedCategory) {
-        toast.error("Selecione uma categoria antes de enviar!");
+        toast.error(t("selectCategoryBeforeSubmit")); // New key
         return;
       }
 
-      // 1) Registrar despesa
+      // 1) Register the expense
       await registerExpense({
         user_id: userId,
         name,
@@ -75,36 +74,38 @@ const ExpenseForm = () => {
         installments,
       });
 
-      toast.success("Despesa registrada com sucesso!");
+      toast.success(t("expenseRegisteredSuccess")); // New key
 
-      // 2) Chamamos fetchInstallments p/ recarregar a listagem
-      //    do mesmo mês que o ViewExpenses está mostrando:
+      // 2) Fetch installments for the current month
       const year = selectedDate.getFullYear();
       const month = selectedDate.getMonth();
       const startDate = new Date(year, month, 1).toISOString();
       const endDate = new Date(year, month + 1, 1).toISOString();
 
       await fetchInstallments(userId, startDate, endDate);
-    } catch {
-      toast.error("Error saving expense");
+    } catch (error) {
+      console.error(error);
+      toast.error(tApi("errorSavingExpense")); // From the "Api" namespace
     } finally {
       setLocalLoading(false);
     }
   };
 
-  // Resto do formulário...
-  const handleAddCategory = async (name: string) => {
+  const handleAddCategory = async (name: string): Promise<Option | void> => {
     if (!name) return;
     if (!userId) {
-      toast.error("User not found");
-      return;
+      toast.error(t("userNotFound"));
+      throw new Error(t("userNotFound"));
     }
     try {
       await addCategory(userId, name);
-      toast.success("Categoria adicionada com sucesso!");
+      const newOption = { value: userId, label: name };
+      toast.success(t("categoryAddSuccess")); // New key
+      return newOption;
     } catch (error) {
       console.error(error);
-      toast.error("Falha ao adicionar categoria");
+      toast.error(t("categoryAddFail")); // New key
+      throw error;
     }
   };
 
@@ -112,20 +113,20 @@ const ExpenseForm = () => {
     if (!newName) return;
     try {
       await updateCategory(option.value, { name: newName, description: "" });
-      toast.success("Categoria editada com sucesso!");
+      toast.success(t("categoryEditSuccess")); // New key
     } catch (error) {
       console.error(error);
-      toast.error("Falha ao editar categoria");
+      toast.error(t("categoryEditFail")); // New key
     }
   };
 
   const handleDeleteCategory = async (option: Option) => {
     try {
       await removeCategory(option.value);
-      toast.success("Categoria deletada com sucesso!");
+      toast.success(t("categoryDeleteSuccess")); // New key
     } catch (error) {
       console.error(error);
-      toast.error("Falha ao deletar categoria");
+      toast.error(t("categoryDeleteFail")); // New key
     }
   };
 
@@ -139,7 +140,7 @@ const ExpenseForm = () => {
       className="max-w-3xl m-0 p-5 border-2 border-chocolate-800 rounded-lg text-sm"
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Coluna 1 */}
+        {/* Column 1 */}
         <div className="flex flex-col space-y-4">
           <Input
             id="name"
@@ -156,7 +157,6 @@ const ExpenseForm = () => {
             label={t("amount")}
             placeholder={t("amount")}
           />
-
           <CustomDropdown
             label={t("category")}
             options={categories}
@@ -168,7 +168,7 @@ const ExpenseForm = () => {
           />
         </div>
 
-        {/* Coluna 2 */}
+        {/* Column 2 */}
         <div className="flex flex-col space-y-4">
           <Input
             id="description"
