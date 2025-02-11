@@ -10,6 +10,8 @@ import ViewExpenses from "./ViewExpenses/ViewExpenses";
 import InstallmentTable from "./InstallmentsTable/InstallmentsTable";
 import CustomToast from "./CustomToast/index";
 import LoadingSpinner from "./LoadingSpinner";
+import ExpensePieChart from "./ExpensePieChart";
+import ExpensesBarChart from "./ExpensesBarChart";
 
 export {
   AuthForm,
@@ -24,4 +26,6 @@ export {
   InstallmentTable,
   CustomToast,
   LoadingSpinner,
+  ExpensePieChart,
+  ExpensesBarChart,
 };
