@@ -28,7 +28,7 @@ const Table: React.FC<TableProps> = ({ title, headers, rows }) => {
           {rows.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {row.map((cell, cellIndex) => (
-                <td key={cellIndex} className="border p-2 text-black text-xs min-w-[60px] max-w-[60px] text-center">
+                <td key={cellIndex} className="border p-2 text-black text-xs min-w-[60px] max-w-[60px] text-clip">
                   {cell}
                 </td>
               ))}
