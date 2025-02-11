@@ -159,7 +159,11 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       inst.expense?.name || "",
       inst.installment_number.toString(),
       inst.amount.toFixed(2),
-      new Date(inst.due_date).toLocaleDateString(),
+      new Date(inst.due_date).toLocaleDateString("pt-BR", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "2-digit",
+      }),
       <div key="menu" className="relative">
         <button
           className="p-2 bg-gray-200 rounded hover:bg-gray-300"
@@ -192,13 +196,13 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
 
   return (
     <Table
-      // Exibe no título o nome da categoria seguido do total formatado
       title={`${category.label} - ${totalAmount.toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
       })}`}
       headers={headers}
       rows={rows}
+      columnWidths={["auto", "10%", "auto", "auto", "auto"]} // define larguras para cada coluna
     />
   );
 };
