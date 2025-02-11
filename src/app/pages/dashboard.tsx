@@ -13,7 +13,7 @@ export default function DashboardPage() {
   return (
     <div>
       <Header />
-      <div className="flex flex-col md:flex-row justify-center mt-5 space-y-5 md:space-y-0 md:space-x-5">
+      <div className="flex flex-col md:flex-row justify-center mt-2 space-y-5 md:space-y-0 md:space-x-5">
         <div className="w-full md:w-1/3 p-2">
           <ExpensesBarChart />
         </div>
