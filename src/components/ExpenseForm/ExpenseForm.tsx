@@ -16,7 +16,6 @@ const ExpenseForm = () => {
   const tApi = useTranslations("Api");
 
   const userId = useAuthStore((state) => state.user?.id);
-
   const {
     categories,
     fetchCategories,
@@ -43,7 +42,7 @@ const ExpenseForm = () => {
     e.preventDefault();
 
     if (!userId) {
-      toast.error(t("userNotFound")); // New translation key: "userNotFound"
+      toast.error(t("userNotFound"));
       return;
     }
 
@@ -59,11 +58,10 @@ const ExpenseForm = () => {
         : 1;
 
       if (!selectedCategory) {
-        toast.error(t("selectCategoryBeforeSubmit")); // New key
+        toast.error(t("selectCategoryBeforeSubmit"));
         return;
       }
 
-      // 1) Register the expense
       await registerExpense({
         user_id: userId,
         name,
@@ -74,9 +72,9 @@ const ExpenseForm = () => {
         installments,
       });
 
-      toast.success(t("expenseRegisteredSuccess")); // New key
+      toast.success(t("expenseRegisteredSuccess"));
 
-      // 2) Fetch installments for the current month
+      // Atualiza os installments do mês atual
       const year = selectedDate.getFullYear();
       const month = selectedDate.getMonth();
       const startDate = new Date(year, month, 1).toISOString();
@@ -85,7 +83,7 @@ const ExpenseForm = () => {
       await fetchInstallments(userId, startDate, endDate);
     } catch (error) {
       console.error(error);
-      toast.error(tApi("errorSavingExpense")); // From the "Api" namespace
+      toast.error(tApi("errorSavingExpense"));
     } finally {
       setLocalLoading(false);
     }
@@ -100,11 +98,11 @@ const ExpenseForm = () => {
     try {
       await addCategory(userId, name);
       const newOption = { value: userId, label: name };
-      toast.success(t("categoryAddSuccess")); // New key
+      toast.success(t("categoryAddSuccess"));
       return newOption;
     } catch (error) {
       console.error(error);
-      toast.error(t("categoryAddFail")); // New key
+      toast.error(t("categoryAddFail"));
       throw error;
     }
   };
@@ -113,20 +111,20 @@ const ExpenseForm = () => {
     if (!newName) return;
     try {
       await updateCategory(option.value, { name: newName, description: "" });
-      toast.success(t("categoryEditSuccess")); // New key
+      toast.success(t("categoryEditSuccess"));
     } catch (error) {
       console.error(error);
-      toast.error(t("categoryEditFail")); // New key
+      toast.error(t("categoryEditFail"));
     }
   };
 
   const handleDeleteCategory = async (option: Option) => {
     try {
       await removeCategory(option.value);
-      toast.success(t("categoryDeleteSuccess")); // New key
+      toast.success(t("categoryDeleteSuccess"));
     } catch (error) {
       console.error(error);
-      toast.error(t("categoryDeleteFail")); // New key
+      toast.error(t("categoryDeleteFail"));
     }
   };
 
@@ -137,66 +135,55 @@ const ExpenseForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-3xl m-0 p-5 border-2 border-chocolate-800 rounded-lg text-sm"
+      className="p-2 border-2 border-chocolate-800 rounded-lg text-sm flex flex-col gap-2 items-center w-80 mx-auto"
     >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Column 1 */}
-        <div className="flex flex-col space-y-4">
-          <Input
-            id="name"
-            name="name"
-            label={t("name")}
-            type="text"
-            placeholder={t("name")}
-          />
-          <Input
-            id="amount"
-            name="amount"
-            type="number"
-            step="0.01"
-            label={t("amount")}
-            placeholder={t("amount")}
-          />
-          <CustomDropdown
-            label={t("category")}
-            options={categories}
-            onSelectOption={handleSelectCategory}
-            onAdd={handleAddCategory}
-            onEdit={handleEditCategory}
-            onDelete={handleDeleteCategory}
-            placeholder={t("placeholderCategory")}
-          />
-        </div>
-
-        {/* Column 2 */}
-        <div className="flex flex-col space-y-4">
-          <Input
-            id="description"
-            name="description"
-            label={t("description")}
-            type="text"
-            placeholder={t("description")}
-          />
-          <InputDate
-            id="date"
-            name="date"
-            label={t("date")}
-            type="date"
-            placeholder={t("date")}
-          />
-          <Input
-            id="installments"
-            name="installments"
-            label={t("installments")}
-            type="number"
-            placeholder={t("installments")}
-          />
-        </div>
-      </div>
-
-      <div className="mt-4 flex justify-center">
+        <Input
+          id="name"
+          name="name"
+          label={t("name")}
+          type="text"
+          placeholder={t("name")}
+        />
+        <Input
+          id="amount"
+          name="amount"
+          type="number"
+          step="0.01"
+          label={t("amount")}
+          placeholder={t("amount")}
+        />
+        <CustomDropdown
+          label={t("category")}
+          options={categories}
+          onSelectOption={handleSelectCategory}
+          onAdd={handleAddCategory}
+          onEdit={handleEditCategory}
+          onDelete={handleDeleteCategory}
+          placeholder={t("placeholderCategory")}
+        />
+        <Input
+          id="description"
+          name="description"
+          label={t("description")}
+          type="text"
+          placeholder={t("description")}
+        />
+        <InputDate
+          id="date"
+          name="date"
+          label={t("date")}
+          type="date"
+          placeholder={t("date")}
+        />
+        <Input
+          id="installments"
+          name="installments"
+          label={t("installments")}
+          type="number"
+          placeholder={t("installments")}
+        />
         <Button type="submit" label={t("submit")} loading={localLoading} />
-      </div>
+
     </form>
   );
 };
