@@ -18,7 +18,7 @@ interface CustomDropdownProps {
   label?: string;
   options: Option[];
   onSelectOption?: (option: Option) => void;
-  onAdd?: (newName: string) => void;
+  onAdd?: (newName: string) => Promise<Option | void>;
   onEdit?: (option: Option, newName: string) => void;
   onDelete?: (option: Option) => void;
   placeholder?: string;
@@ -77,9 +77,13 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   };
 
   // Confirma a adição
-  const handleConfirmAdd = () => {
+  const handleConfirmAdd = async () => {
     if (onAdd && newCategoryName.trim() !== "") {
-      onAdd(newCategoryName.trim());
+      const newOption = await onAdd(newCategoryName.trim());
+      if (newOption) {
+        setSelected(newOption);
+        if (onSelectOption) onSelectOption(newOption);
+      }
     }
     setNewCategoryName("");
     setIsAdding(false);
