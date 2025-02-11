@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 const ViewExpenses = () => {
   const userId = useAuthStore((state) => state.user?.id);
 
-  // Store
   const {
     categories,
     installmentsByCategory,
@@ -27,10 +26,9 @@ const ViewExpenses = () => {
     }
   }, [userId, fetchCategories]);
 
-  // Carrega installments sempre que selectedDate ou userId mudar
+  // Carrega os installments sempre que selectedDate ou userId mudar
   useEffect(() => {
     loadInstallments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, selectedDate]);
 
   const loadInstallments = async () => {
@@ -54,42 +52,11 @@ const ViewExpenses = () => {
     setSelectedDate(new Date(year, month + 1, 1));
   };
 
-  // ------------------------------
-  // LÓGICA DO CARROSSEL
-  // ------------------------------
+  // Lógica do carrossel
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(4);
-
-  // Ajusta quantos itens por página conforme o tamanho da tela
-  useEffect(() => {
-    function updateItemsPerPage() {
-      const width = window.innerWidth;
-
-      if (width < 640) {
-        // Ex: telas bem pequenas
-        setItemsPerPage(1);
-      } else if (width < 1024) {
-        // Ex: telas médias
-        setItemsPerPage(2);
-      } else if (width < 1280) {
-        // Ex: telas grandes
-        setItemsPerPage(3);
-      } else {
-        // Ex: telas muito grandes
-        setItemsPerPage(4);
-      }
-    }
-
-    updateItemsPerPage(); // atualiza já na primeira montagem
-    window.addEventListener("resize", updateItemsPerPage);
-
-    return () => window.removeEventListener("resize", updateItemsPerPage);
-  }, []);
-
-  // Calcula número total de slides
+  const itemsPerPage = 4; // mantemos o valor original
   const totalSlides = Math.ceil(categories.length / itemsPerPage);
 
-  // Funções de navegação
   const handlePrevSlideCarousel = () => {
     setCurrentSlide((prev) => Math.max(prev - 1, 0));
   };
@@ -98,13 +65,14 @@ const ViewExpenses = () => {
     setCurrentSlide((prev) => Math.min(prev + 1, totalSlides - 1));
   };
 
-  // Fatiar as categorias para exibir somente as do "slide" atual
-  const startIndex = currentSlide * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const visibleCategories = categories.slice(startIndex, endIndex);
+  // Cálculo do tamanho do track e da translação para alinhar o último slide
+  const trackWidthPercentage = (categories.length * 100) / itemsPerPage; // largura total do track em %
+  const maxTranslation = trackWidthPercentage - 100; // quanto o track pode se mover (em %)
+  const transformPercentage =
+    totalSlides > 1 ? -(currentSlide / (totalSlides - 1)) * maxTranslation : 0;
 
   return (
-    <div className="p-0 m-0">
+    <div className="p-0 m-0 w-full">
       {/* Navegador de mês */}
       <div className="flex items-center justify-center mb-4">
         <button
@@ -129,50 +97,69 @@ const ViewExpenses = () => {
 
       {loading && <p className="text-center">Carregando...</p>}
 
-      {/* Controles do carrossel */}
       {categories.length > 0 && (
-        <div className="flex items-center justify-center space-x-4 mb-4 ">
-          <button
-            onClick={handlePrevSlideCarousel}
-            disabled={currentSlide === 0}
-            className={`px-3 py-1 rounded ${
-              currentSlide === 0
-                ? "bg-bentenavi-900 text-white text-gray-500 cursor-not-allowed"
-                : "bg-matcha-900 text-white hover:bg-matcha-700"
-            }`}
-          >
-            Prev
-          </button>
+        <>
+          {/* Controles do carrossel */}
+          <div className="flex items-center justify-center space-x-4 mb-4">
+            <button
+              onClick={handlePrevSlideCarousel}
+              disabled={currentSlide === 0}
+              className={`px-3 py-1 rounded ${
+                currentSlide === 0
+                  ? "bg-bentenavi-900 text-white text-gray-500 cursor-not-allowed"
+                  : "bg-matcha-900 text-white hover:bg-matcha-700"
+              }`}
+            >
+              Prev
+            </button>
 
-          <div>
-            {currentSlide + 1} / {totalSlides}
+            <div>
+              {currentSlide + 1} / {totalSlides}
+            </div>
+
+            <button
+              onClick={handleNextSlideCarousel}
+              disabled={currentSlide === totalSlides - 1}
+              className={`px-3 py-1 rounded ${
+                currentSlide === totalSlides - 1 || totalSlides === 0
+                  ? "bg-bentenavi-900 text-white text-gray-500 cursor-not-allowed"
+                  : "bg-matcha-900 text-white hover:bg-matcha-700"
+              }`}
+            >
+              Next
+            </button>
           </div>
 
-          <button
-            onClick={handleNextSlideCarousel}
-            disabled={currentSlide === totalSlides - 1}
-            className={`px-3 py-1 rounded ${
-              currentSlide === totalSlides - 1 || totalSlides === 0
-                ? "bg-bentenavi-900 text-white text-gray-500 cursor-not-allowed"
-                : "bg-matcha-900 text-white hover:bg-matcha-700"
-            }`}
-          >
-            Next
-          </button>
-        </div>
+          {/* Carrossel com animação */}
+          <div className="overflow-hidden w-full">
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{
+                transform: `translateX(${transformPercentage}%)`,
+                width: `100%`,
+              }}
+            >
+              {categories.map((category) => (
+                <div
+                  key={category.value}
+                  className="px-0 flex justify-center" // Remove espaçamento horizontal para aproximar as tabelas
+                  style={{
+                    flex: `0 0 ${100 / itemsPerPage}%`,
+                  }}
+                >
+                  <div className="min-w-[300px] max-w-[300px]">
+                    <InstallmentTable
+                      category={category}
+                      installments={installmentsByCategory[category.value] || []}
+                      onRefresh={loadInstallments}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
       )}
-
-      {/* Mostra apenas as categorias "visíveis" no slide atual */}
-      <div className="flex space-x-4 justify-center">
-        {visibleCategories.map((category) => (
-          <InstallmentTable
-            key={category.value}
-            category={category}
-            installments={installmentsByCategory[category.value] || []}
-            onRefresh={loadInstallments}
-          />
-        ))}
-      </div>
     </div>
   );
 };
