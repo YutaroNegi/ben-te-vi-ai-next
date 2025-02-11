@@ -151,6 +151,7 @@ const ExpenseForm = () => {
           step="0.01"
           label={t("amount")}
           placeholder={t("amount")}
+          maskMilharBr={true}
         />
         <CustomDropdown
           label={t("category")}
