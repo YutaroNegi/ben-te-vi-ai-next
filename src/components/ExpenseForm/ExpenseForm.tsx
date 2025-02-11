@@ -8,7 +8,7 @@ import CustomDropdown, {
 import { useAuthStore } from "@/stores/authStore";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { registerExpense } from "@/utils";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
 
 const ExpenseForm = () => {
@@ -197,7 +197,6 @@ const ExpenseForm = () => {
       <div className="mt-4 flex justify-center">
         <Button type="submit" label={t("submit")} loading={localLoading} />
       </div>
-      <ToastContainer />
     </form>
   );
 };

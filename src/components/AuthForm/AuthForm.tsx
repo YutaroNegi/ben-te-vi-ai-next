@@ -1,15 +1,15 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import { Button, Input } from "@/components";
 import { signIn, createAccount } from "@/utils/auth";
 import { useTranslations } from "next-intl";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function AuthForm() {
-  const [isLogin, setIsLogin] = React.useState(true);
-  const [isloading, setIsLoading] = React.useState(false);
+  const [isLogin, setIsLogin] = useState(true);
+  const [isloading, setIsLoading] = useState(false);
   const t = useTranslations("AuthPage");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +22,7 @@ export default function AuthForm() {
     if (isLogin) {
       try {
         await signIn(email, password);
-        // toast.success(t("loginSuccess"));
+        toast.success(t("loginSuccess"));
         return;
       } catch {
         toast.error(t("loginFailed"));
@@ -102,8 +102,6 @@ export default function AuthForm() {
           </div>
         </div>
       </main>
-
-      <ToastContainer position="top-right" />
     </>
   );
 }

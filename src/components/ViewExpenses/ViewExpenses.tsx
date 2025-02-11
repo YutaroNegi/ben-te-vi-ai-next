@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { InstallmentTable } from "@/components";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ViewExpenses = () => {
@@ -106,8 +105,6 @@ const ViewExpenses = () => {
 
   return (
     <div className="p-0 m-0">
-      <ToastContainer />
-
       {/* Navegador de mês */}
       <div className="flex items-center justify-center mb-4">
         <button
