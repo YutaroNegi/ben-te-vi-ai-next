@@ -8,6 +8,7 @@ import ExpenseForm from "./ExpenseForm/ExpenseForm";
 import Table from "./Table/Table";
 import ViewExpenses from "./ViewExpenses/ViewExpenses";
 import InstallmentTable from "./InstallmentsTable/InstallmentsTable";
+import CustomToast from "./CustomToast/index";
 
 export {
   AuthForm,
@@ -20,4 +21,5 @@ export {
   Table,
   ViewExpenses,
   InstallmentTable,
+  CustomToast
 };
