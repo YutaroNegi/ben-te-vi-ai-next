@@ -166,14 +166,25 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
                 placeholder={t("newCategoryNamePlaceholder")}
                 value={newCategoryName}
                 onChange={(e) => setNewCategoryName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // Impede o submit do formulário
+                    handleConfirmAdd();
+                  }
+                }}
               />
               <button
+                type="button"
                 className="text-green-600 mr-2"
                 onClick={handleConfirmAdd}
               >
                 <FaCheck />
               </button>
-              <button className="text-red-600" onClick={handleCancelAdd}>
+              <button
+                type="button"
+                className="text-red-600"
+                onClick={handleCancelAdd}
+              >
                 <FaTimes />
               </button>
             </div>
@@ -197,14 +208,25 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
                 className="flex-grow border rounded px-2 py-1 mr-2"
                 value={editCategoryName}
                 onChange={(e) => setEditCategoryName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault(); // Impede o submit do formulário
+                    handleConfirmEdit();
+                  }
+                }}
               />
               <button
+                type="button"
                 className="text-green-600 mr-2"
                 onClick={handleConfirmEdit}
               >
                 <FaCheck />
               </button>
-              <button className="text-red-600" onClick={handleCancelEdit}>
+              <button
+                type="button"
+                className="text-red-600"
+                onClick={handleCancelEdit}
+              >
                 <FaTimes />
               </button>
             </div>
