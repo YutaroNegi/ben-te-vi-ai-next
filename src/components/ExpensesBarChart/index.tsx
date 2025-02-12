@@ -50,7 +50,7 @@ const ExpensesBarChart: React.FC = () => {
   });
 
   return (
-    <div className="w-full h-80 text-xs">
+    <div className="w-full h-80 text-xs border-2 border-chocolate-800 rounded-lg p-5">
       <ResponsiveContainer>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
