@@ -4,12 +4,6 @@ import Input from "./Input";
 
 test("Page", () => {
   const label = "Input";
-  render(
-    <Input
-      id={label}
-      label={label}
-      placeholder={label}
-    />
-  );
+  render(<Input id={label} label={label} placeholder={label} />);
   expect(screen.getByText(label)).toBeDefined();
 });

@@ -6,7 +6,7 @@ import {
   ExpenseForm,
   ViewExpenses,
   ExpensePieChart,
-  ExpensesBarChart
+  ExpensesBarChart,
 } from "@/components";
 
 export default function DashboardPage() {

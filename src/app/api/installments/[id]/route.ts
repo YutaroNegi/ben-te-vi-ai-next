@@ -9,7 +9,7 @@ export async function PUT(request: Request) {
     if (!installmentId) {
       return NextResponse.json(
         { error: 'Missing "id" in URL path' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -42,7 +42,7 @@ export async function DELETE(request: Request) {
     if (!installmentId) {
       return NextResponse.json(
         { error: 'Missing "id" in URL path' },
-        { status: 400 }
+        { status: 400 },
       );
     }
     const { error } = await supabase

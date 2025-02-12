@@ -20,12 +20,11 @@ export interface Installment {
   };
 }
 
-
 export interface ExpenseData {
   user_id: string;
   name: string;
   amount: number;
-  category_id: string
+  category_id: string;
   description: string | null;
   date: string;
   installments: number;
@@ -38,7 +37,6 @@ export interface Category {
   description?: string;
   created_at: string;
 }
-
 
 export interface CategoryBody {
   name: string;

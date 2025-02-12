@@ -41,8 +41,6 @@ const ViewExpenses = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, selectedDate]);
 
-
-
   const handlePrevMonth = () => {
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth();
@@ -98,7 +96,11 @@ const ViewExpenses = () => {
         </button>
       </div>
 
-      {loading && <p className="text-center"><LoadingSpinner/></p>}
+      {loading && (
+        <p className="text-center">
+          <LoadingSpinner />
+        </p>
+      )}
 
       {categories.length > 0 && (
         <>

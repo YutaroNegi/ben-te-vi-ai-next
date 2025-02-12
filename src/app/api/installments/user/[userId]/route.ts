@@ -1,38 +1,38 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { supabase } from "@/lib/supabaseClient";
 
-export async function GET(
-  request: NextRequest,
-) {
+export async function GET(request: NextRequest) {
   try {
     const { pathname } = new URL(request.url);
-    const userId = pathname.split('/').pop(); // last segment, e.g. "123"
+    const userId = pathname.split("/").pop(); // last segment, e.g. "123"
 
     if (!userId) {
       return NextResponse.json(
         { error: 'Missing "id" in URL path' },
-        { status: 400 }
+        { status: 400 },
       );
     }
-    
+
     const { searchParams } = new URL(request.url);
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
 
     if (!startDate || !endDate) {
       return NextResponse.json(
-        { error: 'Missing start date or end date' },
-        { status: 400 }
+        { error: "Missing start date or end date" },
+        { status: 400 },
       );
     }
 
     const { data, error } = await supabase
-      .from('installments')
-      .select('*, expense:expenses!inner (id, category_id, name, description, user_id)')
-      .gte('due_date', startDate)
-      .lt('due_date', endDate)
-      .eq('expense.user_id', userId);
+      .from("installments")
+      .select(
+        "*, expense:expenses!inner (id, category_id, name, description, user_id)",
+      )
+      .gte("due_date", startDate)
+      .lt("due_date", endDate)
+      .eq("expense.user_id", userId);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -57,8 +57,8 @@ export async function GET(
     return NextResponse.json(grouped, { status: 200 });
   } catch {
     return NextResponse.json(
-      { error: 'Erro fetching installments.' },
-      { status: 500 }
+      { error: "Erro fetching installments." },
+      { status: 500 },
     );
   }
 }

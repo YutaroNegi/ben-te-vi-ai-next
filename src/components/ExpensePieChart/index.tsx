@@ -31,7 +31,7 @@ const ExpensePieChart: React.FC = () => {
     .map((category) => {
       const total = (installmentsByCategory[category.value] || []).reduce(
         (sum, inst) => sum + inst.amount,
-        0
+        0,
       );
       return { name: category.label, value: total };
     })

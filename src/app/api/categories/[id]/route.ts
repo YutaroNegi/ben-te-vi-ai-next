@@ -9,14 +9,20 @@ export async function PUT(request: Request) {
     const id = pathname.split("/").pop();
 
     if (!id) {
-      return NextResponse.json({ error: "Missing ID in path" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing ID in path" },
+        { status: 400 },
+      );
     }
 
     const body = await request.json();
     const { name, description } = body;
 
     if (!name) {
-      return NextResponse.json({ error: "Category name is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Category name is required" },
+        { status: 400 },
+      );
     }
 
     const { data, error } = await supabase
@@ -32,7 +38,10 @@ export async function PUT(request: Request) {
 
     return NextResponse.json(data, { status: 200 });
   } catch {
-    return NextResponse.json({ error: "Failed to update category" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update category" },
+      { status: 500 },
+    );
   }
 }
 
@@ -42,7 +51,10 @@ export async function DELETE(request: Request) {
     const id = pathname.split("/").pop();
 
     if (!id) {
-      return NextResponse.json({ error: "Missing ID in path" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing ID in path" },
+        { status: 400 },
+      );
     }
 
     const { error } = await supabase
@@ -58,6 +70,9 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ message: "Category deleted" }, { status: 200 });
   } catch {
-    return NextResponse.json({ error: "Error deleting category." }, { status: 500 });
+    return NextResponse.json(
+      { error: "Error deleting category." },
+      { status: 500 },
+    );
   }
 }

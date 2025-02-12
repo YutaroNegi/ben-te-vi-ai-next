@@ -25,7 +25,7 @@ export async function GET(request: Request) {
   } catch {
     return NextResponse.json(
       { error: "Error fetching categories." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

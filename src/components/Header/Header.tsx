@@ -1,6 +1,6 @@
-import React from 'react';
-import Image from 'next/image';
-import { signOut } from '@/utils/auth';
+import React from "react";
+import Image from "next/image";
+import { signOut } from "@/utils/auth";
 
 function Header() {
   async function handleSignOut() {

@@ -1,6 +1,6 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { supabase } from "@/lib/supabaseClient";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,12 +8,12 @@ export async function POST(request: NextRequest) {
     const { user_id, name, description } = body;
 
     if (!user_id || !name) {
-      const msg = 'Missing required fields';
-      return NextResponse.json({ error: msg}, { status: 400 });
+      const msg = "Missing required fields";
+      return NextResponse.json({ error: msg }, { status: 400 });
     }
 
     const { data, error } = await supabase
-      .from('categories')
+      .from("categories")
       .insert([{ user_id, name, description }])
       .single();
 
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(data, { status: 201 });
   } catch {
-    const msg = 'Failed to register category';
-    return NextResponse.json({ error: msg}, { status: 500 });
+    const msg = "Failed to register category";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

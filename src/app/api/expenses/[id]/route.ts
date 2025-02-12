@@ -11,7 +11,7 @@ export async function PUT(request: NextRequest) {
     if (!id) {
       return NextResponse.json(
         { error: 'Missing "id" in URL path' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -21,7 +21,7 @@ export async function PUT(request: NextRequest) {
     if (!category_id || !name || amount === undefined) {
       return NextResponse.json(
         { error: "Some required fields are missing" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -41,7 +41,7 @@ export async function PUT(request: NextRequest) {
   } catch {
     return NextResponse.json(
       { error: "Error updating expense" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -55,7 +55,7 @@ export async function DELETE(request: NextRequest) {
     if (!id) {
       return NextResponse.json(
         { error: 'Missing "id" in URL path' },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -75,7 +75,7 @@ export async function DELETE(request: NextRequest) {
   } catch {
     return NextResponse.json(
       { error: "Error deleting expense" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

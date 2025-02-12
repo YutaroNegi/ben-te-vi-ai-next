@@ -31,7 +31,10 @@ describe("signIn", () => {
     const result = await signIn(email, password);
 
     expect(result).toEqual(user);
-    expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({ email, password });
+    expect(supabase.auth.signInWithPassword).toHaveBeenCalledWith({
+      email,
+      password,
+    });
   });
 
   it("should throw an error when supabase returns an error", async () => {
@@ -91,6 +94,8 @@ describe("createAccount", () => {
       error: null,
     });
 
-    await expect(createAccount(email, password)).rejects.toEqual("Invalid user data");
+    await expect(createAccount(email, password)).rejects.toEqual(
+      "Invalid user data",
+    );
   });
 });

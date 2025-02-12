@@ -137,54 +137,53 @@ const ExpenseForm = () => {
       onSubmit={handleSubmit}
       className="p-2 border-2 border-chocolate-800 rounded-lg text-sm flex flex-col gap-2 items-center w-80 mx-auto"
     >
-        <Input
-          id="name"
-          name="name"
-          label={t("name")}
-          type="text"
-          placeholder={t("name")}
-        />
-        <Input
-          id="amount"
-          name="amount"
-          type="number"
-          step="0.01"
-          label={t("amount")}
-          placeholder={t("amount")}
-          maskMilharBr={true}
-        />
-        <CustomDropdown
-          label={t("category")}
-          options={categories}
-          onSelectOption={handleSelectCategory}
-          onAdd={handleAddCategory}
-          onEdit={handleEditCategory}
-          onDelete={handleDeleteCategory}
-          placeholder={t("placeholderCategory")}
-        />
-        <Input
-          id="description"
-          name="description"
-          label={t("description")}
-          type="text"
-          placeholder={t("description")}
-        />
-        <InputDate
-          id="date"
-          name="date"
-          label={t("date")}
-          type="date"
-          placeholder={t("date")}
-        />
-        <Input
-          id="installments"
-          name="installments"
-          label={t("installments")}
-          type="number"
-          placeholder={t("installments")}
-        />
-        <Button type="submit" label={t("submit")} loading={localLoading} />
-
+      <Input
+        id="name"
+        name="name"
+        label={t("name")}
+        type="text"
+        placeholder={t("name")}
+      />
+      <Input
+        id="amount"
+        name="amount"
+        type="number"
+        step="0.01"
+        label={t("amount")}
+        placeholder={t("amount")}
+        maskMilharBr={true}
+      />
+      <CustomDropdown
+        label={t("category")}
+        options={categories}
+        onSelectOption={handleSelectCategory}
+        onAdd={handleAddCategory}
+        onEdit={handleEditCategory}
+        onDelete={handleDeleteCategory}
+        placeholder={t("placeholderCategory")}
+      />
+      <Input
+        id="description"
+        name="description"
+        label={t("description")}
+        type="text"
+        placeholder={t("description")}
+      />
+      <InputDate
+        id="date"
+        name="date"
+        label={t("date")}
+        type="date"
+        placeholder={t("date")}
+      />
+      <Input
+        id="installments"
+        name="installments"
+        label={t("installments")}
+        type="number"
+        placeholder={t("installments")}
+      />
+      <Button type="submit" label={t("submit")} loading={localLoading} />
     </form>
   );
 };

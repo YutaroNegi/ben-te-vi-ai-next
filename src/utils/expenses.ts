@@ -18,7 +18,7 @@ export async function fetchCategories(userId: string) {
       (cat: { id: string; name: string }) => ({
         value: cat.id,
         label: cat.name,
-      })
+      }),
     );
     return optionsData;
   } catch {
@@ -85,7 +85,7 @@ export const deleteExpense = async (id: string) => {
 
 export const editInstallment = async (
   id: string,
-  body: Partial<Installment>
+  body: Partial<Installment>,
 ) => {
   try {
     const res = await fetch(`/api/installments/${id}`, {
@@ -125,12 +125,12 @@ export const deleteInstallment = async (id: string) => {
 export async function fetchInstallmentsByUserAndDate(
   userId: string,
   startDate: string,
-  endDate: string
+  endDate: string,
 ): Promise<Record<string, Installment[]>> {
   const response = await fetch(
     `/api/installments/user/${userId}?startDate=${encodeURIComponent(
-      startDate
-    )}&endDate=${encodeURIComponent(endDate)}`
+      startDate,
+    )}&endDate=${encodeURIComponent(endDate)}`,
   );
 
   if (!response.ok) {

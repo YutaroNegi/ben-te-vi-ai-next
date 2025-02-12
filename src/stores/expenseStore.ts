@@ -34,7 +34,7 @@ interface ExpensesState {
   fetchInstallments: (
     userId: string,
     startDate: string,
-    endDate: string
+    endDate: string,
   ) => Promise<void>;
   editOneInstallment: (id: string, data: Partial<Installment>) => Promise<void>;
   deleteOneInstallment: (id: string) => Promise<void>;
@@ -59,7 +59,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         categories: data,
         loading: false,
       });
-    } catch  {
+    } catch {
       set({
         error: "Erro ao buscar categorias",
         loading: false,
@@ -78,7 +78,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
       // Depois de criar, buscamos novamente para atualizar a lista
       await get().fetchCategories(userId);
       set({ loading: false });
-    } catch  {
+    } catch {
       set({
         error: "Falha ao adicionar categoria",
         loading: false,
@@ -97,10 +97,10 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
 
       // Se não, pode ser que apenas “edite” localmente as categories:
       const updated = get().categories.map((cat) =>
-        cat.value === id ? { value: id, label: body.name } : cat
+        cat.value === id ? { value: id, label: body.name } : cat,
       );
       set({ categories: updated, loading: false });
-    } catch  {
+    } catch {
       set({
         error: "Falha ao editar categoria",
         loading: false,
@@ -115,7 +115,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
 
       // 2. Remover a categoria localmente do array de categories
       const updatedCategories = get().categories.filter(
-        (cat) => cat.value !== id
+        (cat) => cat.value !== id,
       );
 
       // 3. Remover também do installmentsByCategory (se existir) para não poluir memória
@@ -128,7 +128,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         installmentsByCategory: newInstallments,
         loading: false,
       });
-    } catch  {
+    } catch {
       set({
         error: "Falha ao deletar categoria",
         loading: false,
@@ -143,14 +143,14 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
   fetchInstallments: async (
     userId: string,
     startDate: string,
-    endDate: string
+    endDate: string,
   ) => {
     set({ loading: true, error: null });
     try {
       const grouped = await fetchInstallmentsByUserAndDate(
         userId,
         startDate,
-        endDate
+        endDate,
       );
       set({ installmentsByCategory: grouped, loading: false });
     } catch {
@@ -190,7 +190,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
           },
         });
       }
-    } catch  {
+    } catch {
       set({ error: "Erro ao editar parcela", loading: false });
     }
   },
@@ -211,7 +211,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
       }
       if (foundCategoryId) {
         const filteredArr = installmentsByCat[foundCategoryId].filter(
-          (i) => i.id !== id
+          (i) => i.id !== id,
         );
         set({
           installmentsByCategory: {
@@ -220,7 +220,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
           },
         });
       }
-    } catch  {
+    } catch {
       set({ error: "Erro ao deletar parcela", loading: false });
     }
   },

@@ -2,7 +2,6 @@ import { supabase } from "@/lib/supabaseClient";
 import { User } from "@/types/auth";
 import { useAuthStore } from "@/stores/authStore";
 
-
 export async function signIn(email: string, password: string): Promise<User> {
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -31,7 +30,10 @@ export async function signIn(email: string, password: string): Promise<User> {
   }
 }
 
-export async function createAccount(email: string, password: string): Promise<User> {
+export async function createAccount(
+  email: string,
+  password: string,
+): Promise<User> {
   try {
     const { data, error } = await supabase.auth.signUp({
       email,
