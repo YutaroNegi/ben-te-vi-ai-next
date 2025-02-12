@@ -17,7 +17,7 @@ const Table: React.FC<TableProps> = ({
 }) => {
   return (
     // Adicionamos overflow-hidden para garantir que os cantos arredondados não sejam “vazados”
-    <div className="my-4 shadow-lg rounded overflow-hidden">
+    <div className="my-4 shadow-lg rounded">
       <h2 className="bg-matcha-900 text-white text-sm font-bold p-2">
         {title}
       </h2>
@@ -46,8 +46,17 @@ const Table: React.FC<TableProps> = ({
                   style={{ width: columnWidths?.[cellIndex] }}
                   className={`
                     border p-2 text-black text-xs text-clip
-                    ${rowIndex === rows.length - 1 && cellIndex === 0 ? "rounded-bl-lg" : ""}
-                    ${rowIndex === rows.length - 1 && cellIndex === row.length - 1 ? "rounded-br-lg" : ""}
+                    ${
+                      rowIndex === rows.length - 1 && cellIndex === 0
+                        ? "rounded-bl-lg"
+                        : ""
+                    }
+                    ${
+                      rowIndex === rows.length - 1 &&
+                      cellIndex === row.length - 1
+                        ? "rounded-br-lg"
+                        : ""
+                    }
                   `}
                 >
                   {cell}
