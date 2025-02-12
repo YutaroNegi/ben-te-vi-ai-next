@@ -173,7 +173,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         </button>
         {openMenuId === inst.id && (
           <div
-            className="absolute top-10 right-0 bg-white shadow-md rounded p-2 z-50 border"
+            className="absolute top-0 left-full bg-white shadow-md rounded p-2 z-50 border ml-2"
             style={{ minWidth: "100px" }}
           >
             <button
