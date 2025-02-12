@@ -103,7 +103,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         <input
           key="installmentNumber"
           type="number"
-          className="border p-1 w-full"
+          className="border p-1 w-full text-xs"
           value={editData.installment_number}
           onChange={(e) =>
             setEditData((prev) => ({
@@ -116,7 +116,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
           key="amount"
           type="number"
           step="0.01"
-          className="border p-1 w-full"
+          className="border p-1 w-full text-xs"
           value={editData.amount}
           onChange={(e) =>
             setEditData((prev) => ({
@@ -128,7 +128,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         <input
           key="dueDate"
           type="date"
-          className="border p-1 w-full"
+          className="border p-1 w-full text-xs"
           value={editData.due_date}
           onChange={(e) =>
             setEditData((prev) => ({
@@ -139,13 +139,13 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         />,
         <div key="actions" className="flex space-x-2">
           <button
-            className="px-2 py-1 bg-green-500 text-white rounded"
+            className="px-2 py-1 bg-green-500 text-white rounded text-xs"
             onClick={handleSave}
           >
             {t("actions.save")}
           </button>
           <button
-            className="px-2 py-1 bg-gray-400 text-white rounded"
+            className="px-2 py-1 bg-gray-400 text-white rounded text-xs"
             onClick={handleCancel}
           >
             {t("actions.cancel")}
@@ -202,7 +202,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       })}`}
       headers={headers}
       rows={rows}
-      columnWidths={["auto", "10%", "auto", "auto", "auto"]} // define larguras para cada coluna
+      columnWidths={["auto", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
     />
   );
 };
