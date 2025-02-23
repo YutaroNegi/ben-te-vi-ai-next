@@ -37,7 +37,6 @@ const Input: React.FC<InputProps> = ({
     <div
       className={`flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 ${className} text-xs`}
     >
-      {/* Label ocupando 30% da largura */}
       <span
         className={`flex items-center justify-center ${labelClassName} ${labelTextClassName} px-5`}
         style={{ width: "30%" }}

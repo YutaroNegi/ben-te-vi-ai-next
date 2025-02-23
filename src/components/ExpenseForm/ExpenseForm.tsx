@@ -49,8 +49,13 @@ const ExpenseForm = () => {
     try {
       setLocalLoading(true);
       const formData = new FormData(e.currentTarget);
+
+      const rawAmount = formData.get("amount") as string;
+
+      const cleanedAmount = rawAmount.replace(/\./g, "").replace(",", ".");
+      const amount = parseFloat(cleanedAmount);
+
       const name = formData.get("name") as string;
-      const amount = parseFloat(formData.get("amount") as string);
       const description = (formData.get("description") as string) || null;
       const date = formData.get("date") as string;
       const installments = formData.get("installments")
@@ -74,7 +79,6 @@ const ExpenseForm = () => {
 
       toast.success(t("expenseRegisteredSuccess"));
 
-      // Atualiza os installments do mês atual
       const year = selectedDate.getFullYear();
       const month = selectedDate.getMonth();
       const startDate = new Date(year, month, 1).toISOString();
