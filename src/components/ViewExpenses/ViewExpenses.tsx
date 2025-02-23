@@ -53,9 +53,9 @@ const ViewExpenses = () => {
     setSelectedDate(new Date(year, month + 1, 1));
   };
 
-  // Lógica do carrossel
   const [currentSlide, setCurrentSlide] = useState(0);
-  const itemsPerPage = 4; // mantemos o valor original
+  const itemsPerPage = window.innerWidth >= 1366 ? 4 : 3;
+
   const totalSlides = Math.ceil(categories.length / itemsPerPage);
 
   const handlePrevSlideCarousel = () => {
@@ -149,7 +149,7 @@ const ViewExpenses = () => {
                   key={category.value}
                   className="px-0 flex justify-center" // Remove espaçamento horizontal para aproximar as tabelas
                   style={{
-                    flex: `0 0 ${100 / itemsPerPage}%`,
+                    flex: `0 0 ${100 / 4}%`,
                   }}
                 >
                   <div className="min-w-[300px] max-w-[300px]">
