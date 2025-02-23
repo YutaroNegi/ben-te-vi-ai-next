@@ -57,11 +57,11 @@ const Input: React.FC<InputProps> = ({
               target: {
                 id,
                 name,
-                value: values.formattedValue,
+                value: values.floatValue,
               },
             };
             if (onChange) {
-              onChange(syntheticEvent as React.ChangeEvent<HTMLInputElement>);
+              onChange(syntheticEvent as unknown as React.ChangeEvent<HTMLInputElement>);
             }
           }}
           {...(step ? { step } : {})}
