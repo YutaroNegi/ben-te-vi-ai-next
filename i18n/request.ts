@@ -14,8 +14,7 @@ export default getRequestConfig(async () => {
 
     if (firstLang.startsWith("pt")) {
       locale = "ptBR";
-    }
-    else if (firstLang.startsWith("en")) {
+    } else if (firstLang.startsWith("en")) {
       locale = "en";
     }
   }

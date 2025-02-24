@@ -60,7 +60,9 @@ const Input: React.FC<InputProps> = ({
               },
             };
             if (onChange) {
-              onChange(syntheticEvent as unknown as React.ChangeEvent<HTMLInputElement>);
+              onChange(
+                syntheticEvent as unknown as React.ChangeEvent<HTMLInputElement>,
+              );
             }
           }}
           {...(step ? { step } : {})}

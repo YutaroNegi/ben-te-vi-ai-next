@@ -12,23 +12,23 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         almond: {
-          900: "#E5E0D8"
+          900: "#E5E0D8",
         },
         matcha: {
           800: "#98B484",
-          900: "#809671"
+          900: "#809671",
         },
-        bentevi:{
+        bentevi: {
           900: "#e9d045",
-          800: "#ffed8a"
+          800: "#ffed8a",
         },
-        bentenavi:{
+        bentenavi: {
           900: "#5c6092",
         },
-        chocolate:{
+        chocolate: {
           900: "#593a2d",
-          800: "#8f6f65"
-        }
+          800: "#8f6f65",
+        },
       },
     },
   },
