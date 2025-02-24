@@ -7,6 +7,35 @@ import { InstallmentTable, LoadingSpinner } from "@/components";
 
 import "react-toastify/dist/ReactToastify.css";
 
+// IMPORTS para o react-multi-carousel
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+
+// Importante: se usar toastify
+import "react-toastify/dist/ReactToastify.css";
+
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1366 }, // Ajuste conforme desejar
+    items: 3,
+    partialVisibilityGutter: 40,
+  },
+  laptop: {
+    breakpoint: { max: 1366, min: 1024 },
+    items: 3,
+    partialVisibilityGutter: 30,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+    partialVisibilityGutter: 30,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    partialVisibilityGutter: 30,
+  },
+};
 const ViewExpenses = () => {
   const userId = useAuthStore((state) => state.user?.id);
 
@@ -36,11 +65,13 @@ const ViewExpenses = () => {
     await fetchInstallments(userId, startDate, endDate);
   };
 
+  // Carrega parcelas ao mudar de mês ou user
   useEffect(() => {
     loadInstallments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, selectedDate]);
 
+  // Lógica de navegação de mês
   const handlePrevMonth = () => {
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth();
@@ -52,25 +83,6 @@ const ViewExpenses = () => {
     const month = selectedDate.getMonth();
     setSelectedDate(new Date(year, month + 1, 1));
   };
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const itemsPerPage = window.innerWidth >= 1366 ? 4 : 3;
-
-  const totalSlides = Math.ceil(categories.length / itemsPerPage);
-
-  const handlePrevSlideCarousel = () => {
-    setCurrentSlide((prev) => Math.max(prev - 1, 0));
-  };
-
-  const handleNextSlideCarousel = () => {
-    setCurrentSlide((prev) => Math.min(prev + 1, totalSlides - 1));
-  };
-
-  // Cálculo do tamanho do track e da translação para alinhar o último slide
-  const trackWidthPercentage = (categories.length * 100) / itemsPerPage; // largura total do track em %
-  const maxTranslation = trackWidthPercentage - 100; // quanto o track pode se mover (em %)
-  const transformPercentage =
-    totalSlides > 1 ? -(currentSlide / (totalSlides - 1)) * maxTranslation : 0;
 
   return (
     <div className="p-0 m-0 w-full">
@@ -102,70 +114,35 @@ const ViewExpenses = () => {
         </p>
       )}
 
+      {/* Carrossel de categorias */}
       {categories.length > 0 && (
-        <>
-          {/* Controles do carrossel */}
-          <div className="flex items-center justify-center space-x-4 mb-4">
-            <button
-              onClick={handlePrevSlideCarousel}
-              disabled={currentSlide === 0}
-              className={`px-3 py-1 rounded ${
-                currentSlide === 0
-                  ? "bg-bentenavi-900 text-white text-gray-500 cursor-not-allowed"
-                  : "bg-matcha-900 text-white hover:bg-matcha-700"
-              }`}
-            >
-              Prev
-            </button>
-
-            <div>
-              {currentSlide + 1} / {totalSlides}
+        <Carousel
+        
+          swipeable
+          draggable
+          showDots={false}
+          responsive={responsive}
+          ssr={true} // habilita server-side-rendering (caso precise)
+          infinite={false}
+          autoPlaySpeed={3000}
+          keyBoardControl={true}
+          customTransition="all 0.5s"
+          transitionDuration={500}
+          containerClass="carousel-container"
+          removeArrowOnDeviceType={["tablet", "mobile"]}
+          dotListClass="custom-dot-list-style"
+          itemClass="carousel-item-padding-40-px"
+        >
+          {categories.map((category) => (
+            <div key={category.value} className="px-2">
+              <InstallmentTable
+                category={category}
+                installments={installmentsByCategory[category.value] || []}
+                onRefresh={loadInstallments}
+              />
             </div>
-
-            <button
-              onClick={handleNextSlideCarousel}
-              disabled={currentSlide === totalSlides - 1}
-              className={`px-3 py-1 rounded ${
-                currentSlide === totalSlides - 1 || totalSlides === 0
-                  ? "bg-bentenavi-900 text-white text-gray-500 cursor-not-allowed"
-                  : "bg-matcha-900 text-white hover:bg-matcha-700"
-              }`}
-            >
-              Next
-            </button>
-          </div>
-
-          {/* Carrossel com animação */}
-          <div className="overflow-hidden w-full">
-            <div
-              className="flex transition-transform duration-500 ease-in-out"
-              style={{
-                transform: `translateX(${transformPercentage}%)`,
-                width: `100%`,
-              }}
-            >
-              {categories.map((category) => (
-                <div
-                  key={category.value}
-                  className="px-0 flex justify-center" // Remove espaçamento horizontal para aproximar as tabelas
-                  style={{
-                    flex: `0 0 ${100 / 4}%`,
-                  }}
-                >
-                  <div className="min-w-[300px] max-w-[300px]">
-                    <InstallmentTable
-                      category={category}
-                      installments={
-                        installmentsByCategory[category.value] || []
-                      }
-                      onRefresh={loadInstallments}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
+          ))}
+        </Carousel>
       )}
     </div>
   );
