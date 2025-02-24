@@ -79,5 +79,8 @@
       "updated": "Parcela atualizada com sucesso!",
       "errorUpdating": "Erro ao atualizar parcela."
     }
+  },
+  "Chart": {
+    "noExpensesFound": "Nenhuma despesa encontrada para o mês atual"
   }
 }

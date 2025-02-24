@@ -79,5 +79,8 @@
       "updated": "Installment updated successfully!",
       "errorUpdating": "Error updating installment."
     }
+  },
+  "Chart":{
+    "noExpensesFound": "No expenses found for the current month"
   }
 }
