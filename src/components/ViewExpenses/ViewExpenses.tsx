@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { InstallmentTable, LoadingSpinner } from "@/components";
