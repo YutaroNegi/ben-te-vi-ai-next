@@ -164,7 +164,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         month: "2-digit",
         year: "2-digit",
       }),
-      <div key="menu" className="relative">
+      <td className="relative" key="actions">
         <button
           className="p-2 bg-gray-200 rounded hover:bg-gray-300"
           onClick={() => toggleMenu(inst.id)}
@@ -190,7 +190,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
             </button>
           </div>
         )}
-      </div>,
+      </td>,
     ];
   });
 
