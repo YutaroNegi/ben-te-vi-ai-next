@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { LoadingSpinner } from "@/components";
+import { useTranslations } from "next-intl";
 
 const COLORS = [
   "#98B484",
@@ -26,6 +27,7 @@ const COLORS = [
 
 const ExpensePieChart: React.FC = () => {
   const { categories, installmentsByCategory, loading } = useExpensesStore();
+  const t = useTranslations("Chart");
 
   const data = categories
     .map((category) => {
@@ -42,7 +44,7 @@ const ExpensePieChart: React.FC = () => {
   }
 
   if (data.length === 0) {
-    return <div>Nenhuma despesa encontrada para o mês selecionado.</div>;
+    return <div>{t("noExpensesFound")}</div>;
   }
 
   return (
@@ -75,7 +77,7 @@ const ExpensePieChart: React.FC = () => {
               })
             }
           />
-          <Legend />
+          <Legend layout="vertical" verticalAlign="middle" align="right"/>
         </PieChart>
       </ResponsiveContainer>
     </div>
