@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "type": "tsc --noEmit",
+    "check": "npm run format && npm run lint && npm run type"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
