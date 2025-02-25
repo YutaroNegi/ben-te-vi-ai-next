@@ -139,7 +139,7 @@ const ExpenseForm = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-2 border-2 border-chocolate-800 rounded-lg text-sm flex flex-col gap-2 items-center w-80 mx-auto"
+      className="p-2 rounded-lg text-sm flex flex-col gap-2 items-center w-80 mx-auto"
     >
       <Input
         id="name"
