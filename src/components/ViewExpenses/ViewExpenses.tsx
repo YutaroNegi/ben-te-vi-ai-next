@@ -117,7 +117,6 @@ const ViewExpenses = () => {
       {/* Carrossel de categorias */}
       {categories.length > 0 && (
         <Carousel
-        
           swipeable
           draggable
           showDots={false}

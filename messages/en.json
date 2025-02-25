@@ -80,7 +80,7 @@
       "errorUpdating": "Error updating installment."
     }
   },
-  "Chart":{
+  "Chart": {
     "noExpensesFound": "No expenses found for the current month"
   }
 }

@@ -77,7 +77,7 @@ const ExpensePieChart: React.FC = () => {
               })
             }
           />
-          <Legend layout="vertical" verticalAlign="middle" align="right"/>
+          <Legend layout="vertical" verticalAlign="middle" align="right" />
         </PieChart>
       </ResponsiveContainer>
     </div>
