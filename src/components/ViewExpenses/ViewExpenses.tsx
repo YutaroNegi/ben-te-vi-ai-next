@@ -7,16 +7,18 @@ import { InstallmentTable, LoadingSpinner } from "@/components";
 
 import "react-toastify/dist/ReactToastify.css";
 
-// IMPORTS para o react-multi-carousel
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-// Importante: se usar toastify
-import "react-toastify/dist/ReactToastify.css";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+
+interface CustomArrowProps {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}
 
 const responsive = {
   desktop: {
-    breakpoint: { max: 3000, min: 1366 }, // Ajuste conforme desejar
+    breakpoint: { max: 3000, min: 1366 },
     items: 3,
     partialVisibilityGutter: 40,
   },
@@ -36,7 +38,28 @@ const responsive = {
     partialVisibilityGutter: 30,
   },
 };
-const ViewExpenses = () => {
+
+const CustomLeftArrow: React.FC<CustomArrowProps> = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    style={{ position: "absolute", top: "0", left: "10px", zIndex: 1 }}
+    className="p-2 bg-bentenavi-900 text-white rounded hover:bg-gray-400 transition-colors"
+  >
+    <FaArrowLeft size={20} />
+  </button>
+);
+
+const CustomRightArrow: React.FC<CustomArrowProps> = ({ onClick }) => (
+  <button
+    onClick={onClick}
+    style={{ position: "absolute", top: "0", right: "10px", zIndex: 1 }}
+    className="p-2 bg-bentenavi-900 text-white rounded hover:bg-gray-400 transition-colors"
+  >
+    <FaArrowRight size={20} />
+  </button>
+);
+
+const ViewExpenses: React.FC = () => {
   const userId = useAuthStore((state) => state.user?.id);
 
   const {
@@ -49,7 +72,6 @@ const ViewExpenses = () => {
     setSelectedDate,
   } = useExpensesStore();
 
-  // Carrega as categorias ao montar
   useEffect(() => {
     if (userId) {
       fetchCategories(userId).catch(console.error);
@@ -65,13 +87,12 @@ const ViewExpenses = () => {
     await fetchInstallments(userId, startDate, endDate);
   };
 
-  // Carrega parcelas ao mudar de mês ou user
   useEffect(() => {
     loadInstallments();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, selectedDate]);
 
-  // Lógica de navegação de mês
+  // Navegação de mês
   const handlePrevMonth = () => {
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth();
@@ -85,8 +106,7 @@ const ViewExpenses = () => {
   };
 
   return (
-    <div className="p-0 m-0 w-full">
-      {/* Navegador de mês */}
+    <div className="p-0 m-0 w-full relative">
       <div className="flex items-center justify-center mb-4">
         <button
           onClick={handlePrevMonth}
@@ -114,34 +134,37 @@ const ViewExpenses = () => {
         </p>
       )}
 
-      {/* Carrossel de categorias */}
       {categories.length > 0 && (
-        <Carousel
-          swipeable
-          draggable
-          showDots={false}
-          responsive={responsive}
-          ssr={true} // habilita server-side-rendering (caso precise)
-          infinite={false}
-          autoPlaySpeed={3000}
-          keyBoardControl={true}
-          customTransition="all 0.5s"
-          transitionDuration={500}
-          containerClass="carousel-container"
-          removeArrowOnDeviceType={["tablet", "mobile"]}
-          dotListClass="custom-dot-list-style"
-          itemClass="carousel-item-padding-40-px"
-        >
-          {categories.map((category) => (
-            <div key={category.value} className="px-2">
-              <InstallmentTable
-                category={category}
-                installments={installmentsByCategory[category.value] || []}
-                onRefresh={loadInstallments}
-              />
-            </div>
-          ))}
-        </Carousel>
+        <div className="relative">
+          <Carousel
+            swipeable
+            draggable
+            showDots={false}
+            responsive={responsive}
+            ssr={true}
+            infinite={false}
+            autoPlaySpeed={3000}
+            keyBoardControl={true}
+            customTransition="all 0.5s"
+            transitionDuration={500}
+            containerClass="carousel-container"
+            removeArrowOnDeviceType={["tablet", "mobile"]}
+            dotListClass="custom-dot-list-style"
+            itemClass="carousel-item-padding-40-px"
+            customLeftArrow={<CustomLeftArrow />}
+            customRightArrow={<CustomRightArrow />}
+          >
+            {categories.map((category) => (
+              <div key={category.value} className="px-2 w-[25em] mx-auto">
+                <InstallmentTable
+                  category={category}
+                  installments={installmentsByCategory[category.value] || []}
+                  onRefresh={loadInstallments}
+                />
+              </div>
+            ))}
+          </Carousel>
+        </div>
       )}
     </div>
   );
