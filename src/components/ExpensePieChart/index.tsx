@@ -60,7 +60,7 @@ const ExpensePieChart: React.FC = () => {
             cy="50%"
             outerRadius="80%"
             fill="#8884d8"
-            label
+            label={false}
           >
             {data.map((entry, index) => (
               <Cell
@@ -77,7 +77,12 @@ const ExpensePieChart: React.FC = () => {
               })
             }
           />
-          <Legend layout="vertical" verticalAlign="middle" align="right" />
+          <Legend
+            layout="vertical"
+            verticalAlign="middle"
+            align="right"
+            wrapperStyle={{ fontSize: "12px" }}
+          />
         </PieChart>
       </ResponsiveContainer>
     </div>
