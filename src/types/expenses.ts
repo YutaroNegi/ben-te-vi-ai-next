@@ -11,6 +11,9 @@ export interface Installment {
   amount: number;
   paid: boolean;
   paid_at?: string | null;
+  total_installments: number;
+  total_purchase_amount: number;
+  installment_type: string;
   expense: {
     id: string;
     category_id: string;
