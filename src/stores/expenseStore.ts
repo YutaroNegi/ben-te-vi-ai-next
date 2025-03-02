@@ -89,13 +89,6 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
     set({ loading: true, error: null });
     try {
       await editCategory(id, body);
-      // Para atualizar a lista, podemos reler o userId de algum lugar
-      // Normalmente pegamos do authStore, mas aqui, a store não sabe sozinha qual é.
-      // Se você tiver esse userId guardado no store, basta usá-lo:
-      // const userId = get().userId; // Exemplo se você salvasse userId aqui
-      // await get().fetchCategories(userId);
-
-      // Se não, pode ser que apenas “edite” localmente as categories:
       const updated = get().categories.map((cat) =>
         cat.value === id ? { value: id, label: body.name } : cat,
       );
@@ -110,15 +103,12 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
   removeCategory: async (id: string) => {
     set({ loading: true, error: null });
     try {
-      // 1. Deletar a categoria na API
       await deleteCategory(id);
 
-      // 2. Remover a categoria localmente do array de categories
       const updatedCategories = get().categories.filter(
         (cat) => cat.value !== id,
       );
 
-      // 3. Remover também do installmentsByCategory (se existir) para não poluir memória
       const oldInstallments = get().installmentsByCategory;
       const newInstallments = { ...oldInstallments };
       delete newInstallments[id]; // remove só as parcelas daquela categoria
@@ -165,12 +155,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
     try {
       await editInstallment(id, data);
       set({ loading: false });
-      // Atualiza localmente ou refaz fetchInstallments se preferir
-      // Exemplo de atualização local (assumindo que a data do installment não muda a “category”)
       const installmentsByCat = get().installmentsByCategory;
-      // Precisamos descobrir em qual category este installment está
-      // Como installmentsByCategory é um Record<string, Installment[]>,
-      // faremos a busca e substituiremos:
       let foundCategoryId: string | null = null;
       for (const catId of Object.keys(installmentsByCat)) {
         const index = installmentsByCat[catId].findIndex((i) => i.id === id);
