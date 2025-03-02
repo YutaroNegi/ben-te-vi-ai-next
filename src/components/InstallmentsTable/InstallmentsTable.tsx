@@ -214,7 +214,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       })}`}
       headers={headers}
       rows={rows}
-      columnWidths={["40%", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
+      columnWidths={["35%", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
     />
   );
 };
