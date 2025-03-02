@@ -153,12 +153,24 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         </div>,
       ];
     }
+    const instNum =
+      inst.installment_number.toString() +
+      (inst.installment_type === "multi" ? "/" + inst.total_installments : "");
+    const instVal = inst.amount.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+    const expenseTotal = inst.total_purchase_amount.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
 
-    // Linha padrão (não em edição)
+    const instDisplay =
+      instVal + (inst.installment_type === "multi" ? ` (${expenseTotal})` : "");
     return [
       inst.expense?.name || "",
-      inst.installment_number.toString(),
-      inst.amount.toFixed(2),
+      instNum,
+      instDisplay,
       new Date(inst.due_date).toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "2-digit",
