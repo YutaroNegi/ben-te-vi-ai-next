@@ -136,8 +136,8 @@ export async function fetchInstallmentsByUserAndDate(
   if (!response.ok) {
     throw new Error("Erro ao buscar parcelas.");
   }
-
-  return response.json();
+  const res = await response.json();
+  return res;
 }
 
 export async function editCategory(id: string, body: CategoryBody) {
