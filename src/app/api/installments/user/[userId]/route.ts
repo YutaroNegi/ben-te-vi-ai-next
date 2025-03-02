@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 export async function GET(request: NextRequest) {
   try {
     const { pathname } = new URL(request.url);
-    const userId = pathname.split("/").pop(); // last segment, e.g. "123"
+    const userId = pathname.split("/").pop();
 
     if (!userId) {
       return NextResponse.json(
@@ -26,13 +26,11 @@ export async function GET(request: NextRequest) {
     }
 
     const { data, error } = await supabase
-      .from("installments")
-      .select(
-        "*, expense:expenses!inner (id, category_id, name, description, user_id)",
-      )
+      .from("installments_extended")
+      .select("*")
       .gte("due_date", startDate)
       .lt("due_date", endDate)
-      .eq("expense.user_id", userId);
+      .eq("user_id", userId);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
