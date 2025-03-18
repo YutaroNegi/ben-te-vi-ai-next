@@ -41,6 +41,8 @@ interface ExpensesState {
 
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
+
+  monthTotal: number;
 }
 
 export const useExpensesStore = create<ExpensesState>((set, get) => ({
@@ -143,6 +145,16 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         endDate,
       );
       set({ installmentsByCategory: grouped, loading: false });
+      const total = Object.values(grouped).reduce(
+        (acc, installments) =>
+          acc +
+          installments.reduce(
+            (acc, installment) => acc + installment.amount,
+            0,
+          ),
+        0,
+      );
+      set({ monthTotal: total });
     } catch {
       set({
         error: "Erro ao buscar parcelas",
@@ -212,4 +224,5 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
 
   selectedDate: new Date(),
   setSelectedDate: (date: Date) => set({ selectedDate: date }),
+  monthTotal: 0,
 }));
