@@ -4,7 +4,6 @@ import { signOut } from "@/utils/auth";
 import { useAuthStore } from "@/stores/authStore";
 import { useTranslations } from "next-intl";
 
-
 function Header() {
   const { lastLogin } = useAuthStore();
   const t = useTranslations("AuthPage");
@@ -28,7 +27,9 @@ function Header() {
       />
 
       <p className="text-white text-sm">
-        {lastLogin ? `${t("lastLogin")}: ${new Date(lastLogin).toLocaleString()}` : ""}
+        {lastLogin
+          ? `${t("lastLogin")}: ${new Date(lastLogin).toLocaleString()}`
+          : ""}
       </p>
       <button
         onClick={handleSignOut}
