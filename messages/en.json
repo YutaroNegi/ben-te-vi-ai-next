@@ -60,6 +60,7 @@
     "delete": "Delete",
     "save": "Save",
     "cancel": "Cancel",
+    "monthTotal": "Total for the month",
     "headers": {
       "expense": "Name",
       "installment": "%",
