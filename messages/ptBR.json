@@ -12,6 +12,7 @@
     "toggleToLogin": "Já tem uma conta? Faça login",
     "loginFailed": "Falha no login",
     "loginSuccess": "Login realizado com sucesso",
+    "lastLogin": "Último login",
     "description": "Gerencie suas finanças pessoais de forma fácil e intuitiva. Com a ajuda de IA, torne suas decisões financeiras mais simples e eficazes."
   },
   "Api": {
