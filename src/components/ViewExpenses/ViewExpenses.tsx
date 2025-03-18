@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { InstallmentTable, LoadingSpinner } from "@/components";
+import { useTranslations } from "next-intl";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -61,6 +62,7 @@ const CustomRightArrow: React.FC<CustomArrowProps> = ({ onClick }) => (
 
 const ViewExpenses: React.FC = () => {
   const userId = useAuthStore((state) => state.user?.id);
+  const t = useTranslations("ExpenseTable");
 
   const {
     categories,
@@ -70,6 +72,7 @@ const ViewExpenses: React.FC = () => {
     fetchInstallments,
     selectedDate,
     setSelectedDate,
+    monthTotal,
   } = useExpensesStore();
 
   useEffect(() => {
@@ -107,25 +110,30 @@ const ViewExpenses: React.FC = () => {
 
   return (
     <div className="p-0 m-0 w-full relative">
-      <div className="flex items-center justify-center mb-4">
-        <button
-          onClick={handlePrevMonth}
-          className="p-2 bg-bentenavi-900 text-white rounded-l hover:bg-gray-400 transition-colors"
-        >
-          &#8592;
-        </button>
-        <div className="px-4 py-2 bg-bentenavi-900 text-white">
-          {selectedDate.toLocaleString("default", {
-            month: "long",
-            year: "numeric",
-          })}
+      <div className="flex items-center justify-center mb-5 flex-col">
+        <div className="flex items-center justify-center mb-1">
+          <button
+            onClick={handlePrevMonth}
+            className="p-2 bg-bentenavi-900 text-white rounded-l hover:bg-gray-400 transition-colors"
+          >
+            &#8592;
+          </button>
+          <div className="px-4 py-2 bg-bentenavi-900 text-white">
+            {selectedDate.toLocaleString("default", {
+              month: "long",
+              year: "numeric",
+            })}
+          </div>
+          <button
+            onClick={handleNextMonth}
+            className="p-2 bg-bentenavi-900 text-white rounded-r hover:bg-gray-400 transition-colors"
+          >
+            &#8594;
+          </button>
         </div>
-        <button
-          onClick={handleNextMonth}
-          className="p-2 bg-bentenavi-900 text-white rounded-r hover:bg-gray-400 transition-colors"
-        >
-          &#8594;
-        </button>
+        <div className="px-4 py-2 bg-bentenavi-900 text-white rounded-l">
+          {t("monthTotal")} {monthTotal.toFixed(2)}
+        </div>
       </div>
 
       {loading && (
