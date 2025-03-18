@@ -20,6 +20,7 @@ export async function signIn(email: string, password: string): Promise<User> {
     const res = {
       id: data.user.id,
       email: data.user.email,
+      lastLogin: data.user.last_sign_in_at,
     };
 
     const login = useAuthStore.getState().login;
@@ -51,6 +52,7 @@ export async function createAccount(
     const res = {
       id: data.user.id,
       email: data.user.email,
+      lastLogin: data.user.created_at,
     };
 
     const login = useAuthStore.getState().login;
