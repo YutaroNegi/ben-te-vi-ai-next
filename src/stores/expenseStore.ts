@@ -157,7 +157,11 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
       );
       const latestInstallment = Object.values(grouped)
         .flat()
-        .sort((a, b) => new Date(b.expense.created_at).getTime() - new Date(a.expense.created_at).getTime())[0];
+        .sort(
+          (a, b) =>
+            new Date(b.expense.created_at).getTime() -
+            new Date(a.expense.created_at).getTime(),
+        )[0];
       set({ monthTotal: total, latestInstallment: latestInstallment });
     } catch {
       set({
