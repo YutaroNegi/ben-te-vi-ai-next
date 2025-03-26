@@ -13,7 +13,7 @@
     "loginFailed": "FALHA NO LOGIN",
     "loginSuccess": "LOGIN REALIZADO COM SUCESSO",
     "lastLogin": "ÚLTIMO LOGIN",
-    "lastExpense": "ÚLTIMA DESPESA DO MÊS",
+    "lastExpense": "ÚLTIMO REGISTRO DO MÊS",
     "description": "Gerencie suas finanças pessoais de forma fácil e intuitiva. Com a ajuda de IA, torne suas decisões financeiras mais simples e eficazes."
   },
   "Api": {

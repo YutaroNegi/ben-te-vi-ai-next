@@ -13,7 +13,7 @@
     "loginFailed": "LOGIN FAILED",
     "loginSuccess": "LOGIN SUCCESSFUL",
     "lastLogin": "LAST LOGIN",
-    "lastExpense": "LAST EXPENSE IN THE MONTH",
+    "lastExpense": "LAST REGISTER IN THE MONTH",
     "description": "Manage your personal finances in an easy and intuitive way. With the help of AI, make your financial decisions easier and more effective."
   },
   "Api": {
