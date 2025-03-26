@@ -4,6 +4,8 @@ import { signOut } from "@/utils/auth";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { useTranslations } from "next-intl";
 import { Installment } from "@/types";
+import { Tooltip } from "react-tooltip";
+
 function Header() {
   const [lastInstallment, setLastInstallment] = useState<Installment | null>(
     null,
@@ -28,25 +30,26 @@ function Header() {
     }
   }
 
+  const tooltipText = (() => {
+    const lastExpenseText = lastInstallment
+      ? `${t("lastExpense")}: ${lastInstallment.expense.name} |`
+      : "";
+    return lastInsertedDate
+      ? `${lastExpenseText} ${new Date(lastInsertedDate).toLocaleString()}`
+      : "";
+  })();
+
   return (
     <header className="flex items-center justify-between pr-5 pl-5 shadow-md bg-matcha-900">
       <Image
+        data-tooltip-id="icon-tooltip"
+        data-tooltip-content={tooltipText}
         src="/bem-te-vi-head.png"
         alt="Logo do App"
         width={80}
         height={80}
+        title={tooltipText}
       />
-
-      <p className="text-white text-sm">
-        {(() => {
-          const lastExpenseText = lastInstallment
-            ? `${t("lastExpense")}: ${lastInstallment.expense.name} |`
-            : "";
-          return lastInsertedDate
-            ? `${lastExpenseText} ${new Date(lastInsertedDate).toLocaleString()}`
-            : "";
-        })()}
-      </p>
 
       <button
         onClick={handleSignOut}
@@ -61,6 +64,7 @@ function Header() {
           className="h-6 w-6"
         />
       </button>
+      <Tooltip id="icon-tooltip" />
     </header>
   );
 }
