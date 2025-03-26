@@ -17,13 +17,12 @@ function Header() {
   }
 
   return (
-    <header className="flex items-center justify-between p-4 shadow-md bg-matcha-900">
+    <header className="flex items-center justify-between pr-5 pl-5 shadow-md bg-matcha-900">
       <Image
-        src="/ben-te-vi-logo.png"
+        src="/bem-te-vi-head.png"
         alt="Logo do App"
-        width={40}
-        height={40}
-        className="h-10"
+        width={80}
+        height={80}
       />
 
       <p className="text-white text-sm">
