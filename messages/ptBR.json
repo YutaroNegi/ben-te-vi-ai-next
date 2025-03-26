@@ -84,5 +84,9 @@
   },
   "Chart": {
     "noExpensesFound": "Nenhuma despesa encontrada para o mês atual"
+  },
+  "Dashboard": {
+    "pieChart": "Gráfico de Pizza",
+    "barChart": "Gráfico de Barras"
   }
 }

@@ -84,5 +84,9 @@
   },
   "Chart": {
     "noExpensesFound": "No expenses found for the current month"
+  },
+  "Dashboard": {
+    "pieChart": "Pie Chart",
+    "barChart": "Bar Chart"
   }
 }
