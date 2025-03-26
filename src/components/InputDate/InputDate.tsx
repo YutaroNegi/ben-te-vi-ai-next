@@ -10,7 +10,7 @@ const InputDate: React.FC<InputDateProps> = ({ label, ...props }) => {
       {label && (
         <span
           className="flex items-center justify-center bg-matcha-900 text-white px-4"
-          style={{ width: "30%" }}
+          style={{ width: "45%" }}
         >
           {label}
         </span>

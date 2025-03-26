@@ -140,7 +140,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         {label && (
           <span
             className="flex items-center justify-center text-white px-4"
-            style={{ width: "30%" }}
+            style={{ width: "45%" }}
           >
             {label}
           </span>

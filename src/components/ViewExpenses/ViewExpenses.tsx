@@ -122,7 +122,7 @@ const ViewExpenses: React.FC = () => {
             {selectedDate.toLocaleString("default", {
               month: "long",
               year: "numeric",
-            })}
+            }).toUpperCase()}
           </div>
           <button
             onClick={handleNextMonth}
