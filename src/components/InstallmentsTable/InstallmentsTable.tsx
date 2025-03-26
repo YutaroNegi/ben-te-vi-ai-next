@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Table } from "@/components";
 import { CategoryOption, Installment } from "@/types";
@@ -39,6 +39,24 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     due_date: "",
     paid: false,
   });
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+      if (
+        openMenuId &&
+        !target.closest(`#menu-container-${openMenuId}`) &&
+        !target.closest(`#toggle-button-${openMenuId}`)
+      ) {
+        setOpenMenuId(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [openMenuId]);
 
   const toggleMenu = (id: string) => {
     setOpenMenuId((prev) => (prev === id ? null : id));
@@ -178,6 +196,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       }),
       <td className="relative" key="actions">
         <button
+          id={`toggle-button-${inst.id}`}
           className="p-2 bg-gray-200 rounded hover:bg-gray-300"
           onClick={() => toggleMenu(inst.id)}
         >
@@ -185,6 +204,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         </button>
         {openMenuId === inst.id && (
           <div
+            id={`menu-container-${inst.id}`}
             className="absolute top-0 left-full bg-white shadow-md rounded p-2 z-50 border ml-2"
             style={{ minWidth: "100px" }}
           >
@@ -215,6 +235,8 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       headers={headers}
       rows={rows}
       columnWidths={["35%", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
+      setOpenMenuId={setOpenMenuId}
+      openMenuId={openMenuId}
     />
   );
 };

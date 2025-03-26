@@ -1,12 +1,14 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 interface TableProps {
   title: string;
   headers: React.ReactNode[];
   rows: React.ReactNode[][];
   columnWidths?: string[];
+  openMenuId: string | null;
+  setOpenMenuId: (id: string | null) => void;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -14,7 +16,28 @@ const Table: React.FC<TableProps> = ({
   headers,
   rows,
   columnWidths,
+  openMenuId,
+  setOpenMenuId,
 }) => {
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      const target = event.target as HTMLElement;
+      // If a menu is open and the click is outside the button or menu for that openMenuId, close the menu
+      if (
+        openMenuId &&
+        !target.closest(`#menu-container-${openMenuId}`) &&
+        !target.closest(`#toggle-button-${openMenuId}`)
+      ) {
+        setOpenMenuId(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [openMenuId, setOpenMenuId]);
+
   return (
     // Adicionamos overflow-hidden para garantir que os cantos arredondados não sejam “vazados”
     <div className="my-4 shadow-lg rounded">
