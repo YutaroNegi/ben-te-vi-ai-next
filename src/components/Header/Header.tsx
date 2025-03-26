@@ -1,12 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { signOut } from "@/utils/auth";
-import { useAuthStore } from "@/stores/authStore";
+import { useExpensesStore } from "@/stores/expenseStore";
 import { useTranslations } from "next-intl";
-
+import { Installment } from "@/types";
 function Header() {
-  const { lastLogin } = useAuthStore();
+  const [lastInstallment, setLastInstallment] = useState<Installment | null>(
+    null,
+  );
+  const [lastInsertedDate, setLastInsertedDate] = useState<Date | null>(null);
+
+  const { latestInstallment } = useExpensesStore();
   const t = useTranslations("AuthPage");
+
+  useEffect(() => {
+    if (latestInstallment) {
+      setLastInstallment(latestInstallment);
+      setLastInsertedDate(new Date(latestInstallment.expense.created_at));
+    }
+  }, [latestInstallment]);
 
   async function handleSignOut() {
     try {
@@ -26,10 +38,16 @@ function Header() {
       />
 
       <p className="text-white text-sm">
-        {lastLogin
-          ? `${t("lastLogin")}: ${new Date(lastLogin).toLocaleString()}`
-          : ""}
+        {(() => {
+          const lastExpenseText = lastInstallment
+            ? `${t("lastExpense")}: ${lastInstallment.expense.name} |`
+            : "";
+          return lastInsertedDate
+            ? `${lastExpenseText} ${new Date(lastInsertedDate).toLocaleString()}`
+            : "";
+        })()}
       </p>
+
       <button
         onClick={handleSignOut}
         className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none"
