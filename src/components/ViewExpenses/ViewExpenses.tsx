@@ -119,10 +119,12 @@ const ViewExpenses: React.FC = () => {
             &#8592;
           </button>
           <div className="px-4 py-2 bg-bentenavi-900 text-white">
-            {selectedDate.toLocaleString("default", {
-              month: "long",
-              year: "numeric",
-            }).toUpperCase()}
+            {selectedDate
+              .toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })
+              .toUpperCase()}
           </div>
           <button
             onClick={handleNextMonth}
