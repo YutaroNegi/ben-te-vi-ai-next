@@ -20,6 +20,7 @@ export interface Installment {
     name: string;
     description?: string;
     user_id: string;
+    created_at: string;
   };
 }
 
