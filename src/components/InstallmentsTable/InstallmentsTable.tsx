@@ -6,6 +6,7 @@ import { Table } from "@/components";
 import { CategoryOption, Installment } from "@/types";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { toast } from "react-toastify";
+import { MdEdit, MdDelete } from "react-icons/md";
 
 interface InstallmentTableProps {
   category: CategoryOption;
@@ -205,20 +206,19 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         {openMenuId === inst.id && (
           <div
             id={`menu-container-${inst.id}`}
-            className="absolute top-0 left-full bg-white shadow-md rounded p-2 z-50 border ml-2"
-            style={{ minWidth: "100px" }}
+            className="absolute top-[-30] left-full bg-white shadow-md rounded p-2 z-50 border ml-2"
           >
             <button
-              className="block w-full text-left px-2 py-1 hover:bg-gray-100"
+              className="block w-full text-left p-2 hover:bg-gray-100 text-lg"
               onClick={() => handleEditClick(inst)}
             >
-              {t("actions.edit")}
+              <MdEdit/>
             </button>
             <button
-              className="block w-full text-left px-2 py-1 hover:bg-gray-100"
+              className="block w-full text-left p-2 hover:bg-gray-100 text-lg"
               onClick={() => handleDeleteClick(inst)}
             >
-              {t("actions.delete")}
+              <MdDelete/>
             </button>
           </div>
         )}
