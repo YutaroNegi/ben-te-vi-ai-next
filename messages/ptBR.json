@@ -54,6 +54,7 @@
     "categoryDeleteFail": "FALHA AO DELETAR CATEGORIA"
   },
   "ExpenseTable": {
+    "income": "RENDA",
     "expense": "DESPESA",
     "installment": "PARCELA",
     "value": "VALOR",

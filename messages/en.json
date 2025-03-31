@@ -54,6 +54,7 @@
     "categoryDeleteFail": "FAILED TO DELETE CATEGORY"
   },
   "ExpenseTable": {
+    "income": "INCOME",
     "expense": "EXPENSE",
     "installment": "INSTALLMENT",
     "value": "VALUE",
