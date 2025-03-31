@@ -15,14 +15,20 @@ export default {
           900: "#E5E0D8",
         },
         matcha: {
+          dark: "#556952",
+          light: "#819570",
+          lighter: "#98b385",          
           800: "#98B484",
           900: "#809671",
         },
         bentevi: {
+          light: "#ffec81",
+          medium: "#eacf46",
           900: "#e9d045",
           800: "#ffed8a",
         },
         bentenavi: {
+          dark: "#262d93",
           900: "#5c6092",
         },
         chocolate: {
