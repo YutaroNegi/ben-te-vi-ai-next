@@ -91,7 +91,7 @@ export default function AuthForm() {
               label={isLogin ? t("submitLogin") : t("submitCreateAccount")}
               type="submit"
               loading={isloading}
-              className="bg-bentenavi-dark"
+              className="bg-bentenavi-dark text-[14px]"
             />
           </form>
 
