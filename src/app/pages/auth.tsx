@@ -23,7 +23,7 @@ export default function AuthPage() {
           {t("description")}
         </p>
       </div>
-      <div className="flex-1 flex flex-col items-center justify-center p-4 bg-matcha-900">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 bg-matcha-dark">
         <AuthForm />
       </div>
     </main>

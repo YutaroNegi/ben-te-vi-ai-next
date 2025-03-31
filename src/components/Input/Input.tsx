@@ -27,7 +27,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   className = "",
   inputClassName = "",
-  labelClassName = "bg-matcha-900",
+  labelClassName = "bg-matcha-lighter",
   labelTextClassName = "text-white",
   step,
   name,

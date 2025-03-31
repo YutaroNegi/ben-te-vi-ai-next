@@ -41,11 +41,11 @@ const Table: React.FC<TableProps> = ({
   return (
     // Adicionamos overflow-hidden para garantir que os cantos arredondados não sejam “vazados”
     <div className="my-4 shadow-lg rounded">
-      <h2 className="bg-matcha-900 text-white text-sm font-bold p-2">
+      <h2 className="bg-matcha-light text-white text-sm font-bold p-2">
         {title}
       </h2>
       <table className="min-w-full border-separate border-spacing-0">
-        <thead className="bg-matcha-800">
+        <thead className="bg-matcha-lighter">
           <tr>
             {headers.map((header, index) => (
               <th

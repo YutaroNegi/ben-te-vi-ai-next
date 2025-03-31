@@ -9,7 +9,7 @@ const InputDate: React.FC<InputDateProps> = ({ label, ...props }) => {
     <div className="flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 text-xs">
       {label && (
         <span
-          className="flex items-center justify-center bg-matcha-900 text-white px-4"
+          className="flex items-center justify-center bg-matcha-lighter text-white px-4"
           style={{ width: "45%" }}
         >
           {label}

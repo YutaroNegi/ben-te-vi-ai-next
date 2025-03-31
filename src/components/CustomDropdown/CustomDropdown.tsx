@@ -135,7 +135,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
             setIsOpen((prev) => !prev);
           }
         }}
-        className="cursor-pointer relative flex items-center border border-gray-300 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 bg-matcha-900"
+        className="cursor-pointer relative flex items-center border border-gray-300 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 bg-matcha-lighter"
       >
         {label && (
           <span

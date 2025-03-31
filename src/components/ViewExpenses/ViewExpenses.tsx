@@ -44,7 +44,7 @@ const CustomLeftArrow: React.FC<CustomArrowProps> = ({ onClick }) => (
   <button
     onClick={onClick}
     style={{ position: "absolute", top: "0", left: "10px", zIndex: 1 }}
-    className="p-2 bg-bentenavi-900 text-white rounded hover:bg-gray-400 transition-colors"
+    className="p-2 bg-bentenavi-dark text-white rounded hover:bg-gray-400 transition-colors"
   >
     <FaArrowLeft size={20} />
   </button>
@@ -54,7 +54,7 @@ const CustomRightArrow: React.FC<CustomArrowProps> = ({ onClick }) => (
   <button
     onClick={onClick}
     style={{ position: "absolute", top: "0", right: "10px", zIndex: 1 }}
-    className="p-2 bg-bentenavi-900 text-white rounded hover:bg-gray-400 transition-colors"
+    className="p-2 bg-bentenavi-dark text-white rounded hover:bg-gray-400 transition-colors"
   >
     <FaArrowRight size={20} />
   </button>
@@ -114,11 +114,11 @@ const ViewExpenses: React.FC = () => {
         <div className="flex items-center justify-center mb-1">
           <button
             onClick={handlePrevMonth}
-            className="p-2 bg-bentenavi-900 text-white rounded-l hover:bg-gray-400 transition-colors"
+            className="p-2 bg-bentenavi-dark text-white rounded-l hover:bg-gray-400 transition-colors"
           >
             &#8592;
           </button>
-          <div className="px-4 py-2 bg-bentenavi-900 text-white">
+          <div className="px-4 py-2 bg-bentenavi-dark text-white">
             {selectedDate
               .toLocaleString("default", {
                 month: "long",
@@ -128,12 +128,12 @@ const ViewExpenses: React.FC = () => {
           </div>
           <button
             onClick={handleNextMonth}
-            className="p-2 bg-bentenavi-900 text-white rounded-r hover:bg-gray-400 transition-colors"
+            className="p-2 bg-bentenavi-dark text-white rounded-r hover:bg-gray-400 transition-colors"
           >
             &#8594;
           </button>
         </div>
-        <div className="px-4 py-2 bg-bentenavi-900 text-white rounded-l">
+        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded-l">
           {t("monthTotal")} {monthTotal.toFixed(2)}
         </div>
       </div>

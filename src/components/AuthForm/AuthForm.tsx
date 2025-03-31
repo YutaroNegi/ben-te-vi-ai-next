@@ -62,7 +62,7 @@ export default function AuthForm() {
               label={t("email")}
               type="email"
               placeholder={t("email")}
-              labelClassName="bg-bentevi-800"
+              labelClassName="bg-bentevi-light"
               labelTextClassName="text-chocolate-900"
             />
             <Input
@@ -71,7 +71,7 @@ export default function AuthForm() {
               label={t("password")}
               type="password"
               placeholder={t("password")}
-              labelClassName="bg-bentevi-800"
+              labelClassName="bg-bentevi-light"
               labelTextClassName="text-chocolate-900"
             />
 
@@ -81,6 +81,8 @@ export default function AuthForm() {
                 name="confirmPassword"
                 label={t("confirmPassword")}
                 type="password"
+                labelClassName="bg-bentevi-light"
+                labelTextClassName="text-chocolate-900"
                 placeholder={t("confirmPassword")}
               />
             )}
@@ -89,6 +91,7 @@ export default function AuthForm() {
               label={isLogin ? t("submitLogin") : t("submitCreateAccount")}
               type="submit"
               loading={isloading}
+              className="bg-bentenavi-dark"
             />
           </form>
 

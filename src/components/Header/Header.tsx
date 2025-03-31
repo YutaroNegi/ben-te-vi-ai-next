@@ -40,7 +40,7 @@ function Header() {
   })();
 
   return (
-    <header className="flex items-center justify-between pr-5 pl-5 shadow-md bg-matcha-900">
+    <header className="flex items-center justify-between pr-5 pl-5 shadow-md bg-matcha-dark">
       <Image
         data-tooltip-id="icon-tooltip"
         data-tooltip-content={tooltipText}
