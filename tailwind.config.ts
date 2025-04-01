@@ -17,7 +17,7 @@ export default {
         matcha: {
           dark: "#556952",
           light: "#819570",
-          lighter: "#98b385",          
+          lighter: "#98b385",
           800: "#98B484",
           900: "#809671",
         },

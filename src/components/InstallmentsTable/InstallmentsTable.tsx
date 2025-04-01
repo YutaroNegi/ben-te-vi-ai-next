@@ -212,13 +212,13 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
               className="block w-full text-left p-2 hover:bg-gray-100 text-lg"
               onClick={() => handleEditClick(inst)}
             >
-              <MdEdit/>
+              <MdEdit />
             </button>
             <button
               className="block w-full text-left p-2 hover:bg-gray-100 text-lg"
               onClick={() => handleDeleteClick(inst)}
             >
-              <MdDelete/>
+              <MdDelete />
             </button>
           </div>
         )}
