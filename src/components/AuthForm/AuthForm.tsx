@@ -5,6 +5,7 @@ import { Button, Input } from "@/components";
 import { signIn, createAccount } from "@/utils/auth";
 import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
+import { GoogleAuthBtn, OneTapComponent } from "@/components";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function AuthForm() {
@@ -103,8 +104,18 @@ export default function AuthForm() {
               {isLogin ? t("toggleToCreate") : t("toggleToLogin")}
             </button>
           </div>
+
+          <div className="mt-4">
+            <button
+              onClick={() => setIsLogin(!isLogin)}
+              className="hover:underline"
+            >
+              <GoogleAuthBtn />
+            </button>
+          </div>
         </div>
       </main>
+      <OneTapComponent />
     </>
   );
 }
