@@ -12,6 +12,8 @@ import CustomToast from "./CustomToast/index";
 import LoadingSpinner from "./LoadingSpinner";
 import ExpensePieChart from "./ExpensePieChart";
 import ExpensesBarChart from "./ExpensesBarChart";
+import OneTapComponent from "./OneTapComponent";
+import GoogleAuthBtn from "./GoogleAuthBtn";
 
 export {
   AuthForm,
@@ -28,4 +30,6 @@ export {
   LoadingSpinner,
   ExpensePieChart,
   ExpensesBarChart,
+  OneTapComponent,
+  GoogleAuthBtn,
 };
