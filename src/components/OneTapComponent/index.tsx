@@ -10,7 +10,6 @@ import { useAuthStore } from "@/stores/authStore";
 const OneTapComponent = () => {
   const router = useRouter();
 
-
   // generate nonce to use for google id token sign-in
   const generateNonce = async (): Promise<string[]> => {
     const nonce = btoa(
@@ -60,17 +59,16 @@ const OneTapComponent = () => {
               console.log("Session data: ", data);
               console.log("Successfully logged in with Google One Tap");
 
-
               if (!data || !data.user || !data.user.id || !data.user.email) {
                 throw "Invalid user data";
               }
-      
+
               const res = {
                 id: data.user.id,
                 email: data.user.email,
                 lastLogin: data.user.last_sign_in_at,
               };
-      
+
               const login = useAuthStore.getState().login;
               login(res);
               return res;
@@ -87,6 +85,7 @@ const OneTapComponent = () => {
     };
     initializeGoogleOneTap();
     return () => window.removeEventListener("load", initializeGoogleOneTap);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

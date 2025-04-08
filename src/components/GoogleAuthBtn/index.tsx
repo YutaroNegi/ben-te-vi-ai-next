@@ -6,11 +6,11 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/authStore";
 
-
 export default function GoogleAuthBtn() {
   const router = useRouter();
 
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).handleSignInWithGoogle = async (response: any) => {
       try {
         const { data, error } = await supabase.auth.signInWithIdToken({
