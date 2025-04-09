@@ -15,6 +15,7 @@ export default {
           900: "#E5E0D8",
         },
         matcha: {
+          darker: "#4a5b4d",
           dark: "#556952",
           light: "#819570",
           lighter: "#98b385",
