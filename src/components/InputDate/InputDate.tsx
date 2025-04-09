@@ -5,7 +5,11 @@ interface InputDateProps extends React.InputHTMLAttributes<HTMLInputElement> {
   labelClassName?: string;
 }
 
-const InputDate: React.FC<InputDateProps> = ({ label, labelClassName = "bg-matcha-dark", ...props }) => {
+const InputDate: React.FC<InputDateProps> = ({
+  label,
+  labelClassName = "bg-matcha-dark",
+  ...props
+}) => {
   return (
     <div className="flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 text-xs">
       {label && (

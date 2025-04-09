@@ -6,7 +6,7 @@ import { Table } from "@/components";
 import { CategoryOption, Installment } from "@/types";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { toast } from "react-toastify";
-import { MdEdit, MdDelete } from "react-icons/md";
+import { MdEdit, MdDelete, MdCheck } from "react-icons/md";
 
 interface InstallmentTableProps {
   category: CategoryOption;
@@ -158,16 +158,16 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         />,
         <div key="actions" className="flex space-x-2">
           <button
-            className="px-2 py-1 bg-green-500 text-white rounded text-xs"
+            className="px-2 py-1 bg-matcha-dark hover:bg-matcha-darker text-white rounded text-xs"
             onClick={handleSave}
           >
-            {t("actions.save")}
+            <MdCheck />
           </button>
           <button
-            className="px-2 py-1 bg-gray-400 text-white rounded text-xs"
+            className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
             onClick={handleCancel}
           >
-            {t("actions.cancel")}
+            <MdDelete />
           </button>
         </div>,
       ];
@@ -234,7 +234,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       })}`}
       headers={headers}
       rows={rows}
-      columnWidths={["35%", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
+      columnWidths={["auto", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
       setOpenMenuId={setOpenMenuId}
       openMenuId={openMenuId}
     />
