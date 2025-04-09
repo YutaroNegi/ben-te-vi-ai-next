@@ -7,6 +7,19 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useAuthStore } from "@/stores/authStore";
 
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        id: {
+          initialize(config: import("google-one-tap").IdConfiguration): void;
+          prompt(): void;
+        };
+      };
+    };
+  }
+}
+
 const OneTapComponent = () => {
   const router = useRouter();
 
@@ -43,9 +56,8 @@ const OneTapComponent = () => {
           return;
         }
 
-        /* global google */
-        google.accounts.id.initialize({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+        window.google?.accounts.id.initialize({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
           callback: async (response: CredentialResponse) => {
             try {
               // send id token returned in response.credential to supabase
@@ -80,7 +92,7 @@ const OneTapComponent = () => {
           // with chrome's removal of third-party cookiesm, we need to use FedCM instead (https://developers.google.com/identity/gsi/web/guides/fedcm-migration)
           use_fedcm_for_prompt: true,
         });
-        google.accounts.id.prompt(); // Display the One Tap UI
+        window.google?.accounts.id.prompt(); // Display the One Tap UI
       });
     };
     initializeGoogleOneTap();
