@@ -22,6 +22,7 @@ interface CustomDropdownProps {
   onEdit?: (option: Option, newName: string) => void;
   onDelete?: (option: Option) => void;
   placeholder?: string;
+  labelClassName?: string;
 }
 
 const CustomDropdown: React.FC<CustomDropdownProps> = ({
@@ -32,6 +33,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   onEdit,
   onDelete,
   placeholder = "Selecione...",
+  labelClassName = "bg-matcha-dark",
 }) => {
   const t = useTranslations("ExpenseForm");
 
@@ -135,7 +137,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
             setIsOpen((prev) => !prev);
           }
         }}
-        className="cursor-pointer relative flex items-center border border-gray-300 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 bg-matcha-lighter"
+        className={`cursor-pointer relative flex items-center border border-gray-300 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 ${labelClassName}`}
       >
         {label && (
           <span
