@@ -179,6 +179,7 @@ const ExpenseForm = () => {
         label={t("date")}
         type="date"
         placeholder={t("date")}
+        defaultValue={new Date().toISOString().split("T")[0]}
       />
       <Input
         id="installments"
