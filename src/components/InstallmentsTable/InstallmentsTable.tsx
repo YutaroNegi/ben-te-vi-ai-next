@@ -7,6 +7,7 @@ import { CategoryOption, Installment } from "@/types";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { toast } from "react-toastify";
 import { MdEdit, MdDelete, MdCheck } from "react-icons/md";
+import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface InstallmentTableProps {
   category: CategoryOption;
@@ -110,11 +111,13 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     t("headers.installment"),
     t("headers.value"),
     t("headers.dueDate"),
+
     t("headers.actions"),
   ];
 
   // Mapeia as linhas (rows) da tabela, com tratamento para edição
   const rows = installments.map((inst) => {
+    const desc = inst.expense?.description || "";
     const isEditing = editingId === inst.id;
     if (isEditing) {
       return [
@@ -187,7 +190,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     const instDisplay =
       instVal + (inst.installment_type === "multi" ? ` (${expenseTotal})` : "");
     return [
-      inst.expense?.name || "",
+      <span data-tooltip-id="my-tooltip" data-tooltip-content={desc} key="expenseName">{inst.expense?.name || ""}</span>,
       instNum,
       instDisplay,
       new Date(inst.due_date).toLocaleDateString("pt-BR", {
@@ -195,7 +198,10 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         month: "2-digit",
         year: "2-digit",
       }),
-      <td className="relative" key="actions">
+      <td
+        className="relative text-center grid place-items-center"
+        key="actions"
+      >
         <button
           id={`toggle-button-${inst.id}`}
           className="p-2 bg-gray-200 rounded hover:bg-gray-300"
@@ -227,17 +233,20 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
   });
 
   return (
-    <Table
-      title={`${category.label} - ${totalAmount.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-      })}`}
-      headers={headers}
-      rows={rows}
-      columnWidths={["auto", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
-      setOpenMenuId={setOpenMenuId}
-      openMenuId={openMenuId}
-    />
+    <>
+      <Table
+        title={`${category.label} - ${totalAmount.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        })}`}
+        headers={headers}
+        rows={rows}
+        columnWidths={["auto", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
+        setOpenMenuId={setOpenMenuId}
+        openMenuId={openMenuId}
+      />
+      <ReactTooltip id="my-tooltip" />
+    </>
   );
 };
 
