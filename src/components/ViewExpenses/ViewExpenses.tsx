@@ -168,7 +168,10 @@ const ViewExpenses: React.FC = () => {
             customRightArrow={<CustomRightArrow />}
           >
             {categories.map((category) => (
-              <div key={category.value} className="px-2 w-[25em] mx-auto text-center">
+              <div
+                key={category.value}
+                className="px-2 w-[25em] mx-auto text-center"
+              >
                 <InstallmentTable
                   category={category}
                   installments={installmentsByCategory[category.value] || []}

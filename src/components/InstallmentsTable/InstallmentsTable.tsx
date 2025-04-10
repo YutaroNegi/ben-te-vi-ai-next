@@ -190,7 +190,13 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     const instDisplay =
       instVal + (inst.installment_type === "multi" ? ` (${expenseTotal})` : "");
     return [
-      <span data-tooltip-id="my-tooltip" data-tooltip-content={desc} key="expenseName">{inst.expense?.name || ""}</span>,
+      <span
+        data-tooltip-id="my-tooltip"
+        data-tooltip-content={desc}
+        key="expenseName"
+      >
+        {inst.expense?.name || ""}
+      </span>,
       instNum,
       instDisplay,
       new Date(inst.due_date).toLocaleDateString("pt-BR", {
