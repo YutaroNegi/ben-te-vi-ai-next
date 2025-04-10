@@ -9,8 +9,10 @@
     "lint": "next lint",
     "test": "vitest",
     "format": "prettier --write .",
+    "prettier": "prettier --check .",
     "type": "tsc --noEmit",
-    "check": "npm run format && npm run lint && npm run type"
+    "check": "npm run prettier && npm run lint && npm run type",
+    "prepare": "husky"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.1",
@@ -38,6 +40,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
+    "husky": "^9.1.7",
     "jsdom": "^26.0.0",
     "postcss": "^8",
     "prettier": "3.5.2",
