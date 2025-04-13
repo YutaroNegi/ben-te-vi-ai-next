@@ -39,7 +39,8 @@ const Table: React.FC<TableProps> = ({
   }, [openMenuId, setOpenMenuId]);
 
   return (
-    <div className="my-4 shadow-lg rounded mb-[50px] max-h-[22em] overflow-auto">
+    // Adicionamos overflow-hidden para garantir que os cantos arredondados não sejam “vazados”
+    <div className="my-4 shadow-lg rounded mb-[50px]">
       <h2 className="bg-matcha-light text-white text-sm font-bold p-2 text-center">
         {title}
       </h2>
