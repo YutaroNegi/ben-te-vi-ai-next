@@ -36,3 +36,28 @@ CREATE TABLE installments (
     CONSTRAINT fk_installments_expense
         FOREIGN KEY(expense_id) REFERENCES expenses(id) ON DELETE CASCADE
 );
+
+CREATE TABLE types (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name TEXT UNIQUE NOT NULL CHECK (name IN ('income', 'expense'))
+);
+
+INSERT INTO types (id, name) VALUES
+  (gen_random_uuid(), 'income'),
+  (gen_random_uuid(), 'expense');
+
+
+ALTER TABLE expenses
+ADD COLUMN type_id UUID;
+
+UPDATE expenses
+SET type_id = (
+    SELECT id FROM types WHERE name = 'expense'
+);
+
+ALTER TABLE expenses
+ALTER COLUMN type_id SET NOT NULL;
+
+ALTER TABLE expenses
+ADD CONSTRAINT fk_expenses_type
+FOREIGN KEY (type_id) REFERENCES types(id) ON DELETE RESTRICT;

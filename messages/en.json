@@ -30,6 +30,8 @@
     "userIdNameRequired": "USER ID AND NAME ARE REQUIRED"
   },
   "ExpenseForm": {
+    "income": "Income",
+    "expense": "Expense",
     "name": "NAME",
     "amount": "AMOUNT",
     "category": "CATEGORY",
