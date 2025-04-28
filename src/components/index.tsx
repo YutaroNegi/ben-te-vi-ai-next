@@ -14,6 +14,8 @@ import ExpensePieChart from "./ExpensePieChart";
 import ExpensesBarChart from "./ExpensesBarChart";
 import OneTapComponent from "./OneTapComponent";
 import GoogleAuthBtn from "./GoogleAuthBtn";
+import Tabs from "./Tabs";
+import FormContainer from "./FormContainer";
 
 export {
   AuthForm,
@@ -32,4 +34,6 @@ export {
   ExpensesBarChart,
   OneTapComponent,
   GoogleAuthBtn,
+  Tabs,
+  FormContainer,
 };
