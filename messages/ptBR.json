@@ -30,6 +30,8 @@
     "userIdNameRequired": "ID DO USUÁRIO E NOME SÃO OBRIGATÓRIOS"
   },
   "ExpenseForm": {
+    "income": "Renda",
+    "expense": "Despesa",
     "name": "NOME",
     "amount": "VALOR",
     "category": "CATEGORIA",
