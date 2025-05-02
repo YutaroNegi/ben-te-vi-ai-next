@@ -4,9 +4,10 @@ import {
   Installment,
   CategoryBody,
   RegisterCategoryBody,
+  ExpenseType,
 } from "@/types";
 
-export async function fetchCategories(userId: string) {
+export async function fetchCategories(userId: string, type: ExpenseType) {
   try {
     const res = await fetch(`/api/categories/user/${userId}`);
     if (!res.ok) {
@@ -18,6 +19,7 @@ export async function fetchCategories(userId: string) {
       (cat: { id: string; name: string }) => ({
         value: cat.id,
         label: cat.name,
+        type: type,
       }),
     );
     return optionsData;
@@ -40,7 +42,7 @@ export const registerExpense = async (expenseData: ExpenseData) => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Failed to register expense");
+      throw new Error(data.error ?? "Failed to register expense");
     }
   } catch {
     throw new Error("Failed to register expense");
@@ -60,7 +62,7 @@ export const editExpense = async (id: string, body: ExpenseData) => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Failed to update expense");
+      throw new Error(data.error ?? "Failed to update expense");
     }
   } catch {
     throw new Error("Failed to update expense");
@@ -76,7 +78,7 @@ export const deleteExpense = async (id: string) => {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Failed to delete expense");
+      throw new Error(data.error ?? "Failed to delete expense");
     }
   } catch {
     throw new Error("Failed to delete expense");
@@ -98,7 +100,7 @@ export const editInstallment = async (
 
     const data = await res.json();
     if (!res.ok) {
-      throw new Error(data.error || "Failed to update installment");
+      throw new Error(data.error ?? "Failed to update installment");
     }
     return data;
   } catch {
@@ -114,7 +116,7 @@ export const deleteInstallment = async (id: string) => {
 
     const data = await res.json();
     if (!res.ok) {
-      throw new Error(data.error || "Failed to delete installment");
+      throw new Error(data.error ?? "Failed to delete installment");
     }
     return data;
   } catch {
@@ -153,7 +155,7 @@ export async function editCategory(id: string, body: CategoryBody) {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Failed to update category");
+      throw new Error(data.error ?? "Failed to update category");
     }
   } catch {
     throw new Error("Failed to update category");
@@ -173,7 +175,7 @@ export async function registerCategory(body: RegisterCategoryBody) {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Failed to register category");
+      throw new Error(data.error ?? "Failed to register category");
     }
 
     return data;
@@ -191,7 +193,7 @@ export async function deleteCategory(id: string) {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.error || "Failed to delete category");
+      throw new Error(data.error ?? "Failed to delete category");
     }
   } catch {
     throw new Error("Failed to delete category");
