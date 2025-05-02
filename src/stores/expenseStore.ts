@@ -8,28 +8,29 @@ import {
   fetchInstallmentsByUserAndDate,
   editInstallment,
   deleteInstallment,
-  // caso queira importar também registerExpense, etc.
 } from "@/utils";
 import {
   CategoryOption,
   CategoryBody,
   RegisterCategoryBody,
   Installment,
+  ExpenseType,
 } from "@/types";
 
 interface ExpensesState {
-  // Loading/erro genéricos da store
   loading: boolean;
   error: string | null;
 
-  // Estados relativos a categorias
   categories: CategoryOption[];
-  fetchCategories: (userId: string) => Promise<void>;
-  addCategory: (userId: string, name: string) => Promise<void>;
+  fetchCategories: (userId: string, type: ExpenseType) => Promise<void>;
+  addCategory: (
+    userId: string,
+    name: string,
+    type: ExpenseType,
+  ) => Promise<void>;
   updateCategory: (id: string, body: CategoryBody) => Promise<void>;
   removeCategory: (id: string) => Promise<void>;
 
-  // Estados relativos a installments
   installmentsByCategory: Record<string, Installment[]>;
   fetchInstallments: (
     userId: string,
@@ -54,10 +55,10 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
   // CATEGORIES
   // -----------------
   categories: [],
-  fetchCategories: async (userId: string) => {
+  fetchCategories: async (userId: string, type: ExpenseType) => {
     set({ loading: true, error: null });
     try {
-      const data = await fetchCategories(userId);
+      const data = await fetchCategories(userId, type);
       set({
         categories: data,
         loading: false,
@@ -69,17 +70,18 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
       });
     }
   },
-  addCategory: async (userId: string, name: string) => {
+  addCategory: async (userId: string, name: string, type: ExpenseType) => {
     set({ loading: true, error: null });
     try {
       const payload: RegisterCategoryBody = {
         user_id: userId,
         name,
         description: "",
+        type,
       };
       await registerCategory(payload);
       // Depois de criar, buscamos novamente para atualizar a lista
-      await get().fetchCategories(userId);
+      await get().fetchCategories(userId, type);
       set({ loading: false });
     } catch {
       set({
