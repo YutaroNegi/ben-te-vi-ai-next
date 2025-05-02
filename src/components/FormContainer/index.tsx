@@ -13,7 +13,7 @@ export default function FormContainer() {
     })
     .toUpperCase();
 
-  const tabs = [t("income"), t("expense")];
+  const tabs = [t("expense"), t("income")];
 
   return (
     <>
@@ -22,13 +22,13 @@ export default function FormContainer() {
       {activeTab === 0 && (
         <div className="border-2 border-chocolate-800 rounded-lg shadow p-4 h-[360px] flex items-center justify-center flex-col shadow-xl">
           <h3 className="text-chocolate-950 font-bold">{selectedMonth}</h3>
-          <ExpenseForm />
+          <ExpenseForm type="expense" />
         </div>
       )}
       {activeTab === 1 && (
         <div className="border-2 border-chocolate-800 rounded-lg shadow p-4 h-[360px] flex items-center justify-center flex-col shadow-xl">
           <h3 className="text-chocolate-950 font-bold">{selectedMonth}</h3>
-          <ExpenseForm />
+          <ExpenseForm type="income" />
         </div>
       )}
     </>
