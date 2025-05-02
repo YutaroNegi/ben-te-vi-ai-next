@@ -10,9 +10,16 @@ import { useExpensesStore } from "@/stores/expenseStore";
 import { registerExpense } from "@/utils";
 import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
+import { ExpenseType } from "@/types";
 
-const ExpenseForm = () => {
-  const t = useTranslations("ExpenseForm");
+interface ExpenseFormProps {
+  type: ExpenseType;
+}
+
+const ExpenseForm = ({ type }: ExpenseFormProps) => {
+  const t = useTranslations(
+    `${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}Form`,
+  );
   const tApi = useTranslations("Api");
 
   const userId = useAuthStore((state) => state.user?.id);
@@ -31,12 +38,12 @@ const ExpenseForm = () => {
 
   useEffect(() => {
     if (userId) {
-      fetchCategories(userId).catch((err) => {
+      fetchCategories(userId, type).catch((err) => {
         console.error(err);
         toast.error(t("errorFetchingCategories"));
       });
     }
-  }, [userId, fetchCategories, t]);
+  }, [userId, fetchCategories, t, type]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,6 +82,7 @@ const ExpenseForm = () => {
         description,
         date,
         installments,
+        type: type,
       });
 
       toast.success(t("expenseRegisteredSuccess"));
@@ -100,7 +108,7 @@ const ExpenseForm = () => {
       throw new Error(t("userNotFound"));
     }
     try {
-      await addCategory(userId, name);
+      await addCategory(userId, name, type);
       const newOption = { value: userId, label: name };
       toast.success(t("categoryAddSuccess"));
       return newOption;
@@ -114,7 +122,11 @@ const ExpenseForm = () => {
   const handleEditCategory = async (option: Option, newName: string) => {
     if (!newName) return;
     try {
-      await updateCategory(option.value, { name: newName, description: "" });
+      await updateCategory(option.value, {
+        name: newName,
+        description: "",
+        type,
+      });
       toast.success(t("categoryEditSuccess"));
     } catch (error) {
       console.error(error);
