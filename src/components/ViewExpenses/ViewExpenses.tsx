@@ -77,7 +77,7 @@ const ViewExpenses: React.FC = () => {
 
   useEffect(() => {
     if (userId) {
-      fetchCategories(userId).catch(console.error);
+      fetchCategories(userId, "expense").catch(console.error);
     }
   }, [userId, fetchCategories]);
 
