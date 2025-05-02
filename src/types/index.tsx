@@ -6,6 +6,7 @@ import {
   Category,
   CategoryBody,
   RegisterCategoryBody,
+  ExpenseType,
 } from "./expenses";
 
 export type {
@@ -17,4 +18,5 @@ export type {
   Category,
   CategoryBody,
   RegisterCategoryBody,
+  ExpenseType,
 };

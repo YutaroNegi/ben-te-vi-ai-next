@@ -1,3 +1,5 @@
+export type ExpenseType = "expense" | "income";
+
 export interface CategoryOption {
   value: string;
   label: string;
@@ -21,6 +23,7 @@ export interface Installment {
     description?: string;
     user_id: string;
     created_at: string;
+    type: ExpenseType;
   };
 }
 
@@ -32,6 +35,7 @@ export interface ExpenseData {
   description: string | null;
   date: string;
   installments: number;
+  type: ExpenseType;
 }
 
 export interface Category {
@@ -40,11 +44,13 @@ export interface Category {
   name: string;
   description?: string;
   created_at: string;
+  type: ExpenseType;
 }
 
 export interface CategoryBody {
   name: string;
   description: string;
+  type: ExpenseType;
 }
 
 export interface RegisterCategoryBody extends CategoryBody {
