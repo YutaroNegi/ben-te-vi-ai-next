@@ -9,7 +9,7 @@ import {
 
 export async function fetchCategories(userId: string, type: ExpenseType) {
   try {
-    const res = await fetch(`/api/categories/user/${userId}`);
+    const res = await fetch(`/api/categories/user/${userId}?type=${type}`);
     if (!res.ok) {
       throw new Error("Error fetching categories");
     }
@@ -128,11 +128,12 @@ export async function fetchInstallmentsByUserAndDate(
   userId: string,
   startDate: string,
   endDate: string,
+  type: ExpenseType,
 ): Promise<Record<string, Installment[]>> {
   const response = await fetch(
     `/api/installments/user/${userId}?startDate=${encodeURIComponent(
       startDate,
-    )}&endDate=${encodeURIComponent(endDate)}`,
+    )}&endDate=${encodeURIComponent(endDate)}&type=${type}`,
   );
 
   if (!response.ok) {
