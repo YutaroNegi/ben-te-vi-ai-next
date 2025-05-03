@@ -5,7 +5,10 @@ import { supabase } from "@/lib/supabaseClient";
 export async function GET(request: NextRequest) {
   try {
     const { pathname } = new URL(request.url);
-    const userId = pathname.split("/").pop(); // last segment, e.g. "123"
+    const { searchParams } = new URL(request.url);
+
+    const userId = pathname.split("/").pop();
+    const type = searchParams.get("type");
 
     if (!userId) {
       return NextResponse.json(
@@ -22,6 +25,7 @@ export async function GET(request: NextRequest) {
       .from("expenses")
       .select("*")
       .eq("user_id", userId)
+      .eq("type", type)
       .gte("created_at", isoDate);
 
     if (error) {
