@@ -92,7 +92,7 @@ const ExpenseForm = ({ type }: ExpenseFormProps) => {
       const startDate = new Date(year, month, 1).toISOString();
       const endDate = new Date(year, month + 1, 1).toISOString();
 
-      await fetchInstallments(userId, startDate, endDate);
+      await fetchInstallments(userId, startDate, endDate, type);
     } catch (error) {
       console.error(error);
       toast.error(tApi("errorSavingExpense"));
