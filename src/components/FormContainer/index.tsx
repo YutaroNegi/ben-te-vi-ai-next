@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ExpenseForm, Tabs } from "@/components";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { useTranslations } from "next-intl";
@@ -6,7 +6,7 @@ import { useTranslations } from "next-intl";
 export default function FormContainer() {
   const t = useTranslations("ExpenseForm");
   const [activeTab, setActiveTab] = useState(0);
-  const { selectedDate } = useExpensesStore();
+  const { selectedDate, setSelectedType } = useExpensesStore();
   const selectedMonth = selectedDate
     .toLocaleString("default", {
       month: "long",
@@ -14,6 +14,10 @@ export default function FormContainer() {
     .toUpperCase();
 
   const tabs = [t("expense"), t("income")];
+
+  useEffect(() => {
+    setSelectedType(activeTab === 0 ? "expense" : "income");
+  }, [activeTab, setSelectedType]);
 
   return (
     <>
