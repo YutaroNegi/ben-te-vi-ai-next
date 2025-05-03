@@ -19,6 +19,7 @@ export async function POST(request: NextRequest) {
       amount,
       date,
       installments,
+      type,
     } = body;
 
     if (!user_id || !category_id || !name || amount === undefined || !date) {
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
 
     const { data: expense, error: expenseError } = await supabase
       .from("expenses")
-      .insert([{ user_id, category_id, name, description, amount }])
+      .insert([{ user_id, category_id, name, description, amount, type }])
       .select("*")
       .single();
 
