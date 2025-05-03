@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseClient";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { user_id, name, description } = body;
+    const { user_id, name, description, type } = body;
 
     if (!user_id || !name) {
       const msg = "Missing required fields";
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     const { data, error } = await supabase
       .from("categories")
-      .insert([{ user_id, name, description }])
+      .insert([{ user_id, name, description, type }])
       .single();
 
     if (error) {
