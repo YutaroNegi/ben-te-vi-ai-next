@@ -73,27 +73,27 @@ const ViewExpenses: React.FC = () => {
     selectedDate,
     setSelectedDate,
     monthTotal,
+    selectedType,
   } = useExpensesStore();
 
   useEffect(() => {
     if (userId) {
-      fetchCategories(userId, "expense").catch(console.error);
+      fetchCategories(userId, selectedType).catch(console.error);
     }
   }, [userId, fetchCategories]);
 
-  const loadInstallments = async () => {
+  const loadInstallments = React.useCallback(async () => {
     if (!userId) return;
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth();
     const startDate = new Date(year, month, 1).toISOString();
     const endDate = new Date(year, month + 1, 1).toISOString();
-    await fetchInstallments(userId, startDate, endDate);
-  };
+    await fetchInstallments(userId, startDate, endDate, selectedType);
+  }, [userId, selectedDate, fetchInstallments, selectedType]);
 
   useEffect(() => {
     loadInstallments();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, selectedDate]);
+  }, [loadInstallments]);
 
   // Navegação de mês
   const handlePrevMonth = () => {
