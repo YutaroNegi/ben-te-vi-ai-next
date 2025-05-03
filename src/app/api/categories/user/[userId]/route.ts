@@ -8,7 +8,8 @@ export async function GET(request: Request) {
     // e.g. "/api/categories/user/abc123"
     const userId = pathname.split("/").pop();
     // eg. "/api/categories/user/abc123?movement_type=income"
-    const type = request.url.split("?")[1]?.split("=")[1];
+    const { searchParams } = new URL(request.url);
+    const type = searchParams.get("movement_type");
 
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 });
