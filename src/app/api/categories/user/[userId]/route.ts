@@ -7,6 +7,8 @@ export async function GET(request: Request) {
     const { pathname } = new URL(request.url);
     // e.g. "/api/categories/user/abc123"
     const userId = pathname.split("/").pop();
+    // eg. "/api/categories/user/abc123?movement_type=income"
+    const type = request.url.split("?")[1]?.split("=")[1];
 
     if (!userId) {
       return NextResponse.json({ error: "Missing userId" }, { status: 400 });
@@ -15,7 +17,8 @@ export async function GET(request: Request) {
     const { data, error } = await supabase
       .from("categories")
       .select("*")
-      .eq("user_id", userId);
+      .eq("user_id", userId)
+      .eq("type", type);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
