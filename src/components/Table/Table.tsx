@@ -41,7 +41,7 @@ const Table: React.FC<TableProps> = ({
   return (
     // Adicionamos overflow-hidden para garantir que os cantos arredondados não sejam “vazados”
     <div className="my-4 shadow-lg rounded mb-[50px]">
-      <h2 className="bg-matcha-light text-white text-sm font-bold p-2 text-center">
+      <h2 className="bg-matcha-light text-white text-sm font-bold p-2 text-center rounded-tl-lg rounded-tr-lg">
         {title}
       </h2>
       <table className="min-w-full border-separate border-spacing-0">
