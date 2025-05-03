@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
+    const type = searchParams.get("type");
 
     if (!startDate || !endDate) {
       return NextResponse.json(
@@ -30,7 +31,8 @@ export async function GET(request: NextRequest) {
       .select("*")
       .gte("due_date", startDate)
       .lt("due_date", endDate)
-      .eq("user_id", userId);
+      .eq("user_id", userId)
+      .eq("type", type);
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
