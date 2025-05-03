@@ -36,6 +36,7 @@ interface ExpensesState {
     userId: string,
     startDate: string,
     endDate: string,
+    type: ExpenseType,
   ) => Promise<void>;
   editOneInstallment: (id: string, data: Partial<Installment>) => Promise<void>;
   deleteOneInstallment: (id: string) => Promise<void>;
@@ -45,6 +46,9 @@ interface ExpensesState {
 
   monthTotal: number;
   latestInstallment: Installment | null;
+
+  selectedType: ExpenseType;
+  setSelectedType: (type: ExpenseType) => void;
 }
 
 export const useExpensesStore = create<ExpensesState>((set, get) => ({
@@ -139,6 +143,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
     userId: string,
     startDate: string,
     endDate: string,
+    type: ExpenseType,
   ) => {
     set({ loading: true, error: null });
     try {
@@ -146,6 +151,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         userId,
         startDate,
         endDate,
+        type,
       );
       set({ installmentsByCategory: grouped, loading: false });
       const total = Object.values(grouped).reduce(
@@ -236,4 +242,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
   setSelectedDate: (date: Date) => set({ selectedDate: date }),
   monthTotal: 0,
   latestInstallment: null,
+
+  selectedType: "expense",
+  setSelectedType: (type: ExpenseType) => set({ selectedType: type }),
 }));
