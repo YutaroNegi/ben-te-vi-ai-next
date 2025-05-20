@@ -46,6 +46,7 @@ interface ExpensesState {
 
   monthTotal: number;
   latestInstallment: Installment | null;
+  last10Installments: Installment[] | null;
 
   selectedType: ExpenseType;
   setSelectedType: (type: ExpenseType) => void;
@@ -154,7 +155,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
         type,
       );
       set({ installmentsByCategory: grouped, loading: false });
-      const total = Object.values(grouped).reduce(
+      const monthTotal = Object.values(grouped).reduce(
         (acc, installments) =>
           acc +
           installments.reduce(
@@ -170,7 +171,15 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
             new Date(b.expense.created_at).getTime() -
             new Date(a.expense.created_at).getTime(),
         )[0];
-      set({ monthTotal: total, latestInstallment: latestInstallment });
+      const last10Installments = Object.values(grouped)
+        .flat()
+        .sort(
+          (a, b) =>
+            new Date(b.expense.created_at).getTime() -
+            new Date(a.expense.created_at).getTime(),
+        )
+        .slice(0, 10);
+      set({ monthTotal, latestInstallment, last10Installments });
     } catch {
       set({
         error: "Erro ao buscar parcelas",
@@ -242,7 +251,7 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
   setSelectedDate: (date: Date) => set({ selectedDate: date }),
   monthTotal: 0,
   latestInstallment: null,
-
+  last10Installments: null,
   selectedType: "expense",
   setSelectedType: (type: ExpenseType) => set({ selectedType: type }),
 }));
