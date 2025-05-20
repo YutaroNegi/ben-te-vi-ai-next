@@ -28,6 +28,28 @@ export async function PUT(request: Request) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
+    const { name } = data;
+    if (typeof name === "string" && name.trim() !== "") {
+      const { data: instRow, error: fetchErr } = await supabase
+        .from("installments")
+        .select("expense_id")
+        .eq("id", installmentId)
+        .single();
+
+      if (fetchErr) {
+        return NextResponse.json({ error: fetchErr.message }, { status: 400 });
+      }
+
+      const { error: expErr } = await supabase
+        .from("expenses")
+        .update({ name })
+        .eq("id", instRow.expense_id);
+
+      if (expErr) {
+        return NextResponse.json({ error: expErr.message }, { status: 400 });
+      }
+    }
+
     return NextResponse.json({ success: true });
   } catch {
     return NextResponse.json({ error: "Error" }, { status: 500 });
