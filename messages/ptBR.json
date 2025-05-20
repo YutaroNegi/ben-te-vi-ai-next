@@ -87,6 +87,7 @@
     "installment": "PARCELA",
     "value": "VALOR",
     "dueDate": "DATA DE VENCIMENTO",
+    "date": "DATA",
     "edit": "EDITAR",
     "delete": "EXCLUIR",
     "save": "SALVAR",
