@@ -1,26 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { signOut } from "@/utils/auth";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { useTranslations } from "next-intl";
-import { Installment } from "@/types";
 import { Tooltip } from "react-tooltip";
 
 function Header() {
-  const [lastInstallment, setLastInstallment] = useState<Installment | null>(
-    null,
-  );
-  const [lastInsertedDate, setLastInsertedDate] = useState<Date | null>(null);
-
-  const { latestInstallment } = useExpensesStore();
-  const t = useTranslations("AuthPage");
-
-  useEffect(() => {
-    if (latestInstallment) {
-      setLastInstallment(latestInstallment);
-      setLastInsertedDate(new Date(latestInstallment.expense.created_at));
-    }
-  }, [latestInstallment]);
+  const { last10Installments } = useExpensesStore();
+  const t = useTranslations("ExpenseTable");
 
   async function handleSignOut() {
     try {
@@ -30,25 +17,46 @@ function Header() {
     }
   }
 
-  const tooltipText = (() => {
-    const lastExpenseText = lastInstallment
-      ? `${t("lastExpense")}: ${lastInstallment.expense.name} |`
-      : "";
-    return lastInsertedDate
-      ? `${lastExpenseText} ${new Date(lastInsertedDate).toLocaleString()}`
-      : "";
+  const tooltipHtml = (() => {
+    if (!last10Installments || last10Installments.length === 0) return "";
+
+    const rows = last10Installments
+      .slice(0, 5)
+      .map(
+        (item) => `
+          <tr>
+            <td style="padding: 4px 8px; border-bottom: 1px solid #ccc;">${item.expense.name}</td>
+            <td style="padding: 4px 8px; border-bottom: 1px solid #ccc;">${new Date(item.expense.created_at).toLocaleDateString()}</td>
+          </tr>
+        `,
+      )
+      .join("");
+
+    return `
+      <div>
+        <table style="border-collapse: collapse; width: 100%;">
+          <thead>
+            <tr>
+              <th style="text-align: left; padding: 4px 8px; border-bottom: 2px solid #666;">${t("expense")}</th>
+              <th style="text-align: left; padding: 4px 8px; border-bottom: 2px solid #666;">${t("date")}</th>
+            </tr>
+          </thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    `;
   })();
 
   return (
     <header className="flex items-center justify-between pr-5 pl-5 shadow-md bg-matcha-dark">
       <Image
         data-tooltip-id="icon-tooltip"
-        data-tooltip-content={tooltipText}
+        data-tooltip-html={tooltipHtml}
         src="/bem-te-vi-head.png"
         alt="Logo do App"
         width={80}
         height={80}
-        title={tooltipText}
+        title=""
       />
 
       <button
