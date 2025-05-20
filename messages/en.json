@@ -87,6 +87,7 @@
     "installment": "INSTALLMENT",
     "value": "VALUE",
     "dueDate": "DUE DATE",
+    "date": "DATE",
     "edit": "EDIT",
     "delete": "DELETE",
     "save": "SAVE",
