@@ -80,7 +80,7 @@ const ViewExpenses: React.FC = () => {
     if (userId) {
       fetchCategories(userId, selectedType).catch(console.error);
     }
-  }, [userId, fetchCategories]);
+  }, [userId, fetchCategories, selectedType]);
 
   const loadInstallments = React.useCallback(async () => {
     if (!userId) return;
