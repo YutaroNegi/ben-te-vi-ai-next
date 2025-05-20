@@ -6,19 +6,21 @@ import { Table } from "@/components";
 import { CategoryOption, Installment } from "@/types";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { toast } from "react-toastify";
-import { MdEdit, MdDelete, MdCheck } from "react-icons/md";
+import { MdEdit, MdDelete } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface InstallmentTableProps {
   category: CategoryOption;
   installments: Installment[];
   onRefresh: () => void;
+  onEdit: (inst: Installment) => void;
 }
 
 const InstallmentTable: React.FC<InstallmentTableProps> = ({
   category,
   installments,
   onRefresh,
+  onEdit,
 }) => {
   const t = useTranslations("ExpenseTable");
 
@@ -26,21 +28,9 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
   const totalAmount = installments.reduce((sum, inst) => sum + inst.amount, 0);
 
   // Acesso à store para editar e deletar installments
-  const { editOneInstallment, deleteOneInstallment } = useExpensesStore();
+  const { deleteOneInstallment } = useExpensesStore();
 
-  const [editingId, setEditingId] = useState<string | null>(null);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
-  const [editData, setEditData] = useState<{
-    installment_number: number;
-    amount: number;
-    due_date: string;
-    paid: boolean;
-  }>({
-    installment_number: 1,
-    amount: 0,
-    due_date: "",
-    paid: false,
-  });
 
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -65,14 +55,8 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
   };
 
   const handleEditClick = (inst: Installment) => {
-    setEditingId(inst.id);
     setOpenMenuId(null);
-    setEditData({
-      installment_number: inst.installment_number,
-      amount: inst.amount,
-      due_date: new Date(inst.due_date).toISOString().split("T")[0],
-      paid: inst.paid,
-    });
+    onEdit(inst);
   };
 
   const handleDeleteClick = async (inst: Installment) => {
@@ -87,24 +71,6 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     }
   };
 
-  const handleCancel = () => {
-    setEditingId(null);
-  };
-
-  const handleSave = async () => {
-    if (!editingId) return;
-
-    try {
-      await editOneInstallment(editingId, { ...editData });
-      toast.success(t("toast.updated"));
-      setEditingId(null);
-      onRefresh();
-    } catch (error) {
-      console.error("Erro ao editar installment:", error);
-      toast.error(t("toast.errorUpdating"));
-    }
-  };
-
   // Definição dos cabeçalhos da tabela
   const headers = [
     t("headers.expense"),
@@ -115,66 +81,9 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     t("headers.actions"),
   ];
 
-  // Mapeia as linhas (rows) da tabela, com tratamento para edição
+  // Mapeia as linhas (rows) da tabela, sem edição inline
   const rows = installments.map((inst) => {
     const desc = inst.expense?.description || "";
-    const isEditing = editingId === inst.id;
-    if (isEditing) {
-      return [
-        <span key="expenseName">{inst.expense?.name || ""}</span>,
-        <input
-          key="installmentNumber"
-          type="number"
-          className="border p-1 w-full text-xs"
-          value={editData.installment_number}
-          onChange={(e) =>
-            setEditData((prev) => ({
-              ...prev,
-              installment_number: Number(e.target.value),
-            }))
-          }
-        />,
-        <input
-          key="amount"
-          type="number"
-          step="0.01"
-          className="border p-1 w-full text-xs"
-          value={editData.amount}
-          onChange={(e) =>
-            setEditData((prev) => ({
-              ...prev,
-              amount: Number(e.target.value),
-            }))
-          }
-        />,
-        <input
-          key="dueDate"
-          type="date"
-          className="border p-1 w-full text-xs"
-          value={editData.due_date}
-          onChange={(e) =>
-            setEditData((prev) => ({
-              ...prev,
-              due_date: e.target.value,
-            }))
-          }
-        />,
-        <div key="actions" className="flex space-x-2">
-          <button
-            className="px-2 py-1 bg-matcha-dark hover:bg-matcha-darker text-white rounded text-xs"
-            onClick={handleSave}
-          >
-            <MdCheck />
-          </button>
-          <button
-            className="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs"
-            onClick={handleCancel}
-          >
-            <MdDelete />
-          </button>
-        </div>,
-      ];
-    }
     const instNum =
       inst.installment_number.toString() +
       (inst.installment_type === "multi" ? "/" + inst.total_installments : "");
@@ -189,6 +98,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
 
     const instDisplay =
       instVal + (inst.installment_type === "multi" ? ` (${expenseTotal})` : "");
+
     return [
       <span
         data-tooltip-id="my-tooltip"
