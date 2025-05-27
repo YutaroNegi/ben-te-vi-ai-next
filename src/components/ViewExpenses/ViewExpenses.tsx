@@ -8,6 +8,7 @@ import {
   LoadingSpinner,
   Input,
   InputDate,
+  MonthSelector,
 } from "@/components";
 import { useTranslations } from "next-intl";
 
@@ -146,19 +147,6 @@ const ViewExpenses: React.FC = () => {
     }
   };
 
-  // Navegação de mês
-  const handlePrevMonth = () => {
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth();
-    setSelectedDate(new Date(year, month - 1, 1));
-  };
-
-  const handleNextMonth = () => {
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth();
-    setSelectedDate(new Date(year, month + 1, 1));
-  };
-
   return (
     <div className="p-0 m-0 w-full relative">
       <div className="flex items-center justify-around mb-5 flex-row">
@@ -166,26 +154,10 @@ const ViewExpenses: React.FC = () => {
           {t("monthTotal")} {monthTotal.toFixed(2)}
         </div>
         <div className="flex items-center justify-center">
-          <button
-            onClick={handlePrevMonth}
-            className="p-2 bg-bentenavi-dark text-white rounded-l hover:bg-gray-400 transition-colors"
-          >
-            &#8592;
-          </button>
-          <div className="px-4 py-2 bg-bentenavi-dark text-white">
-            {selectedDate
-              .toLocaleString("default", {
-                month: "long",
-                year: "numeric",
-              })
-              .toUpperCase()}
-          </div>
-          <button
-            onClick={handleNextMonth}
-            className="p-2 bg-bentenavi-dark text-white rounded-r hover:bg-gray-400 transition-colors"
-          >
-            &#8594;
-          </button>
+          <MonthSelector
+            selectedDate={selectedDate}
+            onChange={setSelectedDate}
+          />
         </div>
         <div className="px-4 py-2 bg-bentenavi-dark text-white rounded-full">
           {t("monthTotal")} {monthTotal.toFixed(2)}
