@@ -60,6 +60,7 @@ export interface Transaction {
   category: string;
   amount: number;
   imported: boolean;
+  date: string;
 }
 export interface TransactionsTableProps {
   transactions: Transaction[];
