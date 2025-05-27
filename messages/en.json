@@ -120,5 +120,15 @@
   "Dashboard": {
     "pieChart": "PIE CHART",
     "barChart": "BAR CHART"
+  },
+
+  "TransactionsTable": {
+    "title": "MONTHLY TRANSACTIONS",
+    "headers": {
+      "category": "CATEGORY",
+      "description": "DESCRIPTION",
+      "amount": "AMOUNT",
+      "actions": "ACTIONS"
+    }
   }
 }
