@@ -17,6 +17,7 @@ import GoogleAuthBtn from "./GoogleAuthBtn";
 import Tabs from "./Tabs";
 import FormContainer from "./FormContainer";
 import Pluggy from "./Pluggy";
+import TransactionsTable from "./TransactionsTable";
 
 export {
   AuthForm,
@@ -38,4 +39,5 @@ export {
   Tabs,
   FormContainer,
   Pluggy,
+  TransactionsTable,
 };
