@@ -121,13 +121,13 @@
     "pieChart": "GRÁFICO DE PIZZA",
     "barChart": "GRÁFICO DE BARRAS"
   },
-  "TRANSACTIONSTABLE": {
-    "TITLE": "TRANSAÇÕES DO MÊS",
-    "HEADERS": {
-      "CATEGORY": "CATEGORIA",
-      "DESCRIPTION": "DESCRIÇÃO",
-      "AMOUNT": "VALOR",
-      "ACTIONS": "AÇÕES"
+  "TransactionsTable": {
+    "title": "TRANSAÇÕES DO MÊS",
+    "headers": {
+      "category": "CATEGORIA",
+      "description": "DESCRIÇÃO",
+      "amount": "VALOR",
+      "actions": "AÇÕES"
     }
   }
 }
