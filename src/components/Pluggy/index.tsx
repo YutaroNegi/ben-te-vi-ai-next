@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { PluggyConnect } from "react-pluggy-connect";
 import { ItemData } from "@/types/pluggy";
 import { useAuthStore } from "@/stores/authStore";
+import { LoadingSpinner, TransactionsTable, MonthSelector } from "@/components";
+import { Transaction } from "@/types";
 
 interface PluggyProps {
   readonly show: boolean;
@@ -11,6 +13,10 @@ export default function Pluggy({ show }: PluggyProps) {
   const [connectToken, setConnectToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const userId = useAuthStore((state) => state.user?.id);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [selectedDate, setSelectedDate] = useState(
+    () => new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+  );
 
   const fetchConnectToken = useCallback(async () => {
     try {
@@ -26,9 +32,95 @@ export default function Pluggy({ show }: PluggyProps) {
     }
   }, []);
 
+  const fetchItems = useCallback(async () => {
+    try {
+      const res = await fetch(`/api/pluggy/items/user/${userId}`);
+      if (!res.ok) {
+        throw new Error(`Server responded with ${res.status}`);
+      }
+      const data = await res.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      return data;
+    } catch (err) {
+      console.error("Failed to fetch Pluggy items:", err);
+      setError("Não foi possível buscar os itens do Pluggy.");
+      return [];
+    }
+  }, [userId]);
+
+  const fetchTransactions = useCallback(
+    async (pluggyItemId: string, date: Date) => {
+      try {
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; // 1-based
+        const res = await fetch(
+          `/api/pluggy/transactions/item/${pluggyItemId}?year=${year}&month=${month}`,
+        );
+
+        if (!res.ok) {
+          throw new Error(`Server responded with ${res.status}`);
+        }
+        const data = await res.json();
+        if (data.error) {
+          throw new Error(data.error);
+        }
+
+        return data.transactions;
+      } catch (err) {
+        console.error("Failed to fetch Pluggy items:", err);
+        setError("Não foi possível buscar os itens do Pluggy.");
+        return [];
+      }
+    },
+    [],
+  );
+
   useEffect(() => {
     fetchConnectToken();
   }, [fetchConnectToken]);
+
+  useEffect(() => {
+    const fetchPluggyItems = async () => {
+      if (!userId) {
+        console.warn("User ID is not available, skipping item fetch.");
+        return;
+      }
+      const pluggyItems = await fetchItems();
+      if (pluggyItems.length === 0) {
+        console.warn("No Pluggy items found for the user.");
+        return;
+      }
+      const pluggyItemIds = pluggyItems.map(
+        (item: ItemData) => item.pluggy_item_id,
+      );
+      const pluggyItemId = pluggyItemIds[0]; // Assuming we want to fetch transactions for the first item
+      const transactions = await fetchTransactions(pluggyItemId, selectedDate);
+
+      setTransactions(
+        transactions.map((tx: Transaction) => ({
+          id: tx.id,
+          description: tx.description,
+          category: tx.category,
+          amount: tx.amount,
+          imported: tx.imported,
+          date: new Date(tx.date).toLocaleString("pt-BR", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          }),
+        })),
+      );
+    };
+
+    if (userId) {
+      fetchPluggyItems();
+    } else {
+      console.warn("User ID is not available, skipping item fetch.");
+    }
+  }, [userId, selectedDate, fetchItems, fetchTransactions]);
 
   const onSuccess = async ({ item }: { item: ItemData }) => {
     try {
@@ -57,7 +149,7 @@ export default function Pluggy({ show }: PluggyProps) {
   }
 
   if (!connectToken) {
-    return <p>Carregando conexão segura…</p>;
+    return <LoadingSpinner />;
   }
 
   return (
@@ -69,6 +161,10 @@ export default function Pluggy({ show }: PluggyProps) {
           onSuccess={onSuccess}
         />
       )}
+      <>
+        <MonthSelector selectedDate={selectedDate} onChange={setSelectedDate} />
+        <TransactionsTable transactions={transactions} />
+      </>
     </div>
   );
 }
