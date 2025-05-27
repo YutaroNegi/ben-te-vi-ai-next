@@ -8,6 +8,10 @@ export async function GET(request: Request) {
     const { pathname } = new URL(request.url);
     const pluggyItemId = pathname.split("/").pop();
 
+    const { searchParams } = new URL(request.url);
+    const month = searchParams.get("month");
+    const year = searchParams.get("year");
+
     if (!pluggyItemId) {
       return NextResponse.json(
         { error: "Missing pluggyItemId" },
@@ -26,16 +30,24 @@ export async function GET(request: Request) {
       return NextResponse.json({ transactions: [] });
     }
 
-    const now = new Date();
-    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+    const today = new Date();
+    const targetYear = year ? Number(year) : today.getFullYear();
+    const targetMonth = month ? Number(month) - 1 : today.getMonth();
+
+    const fromDate = new Date(targetYear, targetMonth, 1);
+    const toDate = new Date(targetYear, targetMonth + 1, 0, 23, 59, 59, 999); // último dia às 23:59:59
 
     const allTx: Transaction[] = [];
     for (const acc of creditAccounts) {
-      const { results: tx } = await pluggyClient.fetchTransactions(acc.id);
+      const { results: tx } = await pluggyClient.fetchTransactions(acc.id, {
+        pageSize: 500,
+        from: fromDate.toISOString().slice(0, 10), // YYYY-MM-DD
+        to: toDate.toISOString().slice(0, 10), // YYYY-MM-DD
+      });
       allTx.push(
         ...tx.filter((t: Transaction) => {
           const txDate = new Date(t.date);
-          return txDate >= monthStart && txDate <= now;
+          return txDate >= fromDate && txDate <= toDate;
         }),
       );
     }
