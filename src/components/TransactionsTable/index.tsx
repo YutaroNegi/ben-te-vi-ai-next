@@ -34,6 +34,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   const headers = [
     t("headers.category"),
     t("headers.description"),
+    t("headers.date"),
     t("headers.amount"),
     t("headers.actions"),
   ];
@@ -41,6 +42,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
   const rows = transactions.map((tx) => [
     tx.category,
     tx.description,
+    tx.date,
     tx.amount.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
@@ -55,7 +57,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
       title={t("title")}
       headers={headers}
       rows={rows}
-      columnWidths={["20%", "50%", "20%", "10%"]}
+      columnWidths={["20%", "50%", "20%", "10%", "20%"]}
       openMenuId={openMenuId}
       setOpenMenuId={setOpenMenuId}
     />
