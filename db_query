@@ -44,3 +44,20 @@ ALTER TABLE categories
 
 ALTER TABLE expenses
   ADD COLUMN type movement_type NOT NULL DEFAULT 'expense';
+
+CREATE TABLE pluggy_items (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+    pluggy_item_id UUID NOT NULL UNIQUE,          -- ID retornado pelo Pluggy
+    connector_id INT NOT NULL,                    -- ex.: 612 (Nubank Open Finance)
+    connector_name TEXT NOT NULL,
+    status TEXT NOT NULL,
+    execution_status TEXT NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    last_sync TIMESTAMPTZ,
+    next_sync TIMESTAMPTZ,
+    consent_expires_at TIMESTAMPTZ,
+    error_code TEXT
+);
+
+CREATE INDEX idx_pluggy_items_user ON pluggy_items(user_id);
