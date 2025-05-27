@@ -127,6 +127,7 @@
     "headers": {
       "category": "CATEGORY",
       "description": "DESCRIPTION",
+      "date": "DATE",
       "amount": "AMOUNT",
       "actions": "ACTIONS"
     }
