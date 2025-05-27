@@ -16,6 +16,7 @@ import OneTapComponent from "./OneTapComponent";
 import GoogleAuthBtn from "./GoogleAuthBtn";
 import Tabs from "./Tabs";
 import FormContainer from "./FormContainer";
+import Pluggy from "./Pluggy";
 
 export {
   AuthForm,
@@ -36,4 +37,5 @@ export {
   GoogleAuthBtn,
   Tabs,
   FormContainer,
+  Pluggy,
 };
