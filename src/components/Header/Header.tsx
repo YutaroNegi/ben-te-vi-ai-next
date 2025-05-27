@@ -1,9 +1,11 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { signOut } from "@/utils/auth";
 import { useExpensesStore } from "@/stores/expenseStore";
 import { useTranslations } from "next-intl";
 import { Tooltip } from "react-tooltip";
+import { GrConnectivity } from "react-icons/gr";
 
 function Header() {
   const { last10Installments } = useExpensesStore();
@@ -59,19 +61,24 @@ function Header() {
         title=""
       />
 
-      <button
-        onClick={handleSignOut}
-        className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none"
-      >
-        {/* Para o ícone de logout, definindo width e height de acordo com as classes h-6 e w-6 */}
-        <Image
-          src="/logout.svg"
-          alt="Logout"
-          width={24}
-          height={24}
-          className="h-6 w-6"
-        />
-      </button>
+      <div className="flex items-center space-x-4">
+        <Link href="/connect">
+          <GrConnectivity size={27} color="black" className="cursor-pointer" />
+        </Link>
+        <button
+          onClick={handleSignOut}
+          className="flex items-center space-x-2 text-gray-700 hover:text-gray-900 focus:outline-none"
+        >
+          <Image
+            src="/logout.svg"
+            alt="Logout"
+            width={24}
+            height={24}
+            className="h-6 w-6"
+          />
+        </button>
+      </div>
+
       <Tooltip id="icon-tooltip" />
     </header>
   );
