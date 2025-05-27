@@ -34,6 +34,7 @@ interface Connector {
 
 export interface ItemData {
   id: string;
+  pluggy_item_id: string;
   connector: Connector;
   createdAt: string;
   updatedAt: string;
@@ -52,4 +53,14 @@ export interface ItemData {
   consentExpiresAt: string | null;
   products: string[];
   oauthRedirectUri: string | null;
+}
+export interface Transaction {
+  id: string;
+  description: string;
+  category: string;
+  amount: number;
+  imported: boolean;
+}
+export interface TransactionsTableProps {
+  transactions: Transaction[];
 }
