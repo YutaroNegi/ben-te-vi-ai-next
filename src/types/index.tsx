@@ -8,6 +8,7 @@ import {
   RegisterCategoryBody,
   ExpenseType,
 } from "./expenses";
+import { ItemData } from "./pluggy";
 
 export type {
   User,
@@ -19,4 +20,5 @@ export type {
   CategoryBody,
   RegisterCategoryBody,
   ExpenseType,
+  ItemData,
 };
