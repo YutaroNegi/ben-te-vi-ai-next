@@ -61,3 +61,8 @@ CREATE TABLE pluggy_items (
 );
 
 CREATE INDEX idx_pluggy_items_user ON pluggy_items(user_id);
+
+ALTER TABLE installments
+ADD COLUMN pluggy_transaction_id UUID UNIQUE;
+
+CREATE INDEX idx_installments_pluggy_tx ON installments(pluggy_transaction_id);
