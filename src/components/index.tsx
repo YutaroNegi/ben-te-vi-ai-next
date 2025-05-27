@@ -18,6 +18,7 @@ import Tabs from "./Tabs";
 import FormContainer from "./FormContainer";
 import Pluggy from "./Pluggy";
 import TransactionsTable from "./TransactionsTable";
+import MonthSelector from "./MonthSelector";
 
 export {
   AuthForm,
@@ -40,4 +41,5 @@ export {
   FormContainer,
   Pluggy,
   TransactionsTable,
+  MonthSelector,
 };
