@@ -10,13 +10,14 @@ import { useExpensesStore } from "@/stores/expenseStore";
 import { registerExpense } from "@/utils";
 import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
-import { ExpenseType } from "@/types";
+import { ExpenseType, InitialExpenseValues } from "@/types";
 
 interface ExpenseFormProps {
   type: ExpenseType;
+  initialValue?: InitialExpenseValues;
 }
 
-const ExpenseForm = ({ type }: ExpenseFormProps) => {
+const ExpenseForm = ({ type, initialValue }: ExpenseFormProps) => {
   const t = useTranslations(
     `${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}Form`,
   );
@@ -54,6 +55,7 @@ const ExpenseForm = ({ type }: ExpenseFormProps) => {
     }
 
     try {
+      debugger;
       setLocalLoading(true);
       const formData = new FormData(e.currentTarget);
 
@@ -83,6 +85,7 @@ const ExpenseForm = ({ type }: ExpenseFormProps) => {
         date,
         installments,
         type: type,
+        pluggy_transaction_id: initialValue?.pluggy_transaction_id ?? null,
       });
 
       toast.success(t("expenseRegisteredSuccess"));
@@ -159,6 +162,7 @@ const ExpenseForm = ({ type }: ExpenseFormProps) => {
         label={t("name")}
         type="text"
         placeholder={t("name")}
+        initialValue={initialValue?.name ?? ""}
       />
       <Input
         id="amount"
@@ -168,6 +172,7 @@ const ExpenseForm = ({ type }: ExpenseFormProps) => {
         label={t("amount")}
         placeholder={t("amount")}
         maskMilharBr={true}
+        initialValue={initialValue?.amount?.toString() ?? ""}
       />
       <CustomDropdown
         label={t("category")}
@@ -184,6 +189,7 @@ const ExpenseForm = ({ type }: ExpenseFormProps) => {
         label={t("description")}
         type="text"
         placeholder={t("description")}
+        initialValue={initialValue?.description ?? ""}
       />
       <InputDate
         id="date"
@@ -191,7 +197,9 @@ const ExpenseForm = ({ type }: ExpenseFormProps) => {
         label={t("date")}
         type="date"
         placeholder={t("date")}
-        defaultValue={new Date().toISOString().split("T")[0]}
+        initialValue={
+          initialValue?.created_at ?? new Date().toISOString().split("T")[0]
+        }
       />
       <Input
         id="installments"
@@ -199,6 +207,7 @@ const ExpenseForm = ({ type }: ExpenseFormProps) => {
         label={t("installments")}
         type="number"
         placeholder={t("installments")}
+        initialValue={initialValue?.installments?.toString() ?? "1"}
       />
       <Button type="submit" label={t("submit")} loading={localLoading} />
     </form>
