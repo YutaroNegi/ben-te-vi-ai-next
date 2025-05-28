@@ -9,6 +9,7 @@ interface TableProps {
   columnWidths?: string[];
   openMenuId: string | null;
   setOpenMenuId: (id: string | null) => void;
+  className?: string;
 }
 
 const Table: React.FC<TableProps> = ({
@@ -18,6 +19,7 @@ const Table: React.FC<TableProps> = ({
   columnWidths,
   openMenuId,
   setOpenMenuId,
+  className = "",
 }) => {
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -40,7 +42,7 @@ const Table: React.FC<TableProps> = ({
 
   return (
     // Adicionamos overflow-hidden para garantir que os cantos arredondados não sejam “vazados”
-    <div className="my-4 shadow-lg rounded mb-[50px]">
+    <div className={`my-4 shadow-lg rounded mb-[50px] ${className}`}>
       <h2 className="bg-matcha-light text-white text-sm font-bold p-2 text-center rounded-tl-lg rounded-tr-lg">
         {title}
       </h2>
