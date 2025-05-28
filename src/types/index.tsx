@@ -7,6 +7,7 @@ import {
   CategoryBody,
   RegisterCategoryBody,
   ExpenseType,
+  InitialExpenseValues,
 } from "./expenses";
 import { ItemData, Transaction, TransactionsTableProps } from "./pluggy";
 
@@ -23,4 +24,5 @@ export type {
   ItemData,
   Transaction,
   TransactionsTableProps,
+  InitialExpenseValues,
 };
