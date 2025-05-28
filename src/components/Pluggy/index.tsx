@@ -20,7 +20,9 @@ export default function Pluggy({ show }: PluggyProps) {
   const [connectToken, setConnectToken] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const userId = useAuthStore((state) => state.user?.id);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactionsByItem, setTransactionsByItem] = useState<
+    Record<string, Transaction[]>
+  >({});
   const [selectedDate, setSelectedDate] = useState(
     () => new Date(new Date().getFullYear(), new Date().getMonth(), 1),
   );
@@ -98,7 +100,7 @@ export default function Pluggy({ show }: PluggyProps) {
   }, [fetchConnectToken]);
 
   useEffect(() => {
-    const fetchPluggyItems = async () => {
+    const fetchPluggy = async () => {
       if (!userId) {
         console.warn("User ID is not available, skipping item fetch.");
         return;
@@ -108,26 +110,26 @@ export default function Pluggy({ show }: PluggyProps) {
         console.warn("No Pluggy items found for the user.");
         return;
       }
-      const pluggyItemIds = pluggyItems.map(
-        (item: ItemData) => item.pluggy_item_id,
-      );
-      const pluggyItemId = pluggyItemIds[0]; // Assuming we want to fetch transactions for the first item
-      const transactions = await fetchTransactions(pluggyItemId, selectedDate);
+      const transactionsData: Record<string, Transaction[]> = {};
 
-      setTransactions(
-        transactions.map((tx: Transaction) => ({
+      for (const item of pluggyItems) {
+        const txs = await fetchTransactions(item.pluggy_item_id, selectedDate);
+
+        transactionsData[item.pluggy_item_id] = txs.map((tx: Transaction) => ({
           id: tx.id,
           description: tx.description,
           category: tx.category,
           amount: tx.amount,
           imported: tx.imported,
           date: tx.date,
-        })),
-      );
+        }));
+      }
+
+      setTransactionsByItem(transactionsData);
     };
 
     if (userId) {
-      fetchPluggyItems();
+      fetchPluggy();
     } else {
       console.warn("User ID is not available, skipping item fetch.");
     }
@@ -169,16 +171,23 @@ export default function Pluggy({ show }: PluggyProps) {
         <PluggyConnect
           connectToken={connectToken}
           includeSandbox={false}
+          /* limita a listagem apenas ao conector Nubank */
+          connectorIds={[612]} // ID do conector Nubank no Pluggy
+          selectedConnectorId={612} // já abre direto no Nubank
           onSuccess={onSuccess}
         />
       )}
       <div>
         <MonthSelector selectedDate={selectedDate} onChange={setSelectedDate} />
-        <TransactionsTable
-          transactions={transactions}
-          setInitialValue={setInitialValue}
-          setShowModal={setShowModal}
-        />
+        {Object.entries(transactionsByItem).map(([itemId, txs]) => (
+          <div key={itemId} className="mb-4">
+            <TransactionsTable
+              transactions={txs}
+              setInitialValue={setInitialValue}
+              setShowModal={setShowModal}
+            />
+          </div>
+        ))}
       </div>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <ExpenseForm initialValue={initialValue} type="expense" />
