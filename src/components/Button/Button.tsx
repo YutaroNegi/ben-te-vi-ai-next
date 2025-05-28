@@ -2,7 +2,7 @@ import React from "react";
 import { LoadingSpinner } from "@/components";
 
 interface ButtonProps {
-  label: string;
+  label: string | React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   className?: string;
