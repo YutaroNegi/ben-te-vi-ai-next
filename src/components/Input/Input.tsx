@@ -8,6 +8,8 @@ interface InputProps {
   name?: string;
   placeholder?: string;
   value?: string;
+  /** Valor inicial não controlado */
+  initialValue?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   className?: string;
   inputClassName?: string;
@@ -24,6 +26,7 @@ const Input: React.FC<InputProps> = ({
   type = "text",
   placeholder,
   value,
+  initialValue,
   onChange,
   className = "",
   inputClassName = "",
@@ -49,6 +52,7 @@ const Input: React.FC<InputProps> = ({
           name={name}
           placeholder={placeholder}
           value={value}
+          defaultValue={initialValue}
           thousandSeparator="."
           decimalSeparator=","
           onValueChange={(values: NumberFormatValues) => {
@@ -75,6 +79,7 @@ const Input: React.FC<InputProps> = ({
           type={type}
           placeholder={placeholder}
           value={value}
+          defaultValue={initialValue}
           onChange={onChange}
           step={step}
           className={`px-4 py-2 outline-none w-[70%] ${inputClassName} text-black`}
