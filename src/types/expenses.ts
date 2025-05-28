@@ -36,6 +36,7 @@ export interface ExpenseData {
   date: string;
   installments: number;
   type: ExpenseType;
+  pluggy_transaction_id?: string | null;
 }
 
 export interface Category {
@@ -55,4 +56,14 @@ export interface CategoryBody {
 
 export interface RegisterCategoryBody extends CategoryBody {
   user_id: string;
+}
+
+export interface InitialExpenseValues {
+  name?: string;
+  description?: string;
+  created_at?: string;
+  amount?: number;
+  type: ExpenseType;
+  installments?: number;
+  pluggy_transaction_id?: string;
 }
