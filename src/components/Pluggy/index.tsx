@@ -2,8 +2,15 @@ import React, { useCallback, useEffect, useState } from "react";
 import { PluggyConnect } from "react-pluggy-connect";
 import { ItemData } from "@/types/pluggy";
 import { useAuthStore } from "@/stores/authStore";
-import { LoadingSpinner, TransactionsTable, MonthSelector } from "@/components";
-import { Transaction } from "@/types";
+import {
+  LoadingSpinner,
+  TransactionsTable,
+  MonthSelector,
+  Modal,
+  ExpenseForm,
+  CustomToast,
+} from "@/components";
+import { Transaction, InitialExpenseValues } from "@/types";
 
 interface PluggyProps {
   readonly show: boolean;
@@ -17,6 +24,14 @@ export default function Pluggy({ show }: PluggyProps) {
   const [selectedDate, setSelectedDate] = useState(
     () => new Date(new Date().getFullYear(), new Date().getMonth(), 1),
   );
+  const [showModal, setShowModal] = useState(false);
+  const [initialValue, setInitialValue] = useState<InitialExpenseValues>({
+    type: "expense",
+    name: "",
+    description: "",
+    created_at: new Date().toISOString(),
+    amount: 0,
+  });
 
   const fetchConnectToken = useCallback(async () => {
     try {
@@ -106,11 +121,7 @@ export default function Pluggy({ show }: PluggyProps) {
           category: tx.category,
           amount: tx.amount,
           imported: tx.imported,
-          date: new Date(tx.date).toLocaleString("pt-BR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          }),
+          date: tx.date,
         })),
       );
     };
@@ -161,10 +172,18 @@ export default function Pluggy({ show }: PluggyProps) {
           onSuccess={onSuccess}
         />
       )}
-      <>
+      <div>
         <MonthSelector selectedDate={selectedDate} onChange={setSelectedDate} />
-        <TransactionsTable transactions={transactions} />
-      </>
+        <TransactionsTable
+          transactions={transactions}
+          setInitialValue={setInitialValue}
+          setShowModal={setShowModal}
+        />
+      </div>
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <ExpenseForm initialValue={initialValue} type="expense" />
+      </Modal>
+      <CustomToast />
     </div>
   );
 }
