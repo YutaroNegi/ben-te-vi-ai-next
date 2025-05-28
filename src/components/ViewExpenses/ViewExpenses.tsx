@@ -9,6 +9,7 @@ import {
   Input,
   InputDate,
   MonthSelector,
+  Modal,
 } from "@/components";
 import { useTranslations } from "next-intl";
 
@@ -208,84 +209,82 @@ const ViewExpenses: React.FC = () => {
       )}
 
       {modalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[1000]">
-          <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4 text-center">
-              {t("editInstallment")}
-            </h2>
+        <Modal isOpen={modalOpen} onClose={handleCancelEdit}>
+          <h2 className="text-lg font-semibold mb-4 text-center">
+            {t("editInstallment")}
+          </h2>
 
-            <div className="space-y-3 flex flex-col items-center">
-              <Input
-                id="name"
-                name="name"
-                label={t("headers.expense")}
-                type="text"
-                value={editData.name}
-                onChange={(e) =>
-                  setEditData((prev) => ({ ...prev, name: e.target.value }))
-                }
-              />
+          <div className="space-y-3 flex flex-col items-center">
+            <Input
+              id="name"
+              name="name"
+              label={t("headers.expense")}
+              type="text"
+              value={editData.name}
+              onChange={(e) =>
+                setEditData((prev) => ({ ...prev, name: e.target.value }))
+              }
+            />
 
-              <Input
-                id="installment_number"
-                name="installment_number"
-                label={t("installment")}
-                type="number"
-                value={editData.installment_number.toString()}
-                onChange={(e) =>
-                  setEditData((prev) => ({
-                    ...prev,
-                    installment_number: Number(e.target.value),
-                  }))
-                }
-              />
+            <Input
+              id="installment_number"
+              name="installment_number"
+              label={t("installment")}
+              type="number"
+              value={editData.installment_number.toString()}
+              onChange={(e) =>
+                setEditData((prev) => ({
+                  ...prev,
+                  installment_number: Number(e.target.value),
+                }))
+              }
+            />
 
-              <Input
-                id="amount"
-                name="amount"
-                label={t("headers.value")}
-                type="number"
-                step="0.01"
-                value={editData.amount.toString()}
-                onChange={(e) =>
-                  setEditData((prev) => ({
-                    ...prev,
-                    amount: Number(e.target.value),
-                  }))
-                }
-              />
+            <Input
+              id="amount"
+              name="amount"
+              label={t("headers.value")}
+              type="number"
+              step="0.01"
+              value={editData.amount.toString()}
+              onChange={(e) =>
+                setEditData((prev) => ({
+                  ...prev,
+                  amount: Number(e.target.value),
+                }))
+              }
+            />
 
-              <InputDate
-                id="due_date"
-                name="due_date"
-                label={t("headers.dueDate")}
-                type="date"
-                value={editData.due_date}
-                onChange={(e) =>
-                  setEditData((prev) => ({
-                    ...prev,
-                    due_date: e.target.value,
-                  }))
-                }
-              />
-            </div>
-
-            <div className="flex justify-end space-x-2 mt-6">
-              <button
-                className="px-3 py-1 bg-gray-200 rounded"
-                onClick={handleCancelEdit}
-              >
-                {t("cancel") ?? "Cancelar"}
-              </button>
-              <button
-                className="px-3 py-1 bg-matcha-dark text-white rounded"
-                onClick={handleSaveEdit}
-              >
-                <MdCheck />
-              </button>
-            </div>
+            <InputDate
+              id="due_date"
+              name="due_date"
+              label={t("headers.dueDate")}
+              type="date"
+              value={editData.due_date}
+              onChange={(e) =>
+                setEditData((prev) => ({
+                  ...prev,
+                  due_date: e.target.value,
+                }))
+              }
+            />
           </div>
-        </div>
+
+          <div className="flex justify-end space-x-2 mt-6">
+            <button
+              className="px-3 py-1 bg-gray-200 rounded"
+              onClick={handleCancelEdit}
+            >
+              {t("cancel") ?? "Cancelar"}
+            </button>
+            <button
+              className="px-3 py-1 bg-matcha-dark text-white rounded"
+              onClick={handleSaveEdit}
+            >
+              <MdCheck />
+            </button>
+          </div>
+        </Modal>
       )}
     </div>
   );
