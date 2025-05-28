@@ -20,6 +20,7 @@ export async function POST(request: NextRequest) {
       date,
       installments,
       type,
+      pluggy_transaction_id,
     } = body;
 
     if (!user_id || !category_id || !name || amount === undefined || !date) {
@@ -61,6 +62,7 @@ export async function POST(request: NextRequest) {
             due_date: dueDate.toISOString().split("T")[0], // Formato YYYY-MM-DD
             amount: installmentAmount,
             paid: false,
+            pluggy_transaction_id: pluggy_transaction_id ?? null,
           };
         },
       );
@@ -83,6 +85,7 @@ export async function POST(request: NextRequest) {
         due_date: startDate.toISOString().split("T")[0],
         amount: amount,
         paid: false,
+        pluggy_transaction_id: pluggy_transaction_id ?? null,
       };
 
       const { error: installmentError } = await supabase
