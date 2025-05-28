@@ -1,5 +1,13 @@
+"use client";
+
+import dynamic from "next/dynamic";
+// carrega só no browser; no servidor nem tenta resolver o módulo
+const PluggyConnect = dynamic(
+  () => import("react-pluggy-connect").then((m) => m.PluggyConnect),
+  { ssr: false },
+);
+
 import React, { useCallback, useEffect, useState } from "react";
-import { PluggyConnect } from "react-pluggy-connect";
 import { ItemData } from "@/types/pluggy";
 import { useAuthStore } from "@/stores/authStore";
 import {
