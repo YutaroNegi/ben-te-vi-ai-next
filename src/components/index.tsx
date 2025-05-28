@@ -19,6 +19,7 @@ import FormContainer from "./FormContainer";
 import Pluggy from "./Pluggy";
 import TransactionsTable from "./TransactionsTable";
 import MonthSelector from "./MonthSelector";
+import Modal from "./Modal";
 
 export {
   AuthForm,
@@ -42,4 +43,5 @@ export {
   Pluggy,
   TransactionsTable,
   MonthSelector,
+  Modal,
 };
