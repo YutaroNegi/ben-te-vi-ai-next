@@ -99,6 +99,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     const instDisplay =
       instVal + (inst.installment_type === "multi" ? ` (${expenseTotal})` : "");
 
+    const dueDate = new Date(inst.due_date + "T00:00:00");
     return [
       <span
         data-tooltip-id="my-tooltip"
@@ -109,7 +110,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
       </span>,
       instNum,
       instDisplay,
-      new Date(inst.due_date).toLocaleDateString("pt-BR", {
+      new Date(dueDate).toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "2-digit",
         year: "2-digit",
