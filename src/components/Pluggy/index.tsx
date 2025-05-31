@@ -103,45 +103,45 @@ export default function Pluggy({ show }: PluggyProps) {
     [],
   );
 
+  const fetchPluggy = useCallback(async () => {
+    if (!userId) {
+      console.warn("User ID is not available, skipping item fetch.");
+      return;
+    }
+    const pluggyItems = await fetchItems();
+    if (pluggyItems.length === 0) {
+      console.warn("No Pluggy items found for the user.");
+      return;
+    }
+    const transactionsData: Record<string, Transaction[]> = {};
+
+    for (const item of pluggyItems) {
+      const txs = await fetchTransactions(item.pluggy_item_id, selectedDate);
+
+      transactionsData[item.pluggy_item_id] = txs.map((tx: Transaction) => ({
+        id: tx.id,
+        description: tx.description,
+        category: tx.category,
+        amount: tx.amount,
+        imported: tx.imported,
+        date: tx.date,
+      }));
+    }
+
+    setTransactionsByItem(transactionsData);
+  }, [userId, fetchItems, fetchTransactions, selectedDate]);
+
   useEffect(() => {
     fetchConnectToken();
   }, [fetchConnectToken]);
 
   useEffect(() => {
-    const fetchPluggy = async () => {
-      if (!userId) {
-        console.warn("User ID is not available, skipping item fetch.");
-        return;
-      }
-      const pluggyItems = await fetchItems();
-      if (pluggyItems.length === 0) {
-        console.warn("No Pluggy items found for the user.");
-        return;
-      }
-      const transactionsData: Record<string, Transaction[]> = {};
-
-      for (const item of pluggyItems) {
-        const txs = await fetchTransactions(item.pluggy_item_id, selectedDate);
-
-        transactionsData[item.pluggy_item_id] = txs.map((tx: Transaction) => ({
-          id: tx.id,
-          description: tx.description,
-          category: tx.category,
-          amount: tx.amount,
-          imported: tx.imported,
-          date: tx.date,
-        }));
-      }
-
-      setTransactionsByItem(transactionsData);
-    };
-
     if (userId) {
       fetchPluggy();
     } else {
       console.warn("User ID is not available, skipping item fetch.");
     }
-  }, [userId, selectedDate, fetchItems, fetchTransactions]);
+  }, [userId, fetchPluggy]);
 
   const onSuccess = async ({ item }: { item: ItemData }) => {
     try {
@@ -198,7 +198,11 @@ export default function Pluggy({ show }: PluggyProps) {
         ))}
       </div>
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <ExpenseForm initialValue={initialValue} type="expense" />
+        <ExpenseForm
+          initialValue={initialValue}
+          type="expense"
+          onSubmit={fetchPluggy}
+        />
       </Modal>
       <CustomToast />
     </div>
