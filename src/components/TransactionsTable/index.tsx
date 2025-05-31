@@ -83,6 +83,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
     </button>,
   ]);
 
+  const rowClasses = transactions.map((tx) =>
+    tx.imported ? "opacity-50" : "",
+  );
+
   return (
     <Table
       className="w-[80vw] mx-auto"
@@ -92,6 +96,7 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
       columnWidths={["20%", "50%", "20%", "10%", "20%"]}
       openMenuId={openMenuId}
       setOpenMenuId={setOpenMenuId}
+      rowClasses={rowClasses}
     />
   );
 };
