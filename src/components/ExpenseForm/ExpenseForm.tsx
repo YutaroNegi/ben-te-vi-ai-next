@@ -15,9 +15,10 @@ import { ExpenseType, InitialExpenseValues } from "@/types";
 interface ExpenseFormProps {
   type: ExpenseType;
   initialValue?: InitialExpenseValues;
+  onSubmit?: () => void;
 }
 
-const ExpenseForm = ({ type, initialValue }: ExpenseFormProps) => {
+const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
   const t = useTranslations(
     `${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}Form`,
   );
@@ -55,7 +56,6 @@ const ExpenseForm = ({ type, initialValue }: ExpenseFormProps) => {
     }
 
     try {
-      debugger;
       setLocalLoading(true);
       const formData = new FormData(e.currentTarget);
 
@@ -95,6 +95,7 @@ const ExpenseForm = ({ type, initialValue }: ExpenseFormProps) => {
       const startDate = new Date(year, month, 1).toISOString();
       const endDate = new Date(year, month + 1, 1).toISOString();
 
+      await onSubmit?.();
       await fetchInstallments(userId, startDate, endDate, type);
     } catch (error) {
       console.error(error);
