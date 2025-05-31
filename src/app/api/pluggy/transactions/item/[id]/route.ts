@@ -3,10 +3,6 @@ import { pluggyClient } from "@/lib/pluggy";
 import { Account, Transaction } from "pluggy-sdk";
 import { supabase } from "@/lib/supabaseClient";
 
-interface Err extends Error {
-  codeDescription?: string;
-}
-
 export async function GET(request: Request) {
   try {
     const { pathname } = new URL(request.url);
@@ -23,37 +19,6 @@ export async function GET(request: Request) {
       );
     }
 
-    // --- Refresh Pluggy item if needed, but avoid concurrent updates ---
-    let itemInfo;
-    try {
-      itemInfo = await pluggyClient.fetchItem(pluggyItemId); // or getItem if using older SDK
-    } catch (err) {
-      console.error("Could not fetch Pluggy item metadata:", err);
-    }
-
-    const isUpdating = itemInfo?.status === "UPDATING";
-    const lastUpdate = itemInfo?.lastUpdatedAt
-      ? new Date(itemInfo.lastUpdatedAt)
-      : null;
-    const today = new Date();
-
-    // Refresh if (a) not already updating and (b) last update is from another day
-
-    if (
-      !isUpdating &&
-      (!lastUpdate || lastUpdate.toDateString() !== today.toDateString())
-    ) {
-      try {
-        await pluggyClient.updateItem(pluggyItemId);
-      } catch (err) {
-        const typedErr = err as Err;
-        // ITEM_ALREADY_UPDATING is harmless (React StrictMode double‑fetch)
-        if ((typedErr.codeDescription ?? "") !== "ITEM_ALREADY_UPDATING") {
-          console.error("Failed to update Pluggy item:", err);
-        }
-      }
-    }
-
     const { results: accounts } =
       await pluggyClient.fetchAccounts(pluggyItemId);
 
@@ -65,6 +30,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ transactions: [] });
     }
 
+    const today = new Date();
     const targetYear = year ? Number(year) : today.getFullYear();
     const targetMonth = month ? Number(month) - 1 : today.getMonth();
 
