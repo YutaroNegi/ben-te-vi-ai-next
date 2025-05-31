@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Input, GoogleAuthBtn, OneTapComponent } from "@/components";
+import { Button, Input, GoogleAuthBtn } from "@/components";
 import { signIn, createAccount } from "@/utils/auth";
 import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
@@ -114,7 +114,7 @@ export default function AuthForm() {
           </div>
         </div>
       </main>
-      <OneTapComponent />
+      {/* <OneTapComponent /> */}
     </>
   );
 }
