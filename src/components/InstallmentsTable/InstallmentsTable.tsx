@@ -114,7 +114,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         month: "2-digit",
         year: "2-digit",
       }),
-      <td
+      <div
         className="relative text-center grid place-items-center"
         key="actions"
       >
@@ -144,7 +144,7 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
             </button>
           </div>
         )}
-      </td>,
+      </div>,
     ];
   });
 
