@@ -2,11 +2,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/stores/authStore";
+import { useSupabaseAuth } from "@/hooks/useAuth";
 import { Pluggy, Header, Button } from "@/components";
 import { SiNubank } from "react-icons/si";
 import { FaPlus } from "react-icons/fa";
 
 export default function ConnectPage() {
+  useSupabaseAuth();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const [show, setShow] = useState(false);
 
