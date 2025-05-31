@@ -158,7 +158,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       </div>
 
       {isOpen && (
-        <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1">
+        <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-60 overflow-y-scroll overflow-x-hidden">
           {/* Se estamos adicionando */}
           {isAdding ? (
             <div className="flex items-center px-4 py-2 border-b border-gray-200">
