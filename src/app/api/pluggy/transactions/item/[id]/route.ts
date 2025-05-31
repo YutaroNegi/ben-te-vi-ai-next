@@ -19,6 +19,12 @@ export async function GET(request: Request) {
       );
     }
 
+    try {
+      await pluggyClient.updateItem(pluggyItemId);
+    } catch (err) {
+      console.warn("Ignoring Error updating item:", err);
+    }
+
     const { results: accounts } =
       await pluggyClient.fetchAccounts(pluggyItemId);
 
