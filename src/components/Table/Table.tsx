@@ -10,6 +10,7 @@ interface TableProps {
   openMenuId: string | null;
   setOpenMenuId: (id: string | null) => void;
   className?: string;
+  rowClasses?: string[];
 }
 
 const Table: React.FC<TableProps> = ({
@@ -20,6 +21,7 @@ const Table: React.FC<TableProps> = ({
   openMenuId,
   setOpenMenuId,
   className = "",
+  rowClasses,
 }) => {
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
@@ -64,7 +66,7 @@ const Table: React.FC<TableProps> = ({
         </thead>
         <tbody className="bg-almond-900">
           {rows.map((row, rowIndex) => (
-            <tr key={rowIndex}>
+            <tr key={rowIndex} className={rowClasses?.[rowIndex] ?? ""}>
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
