@@ -1,4 +1,7 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bem-te-vi AI
+
+Personal finance tracker built with Next.js and Supabase.  
+Live: https://ben-te-vi-ai-next.vercel.app
 
 ## Getting Started
 
