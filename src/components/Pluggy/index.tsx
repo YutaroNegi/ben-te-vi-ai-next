@@ -121,8 +121,8 @@ export default function Pluggy({ show }: PluggyProps) {
         ...tx,
       }));
     }
-    console.log("after map", transactionsData);
     setTransactionsByItem(transactionsData);
+    setShowModal(false);
   }, [userId, fetchItems, fetchTransactions, selectedDate]);
 
   useEffect(() => {
