@@ -16,7 +16,6 @@ function generateInstallmentsReference(
     .replace(/\s+\d+\/\d+\s*$/, "")
     .toLowerCase()
     .trim();
-  console.log("Normalized description:", normalizedDesc);
   return crypto
     .createHash("sha256")
     .update(
@@ -115,7 +114,6 @@ export async function GET(request: Request) {
     const references = allTx
       .map((t) => (t as any).pluggy_installments_reference)
       .filter(Boolean);
-    console.log("References to check:", references);
     if (references.length) {
       const { data: refRows, error: refErr } = await supabase
         .from("expenses")

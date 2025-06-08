@@ -41,10 +41,8 @@ const OneTapComponent = () => {
 
   useEffect(() => {
     const initializeGoogleOneTap = () => {
-      console.log("Initializing Google One Tap");
       window.addEventListener("load", async () => {
         const [nonce, hashedNonce] = await generateNonce();
-        console.log("Nonce: ", nonce, hashedNonce);
 
         // check if there's already an existing session before initializing the one-tap UI
         const { data, error } = await supabase.auth.getSession();
@@ -68,8 +66,6 @@ const OneTapComponent = () => {
               });
 
               if (error) throw error;
-              console.log("Session data: ", data);
-              console.log("Successfully logged in with Google One Tap");
 
               if (!data || !data.user || !data.user.id || !data.user.email) {
                 throw "Invalid user data";
