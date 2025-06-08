@@ -117,17 +117,11 @@ export default function Pluggy({ show }: PluggyProps) {
 
     for (const item of pluggyItems) {
       const txs = await fetchTransactions(item.pluggy_item_id, selectedDate);
-
       transactionsData[item.pluggy_item_id] = txs.map((tx: Transaction) => ({
-        id: tx.id,
-        description: tx.description,
-        category: tx.category,
-        amount: tx.amount,
-        imported: tx.imported,
-        date: tx.date,
+        ...tx,
       }));
     }
-
+    console.log("after map", transactionsData);
     setTransactionsByItem(transactionsData);
   }, [userId, fetchItems, fetchTransactions, selectedDate]);
 
