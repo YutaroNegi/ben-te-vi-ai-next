@@ -1,7 +1,29 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { pluggyClient } from "@/lib/pluggy";
 import { Account, Transaction } from "pluggy-sdk";
 import { supabase } from "@/lib/supabaseClient";
+
+import crypto from "crypto";
+
+function generateInstallmentsReference(
+  cardNumber: string,
+  purchaseDate: string,
+  totalInstallments: number,
+  description: string,
+): string {
+  const normalizedDesc = description
+    .replace(/\s+\d+\/\d+\s*$/, "")
+    .toLowerCase()
+    .trim();
+  console.log("Normalized description:", normalizedDesc);
+  return crypto
+    .createHash("sha256")
+    .update(
+      `${cardNumber}|${purchaseDate}|${totalInstallments}|${normalizedDesc}`,
+    )
+    .digest("hex");
+}
 
 export async function GET(request: Request) {
   try {
@@ -73,10 +95,52 @@ export async function GET(request: Request) {
       (imported ?? []).map((row) => row.pluggy_transaction_id),
     );
 
-    const transactions = allTx.map((tx) => ({
-      ...tx,
-      imported: importedSet.has(tx.id),
-    }));
+    let importedRefsSet: Set<string> = new Set();
+
+    for (const tx of allTx) {
+      const meta = tx.creditCardMetadata as any;
+
+      if (meta?.totalInstallments && meta.totalInstallments > 1) {
+        const pluggy_installments_reference = generateInstallmentsReference(
+          meta.cardNumber ?? "",
+          meta.purchaseDate,
+          meta.totalInstallments,
+          tx.description,
+        );
+        (tx as any).pluggy_installments_reference =
+          pluggy_installments_reference;
+      }
+    }
+
+    const references = allTx
+      .map((t) => (t as any).pluggy_installments_reference)
+      .filter(Boolean);
+    console.log("References to check:", references);
+    if (references.length) {
+      const { data: refRows, error: refErr } = await supabase
+        .from("expenses")
+        .select("pluggy_installments_reference")
+        .in("pluggy_installments_reference", references);
+
+      if (refErr) {
+        return NextResponse.json({ error: refErr.message }, { status: 500 });
+      }
+
+      importedRefsSet = new Set(
+        (refRows ?? []).map((row) => row.pluggy_installments_reference),
+      );
+    }
+
+    const transactions = allTx.map((tx) => {
+      const ref = (tx as any).pluggy_installments_reference;
+      const imported =
+        importedSet.has(tx.id) || (ref ? importedRefsSet.has(ref) : false);
+
+      return {
+        ...tx,
+        imported,
+      };
+    });
 
     return NextResponse.json({ transactions });
   } catch (err) {
