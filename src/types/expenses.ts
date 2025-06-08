@@ -37,6 +37,7 @@ export interface ExpenseData {
   installments: number;
   type: ExpenseType;
   pluggy_transaction_id?: string | null;
+  pluggy_installments_reference?: string | null;
 }
 
 export interface Category {
@@ -65,5 +66,7 @@ export interface InitialExpenseValues {
   amount?: number;
   type: ExpenseType;
   installments?: number;
+  installmentNumber?: number;
   pluggy_transaction_id?: string;
+  pluggy_installments_reference?: string;
 }

@@ -61,6 +61,12 @@ export interface Transaction {
   amount: number;
   imported: boolean;
   date: string;
+  pluggy_installments_reference?: string;
+  installmentNumber?: number;
+  creditCardMetadata?: {
+    installmentNumber?: number;
+    totalInstallments?: number;
+  };
 }
 export interface TransactionsTableProps {
   transactions: Transaction[];
