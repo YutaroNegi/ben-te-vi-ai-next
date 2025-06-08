@@ -51,10 +51,10 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
       description: tx.description,
       created_at: new Date(tx.date).toISOString().split("T")[0],
       amount: tx.amount,
-      installments: 1,
+      installments: tx.creditCardMetadata?.totalInstallments ?? 1,
       pluggy_transaction_id: tx.id,
+      pluggy_installments_reference: tx.pluggy_installments_reference,
     };
-    console.log("Initial Value:", initialValue);
     if (setInitialValue) {
       setInitialValue(initialValue);
       setShowModal(true);
