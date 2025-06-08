@@ -66,3 +66,6 @@ ALTER TABLE installments
 ADD COLUMN pluggy_transaction_id UUID UNIQUE;
 
 CREATE INDEX idx_installments_pluggy_tx ON installments(pluggy_transaction_id);
+
+ALTER TABLE expenses
+ADD COLUMN pluggy_installments_reference TEXT;
