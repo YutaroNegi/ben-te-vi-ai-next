@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
       installments,
       type,
       pluggy_transaction_id,
+      pluggy_installments_reference,
     } = body;
 
     if (!user_id || !category_id || !name || amount === undefined || !date) {
@@ -32,7 +33,17 @@ export async function POST(request: NextRequest) {
 
     const { data: expense, error: expenseError } = await supabase
       .from("expenses")
-      .insert([{ user_id, category_id, name, description, amount, type }])
+      .insert([
+        {
+          user_id,
+          category_id,
+          name,
+          description,
+          amount,
+          type,
+          pluggy_installments_reference,
+        },
+      ])
       .select("*")
       .single();
 
@@ -62,7 +73,8 @@ export async function POST(request: NextRequest) {
             due_date: dueDate.toISOString().split("T")[0], // Formato YYYY-MM-DD
             amount: installmentAmount,
             paid: false,
-            pluggy_transaction_id: pluggy_transaction_id ?? null,
+            pluggy_transaction_id:
+              index + 1 === 1 ? pluggy_transaction_id : null,
           };
         },
       );
