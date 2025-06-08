@@ -45,13 +45,15 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
 
   const handleActionClick = (tx: Transaction) => {
     if (tx.imported) return;
+    const totalInstallments = tx.creditCardMetadata?.totalInstallments ?? 1;
+    const totalAmount = tx.amount * totalInstallments;
     const initialValue: InitialExpenseValues = {
       type: "expense",
       name: tx.description,
       description: tx.description,
       created_at: new Date(tx.date).toISOString().split("T")[0],
-      amount: tx.amount,
-      installments: tx.creditCardMetadata?.totalInstallments ?? 1,
+      amount: totalAmount,
+      installments: totalInstallments,
       pluggy_transaction_id: tx.id,
       pluggy_installments_reference: tx.pluggy_installments_reference,
     };
