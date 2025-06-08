@@ -75,7 +75,6 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
         toast.error(t("selectCategoryBeforeSubmit"));
         return;
       }
-
       await registerExpense({
         user_id: userId,
         name,
@@ -84,8 +83,10 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
         description,
         date,
         installments,
-        type: type,
+        type,
         pluggy_transaction_id: initialValue?.pluggy_transaction_id ?? null,
+        pluggy_installments_reference:
+          initialValue?.pluggy_installments_reference ?? null,
       });
 
       toast.success(t("expenseRegisteredSuccess"));
