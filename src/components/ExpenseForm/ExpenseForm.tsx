@@ -10,15 +10,21 @@ import { useExpensesStore } from "@/stores/expenseStore";
 import { registerExpense } from "@/utils";
 import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
-import { ExpenseType, InitialExpenseValues } from "@/types";
+import { ExpenseType, InitialExpenseValues, ExpenseData } from "@/types";
 
 interface ExpenseFormProps {
   type: ExpenseType;
   initialValue?: InitialExpenseValues;
   onSubmit?: () => void;
+  isEdit?: boolean;
 }
 
-const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
+const ExpenseForm = ({
+  type,
+  initialValue,
+  onSubmit,
+  isEdit,
+}: ExpenseFormProps) => {
   const t = useTranslations(
     `${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}Form`,
   );
@@ -33,6 +39,7 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
     removeCategory,
     selectedDate,
     fetchInstallments,
+    editOneInstallment,
   } = useExpensesStore();
 
   const [selectedCategory, setSelectedCategory] = useState<Option | null>(null);
@@ -45,7 +52,31 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
         toast.error(t("errorFetchingCategories"));
       });
     }
+
+    if (isEdit) {
+      setSelectedCategory(
+        initialValue?.category_id
+          ? {
+              value: initialValue.category_id,
+              label:
+                categories.find((cat) => cat.value === initialValue.category_id)
+                  ?.label ?? "",
+            }
+          : null,
+      );
+    }
   }, [userId, fetchCategories, t, type]);
+
+  const handleSaveEdit = async (expenseData: ExpenseData) => {
+    try {
+      if (!initialValue?.installment_id) return;
+      console.log("Editing installment with data:", expenseData);
+
+      await editOneInstallment(initialValue.installment_id, expenseData);
+    } catch (error) {
+      console.error("Erro ao editar installment:", error);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,7 +106,7 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
         toast.error(t("selectCategoryBeforeSubmit"));
         return;
       }
-      await registerExpense({
+      const expenseData = {
         user_id: userId,
         name,
         amount,
@@ -87,7 +118,10 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
         pluggy_transaction_id: initialValue?.pluggy_transaction_id ?? null,
         pluggy_installments_reference:
           initialValue?.pluggy_installments_reference ?? null,
-      });
+      };
+
+      if (isEdit) await handleSaveEdit(expenseData);
+      if (!isEdit) await registerExpense(expenseData);
 
       toast.success(t("expenseRegisteredSuccess"));
 
@@ -189,6 +223,17 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
         onEdit={handleEditCategory}
         onDelete={handleDeleteCategory}
         placeholder={t("placeholderCategory")}
+        initialValue={
+          initialValue?.category_id
+            ? {
+                value: initialValue.category_id,
+                label:
+                  categories.find(
+                    (cat) => cat.value === initialValue.category_id,
+                  )?.label ?? "",
+              }
+            : undefined
+        }
       />
       <Input
         id="description"
@@ -208,14 +253,16 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
           initialValue?.created_at ?? new Date().toISOString().split("T")[0]
         }
       />
-      <Input
-        id="installments"
-        name="installments"
-        label={t("installments")}
-        type="number"
-        placeholder={t("installments")}
-        initialValue={initialValue?.installments?.toString() ?? "1"}
-      />
+      {!isEdit && (
+        <Input
+          id="installments"
+          name="installments"
+          label={t("installments")}
+          type="number"
+          placeholder={t("installments")}
+          initialValue={initialValue?.installments?.toString() ?? "1"}
+        />
+      )}
       <Button type="submit" label={t("submit")} loading={localLoading} />
     </form>
   );
