@@ -162,118 +162,123 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       </div>
 
       {isOpen && (
-        <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1 max-h-60 overflow-y-scroll overflow-x-hidden">
-          {/* Se estamos adicionando */}
-          {isAdding ? (
-            <div className="flex items-center px-4 py-2 border-b border-gray-200">
-              <input
-                type="text"
-                className="flex-grow border rounded px-2 py-1 mr-2"
-                placeholder={t("newCategoryNamePlaceholder")}
-                value={newCategoryName}
-                onChange={(e) => setNewCategoryName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault(); // Impede o submit do formulário
-                    handleConfirmAdd();
-                  }
-                }}
-              />
-              <button
-                type="button"
-                className="text-green-600 mr-2"
-                onClick={handleConfirmAdd}
-              >
-                <FaCheck />
-              </button>
-              <button
-                type="button"
-                className="text-red-600"
-                onClick={handleCancelAdd}
-              >
-                <FaTimes />
-              </button>
-            </div>
-          ) : (
-            <div
-              className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={handleStartAdd}
-            >
-              <span className="text-gray-700 font-medium">{t("addNew")}</span>
-              <FaPlus className="text-gray-600 ml-2" />
-            </div>
-          )}
-
-          <hr className="my-1" />
-
-          {/* Se estamos editando */}
-          {isEditing && editOption && (
-            <div className="flex items-center px-4 py-2 border-b border-gray-200 bg-gray-50">
-              <input
-                type="text"
-                className="flex-grow border rounded px-2 py-1 mr-2"
-                value={editCategoryName}
-                onChange={(e) => setEditCategoryName(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault(); // Impede o submit do formulário
-                    handleConfirmEdit();
-                  }
-                }}
-              />
-              <button
-                type="button"
-                className="text-green-600 mr-2"
-                onClick={handleConfirmEdit}
-              >
-                <FaCheck />
-              </button>
-              <button
-                type="button"
-                className="text-red-600"
-                onClick={handleCancelEdit}
-              >
-                <FaTimes />
-              </button>
-            </div>
-          )}
-
-          {/* Lista de opções */}
-          {options.map((option) => (
-            <div
-              key={option.value}
-              className="group flex items-center justify-between px-4 py-2 hover:bg-gray-100"
-            >
+        <div className="absolute z-10 w-full bg-white border border-gray-200 rounded-md shadow-lg mt-1 overflow-visible">
+          <div
+            className="max-h-60"
+            style={{ overflowY: "auto", overflowX: "visible" }}
+          >
+            {/* Se estamos adicionando */}
+            {isAdding ? (
+              <div className="flex items-center px-4 py-2 border-b border-gray-200">
+                <input
+                  type="text"
+                  className="flex-grow border rounded px-2 py-1 mr-2"
+                  placeholder={t("newCategoryNamePlaceholder")}
+                  value={newCategoryName}
+                  onChange={(e) => setNewCategoryName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault(); // Impede o submit do formulário
+                      handleConfirmAdd();
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  className="text-green-600 mr-2"
+                  onClick={handleConfirmAdd}
+                >
+                  <FaCheck />
+                </button>
+                <button
+                  type="button"
+                  className="text-red-600"
+                  onClick={handleCancelAdd}
+                >
+                  <FaTimes />
+                </button>
+              </div>
+            ) : (
               <div
-                className="cursor-pointer text-gray-700 text-left w-full"
-                onClick={() => handleSelectOption(option)}
+                className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={handleStartAdd}
               >
-                {option.label}
+                <span className="text-gray-700 font-medium">{t("addNew")}</span>
+                <FaPlus className="text-gray-600 ml-2" />
               </div>
+            )}
 
-              {/* Ícone de menu (3 pontinhos) */}
-              <div className="relative flex items-center">
-                <div className="cursor-pointer p-1 ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
-                  <FaEllipsisV />
+            <hr className="my-1" />
+
+            {/* Se estamos editando */}
+            {isEditing && editOption && (
+              <div className="flex items-center px-4 py-2 border-b border-gray-200 bg-gray-50">
+                <input
+                  type="text"
+                  className="flex-grow border rounded px-2 py-1 mr-2"
+                  value={editCategoryName}
+                  onChange={(e) => setEditCategoryName(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault(); // Impede o submit do formulário
+                      handleConfirmEdit();
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  className="text-green-600 mr-2"
+                  onClick={handleConfirmEdit}
+                >
+                  <FaCheck />
+                </button>
+                <button
+                  type="button"
+                  className="text-red-600"
+                  onClick={handleCancelEdit}
+                >
+                  <FaTimes />
+                </button>
+              </div>
+            )}
+
+            {/* Lista de opções */}
+            {options.map((option) => (
+              <div
+                key={option.value}
+                className="group flex items-center justify-between px-4 py-2 hover:bg-gray-100"
+              >
+                <div
+                  className="cursor-pointer text-gray-700 text-left w-full"
+                  onClick={() => handleSelectOption(option)}
+                >
+                  {option.label}
                 </div>
 
-                <div className="hidden group-hover:flex flex-col absolute top-0 left-full ml-2 bg-white border border-gray-200 rounded shadow-lg z-20">
-                  <div
-                    className="cursor-pointer flex items-center px-4 py-2 text-xs text-matcha-dark hover:bg-gray-100"
-                    onClick={() => handleStartEdit(option)}
-                  >
-                    <FaEdit className="text-[17px]" />
+                {/* Ícone de menu (3 pontinhos) */}
+                <div className="relative flex items-center">
+                  <div className="cursor-pointer p-1 ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                    <FaEllipsisV />
                   </div>
-                  <div
-                    className="cursor-pointer flex items-center px-4 py-2 text-xs text-bentenavi-dark hover:bg-gray-100"
-                    onClick={() => handleDeleteClick(option)}
-                  >
-                    <FaTrash className="text-[15px]" />
+
+                  <div className="hidden group-hover:flex flex-col absolute top-0 right-0 bg-white border border-gray-200 rounded shadow-lg z-20">
+                    <div
+                      className="cursor-pointer flex items-center px-4 py-2 text-xs text-matcha-dark hover:bg-gray-100"
+                      onClick={() => handleStartEdit(option)}
+                    >
+                      <FaEdit className="text-[17px]" />
+                    </div>
+                    <div
+                      className="cursor-pointer flex items-center px-4 py-2 text-xs text-bentenavi-dark hover:bg-gray-100"
+                      onClick={() => handleDeleteClick(option)}
+                    >
+                      <FaTrash className="text-[15px]" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>
