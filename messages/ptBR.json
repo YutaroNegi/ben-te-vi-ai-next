@@ -53,7 +53,8 @@
     "categoryEditSuccess": "CATEGORIA EDITADA COM SUCESSO!",
     "categoryEditFail": "FALHA AO EDITAR CATEGORIA",
     "categoryDeleteSuccess": "CATEGORIA DELETADA COM SUCESSO!",
-    "categoryDeleteFail": "FALHA AO DELETAR CATEGORIA"
+    "categoryDeleteFail": "FALHA AO DELETAR CATEGORIA",
+    "filterPlaceholder": "...Filtrar"
   },
   "IncomeForm": {
     "income": "Renda",
