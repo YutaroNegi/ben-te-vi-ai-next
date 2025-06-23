@@ -132,6 +132,10 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
         description: "",
         type,
       });
+      handleSelectCategory({
+        value: option.value,
+        label: newName,
+      });
       toast.success(t("categoryEditSuccess"));
     } catch (error) {
       console.error(error);
@@ -150,6 +154,7 @@ const ExpenseForm = ({ type, initialValue, onSubmit }: ExpenseFormProps) => {
   };
 
   const handleSelectCategory = (option: Option) => {
+    console.log("Selected category:", option);
     setSelectedCategory(option);
   };
 

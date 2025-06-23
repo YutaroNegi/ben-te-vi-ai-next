@@ -109,6 +109,10 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   const handleConfirmEdit = () => {
     if (onEdit && editOption && editCategoryName.trim() !== "") {
       onEdit(editOption, editCategoryName.trim());
+
+      if (selected && selected.value === editOption.value) {
+        setSelected({ ...selected, label: editCategoryName.trim() });
+      }
     }
     setIsEditing(false);
     setIsOpen(false);
