@@ -28,7 +28,7 @@ export async function PUT(request: Request) {
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
-    const { name } = data;
+    const { name, category_id } = data;
     if (typeof name === "string" && name.trim() !== "") {
       const { data: instRow, error: fetchErr } = await supabase
         .from("installments")
@@ -42,7 +42,7 @@ export async function PUT(request: Request) {
 
       const { error: expErr } = await supabase
         .from("expenses")
-        .update({ name })
+        .update({ name, category_id })
         .eq("id", instRow.expense_id);
 
       if (expErr) {
