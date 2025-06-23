@@ -6,16 +6,13 @@ import { useExpensesStore } from "@/stores/expenseStore";
 import {
   InstallmentTable,
   LoadingSpinner,
-  Input,
-  InputDate,
   MonthSelector,
   Modal,
+  ExpenseForm,
 } from "@/components";
 import { useTranslations } from "next-intl";
 
 import { Installment } from "@/types";
-import { toast } from "react-toastify";
-import { MdCheck } from "react-icons/md";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -77,13 +74,6 @@ const ViewExpenses: React.FC = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedInst, setSelectedInst] = useState<Installment | null>(null);
-  const [editData, setEditData] = useState({
-    name: "",
-    installment_number: 1,
-    amount: 0,
-    due_date: "",
-    paid: false,
-  });
 
   const {
     categories,
@@ -95,7 +85,6 @@ const ViewExpenses: React.FC = () => {
     setSelectedDate,
     monthTotal,
     selectedType,
-    editOneInstallment,
   } = useExpensesStore();
 
   useEffect(() => {
@@ -119,14 +108,13 @@ const ViewExpenses: React.FC = () => {
 
   const handleEditInstallment = (inst: Installment) => {
     setSelectedInst(inst);
-    setEditData({
-      name: inst.expense?.name || "",
-      installment_number: inst.installment_number,
-      amount: inst.amount,
-      due_date: new Date(inst.due_date).toISOString().split("T")[0],
-      paid: inst.paid,
-    });
     setModalOpen(true);
+  };
+
+  const handleExpenseFormSubmit = async () => {
+    await loadInstallments();
+    setModalOpen(false);
+    setSelectedInst(null);
   };
 
   const handleCancelEdit = () => {
@@ -134,19 +122,27 @@ const ViewExpenses: React.FC = () => {
     setSelectedInst(null);
   };
 
-  const handleSaveEdit = async () => {
-    if (!selectedInst) return;
-    try {
-      await editOneInstallment(selectedInst.id, { ...editData });
-      toast.success(t("toast.updated"));
-      setModalOpen(false);
-      setSelectedInst(null);
-      await loadInstallments();
-    } catch (error) {
-      console.error("Erro ao editar installment:", error);
-      toast.error(t("toast.errorUpdating"));
-    }
-  };
+  const initialExpenseValues = selectedInst
+    ? // name?: string;
+      // description?: string;
+      // created_at?: string;
+      // amount?: number;
+      // type: ExpenseType;
+      // installments?: number;
+      // installmentNumber?: number;
+      // pluggy_transaction_id?: string;
+      // pluggy_installments_reference?: string;
+      {
+        name: selectedInst.expense?.name ?? "",
+        amount: selectedInst.amount,
+        description: selectedInst.expense?.description ?? "",
+        created_at: new Date(selectedInst.due_date).toISOString().split("T")[0],
+        installments: selectedInst.installment_number,
+        category_id: selectedInst.expense?.category_id || "",
+        type: selectedInst.expense?.type || "expense",
+        installment_id: selectedInst.id,
+      }
+    : undefined;
 
   return (
     <div className="p-0 m-0 w-full relative">
@@ -210,78 +206,18 @@ const ViewExpenses: React.FC = () => {
 
       {modalOpen && (
         <Modal isOpen={modalOpen} onClose={handleCancelEdit}>
-          <h2 className="text-lg font-semibold mb-4 text-center">
-            {t("editInstallment")}
-          </h2>
-
-          <div className="space-y-3 flex flex-col items-center">
-            <Input
-              id="name"
-              name="name"
-              label={t("headers.expense")}
-              type="text"
-              value={editData.name}
-              onChange={(e) =>
-                setEditData((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
-
-            <Input
-              id="installment_number"
-              name="installment_number"
-              label={t("installment")}
-              type="number"
-              value={editData.installment_number.toString()}
-              onChange={(e) =>
-                setEditData((prev) => ({
-                  ...prev,
-                  installment_number: Number(e.target.value),
-                }))
-              }
-            />
-
-            <Input
-              id="amount"
-              name="amount"
-              label={t("headers.value")}
-              type="number"
-              step="0.01"
-              value={editData.amount.toString()}
-              onChange={(e) =>
-                setEditData((prev) => ({
-                  ...prev,
-                  amount: Number(e.target.value),
-                }))
-              }
-            />
-
-            <InputDate
-              id="due_date"
-              name="due_date"
-              label={t("headers.dueDate")}
-              type="date"
-              value={editData.due_date}
-              onChange={(e) =>
-                setEditData((prev) => ({
-                  ...prev,
-                  due_date: e.target.value,
-                }))
-              }
-            />
-          </div>
-
-          <div className="flex justify-end space-x-2 mt-6">
+          <ExpenseForm
+            type={selectedType}
+            initialValue={initialExpenseValues}
+            onSubmit={handleExpenseFormSubmit}
+            isEdit={true}
+          />
+          <div className="flex justify-end mt-4">
             <button
               className="px-3 py-1 bg-gray-200 rounded"
               onClick={handleCancelEdit}
             >
               {t("cancel") ?? "Cancelar"}
-            </button>
-            <button
-              className="px-3 py-1 bg-matcha-dark text-white rounded"
-              onClick={handleSaveEdit}
-            >
-              <MdCheck />
             </button>
           </div>
         </Modal>
