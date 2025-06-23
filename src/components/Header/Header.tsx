@@ -8,7 +8,7 @@ import { Tooltip } from "react-tooltip";
 import { GrConnectivity } from "react-icons/gr";
 
 function Header() {
-  const { last10Installments } = useExpensesStore();
+  const { last10Installments, selectedType } = useExpensesStore();
   const t = useTranslations("ExpenseTable");
 
   async function handleSignOut() {
@@ -39,7 +39,7 @@ function Header() {
         <table style="border-collapse: collapse; width: 100%;">
           <thead>
             <tr>
-              <th style="text-align: left; padding: 4px 8px; border-bottom: 2px solid #666;">${t("expense")}</th>
+              <th style="text-align: left; padding: 4px 8px; border-bottom: 2px solid #666;">${selectedType === "expense" ? t("expense") : t("income")}</th>
               <th style="text-align: left; padding: 4px 8px; border-bottom: 2px solid #666;">${t("date")}</th>
             </tr>
           </thead>
