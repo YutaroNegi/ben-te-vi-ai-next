@@ -187,19 +187,24 @@ const ViewExpenses: React.FC = () => {
             customLeftArrow={<CustomLeftArrow />}
             customRightArrow={<CustomRightArrow />}
           >
-            {categories.map((category) => (
-              <div
-                key={category.value}
-                className="px-2 w-[25em] mx-auto text-center"
-              >
-                <InstallmentTable
-                  category={category}
-                  installments={installmentsByCategory[category.value] || []}
-                  onRefresh={loadInstallments}
-                  onEdit={handleEditInstallment}
-                />
-              </div>
-            ))}
+            {categories
+              .filter(
+                (category) =>
+                  (installmentsByCategory[category.value] || []).length > 0,
+              )
+              .map((category) => (
+                <div
+                  key={category.value}
+                  className="px-2 w-[25em] mx-auto text-center"
+                >
+                  <InstallmentTable
+                    category={category}
+                    installments={installmentsByCategory[category.value] || []}
+                    onRefresh={loadInstallments}
+                    onEdit={handleEditInstallment}
+                  />
+                </div>
+              ))}
           </Carousel>
         </div>
       )}
