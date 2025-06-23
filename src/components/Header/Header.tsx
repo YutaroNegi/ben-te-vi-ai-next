@@ -28,6 +28,13 @@ function Header() {
         (item) => `
           <tr>
             <td style="padding: 4px 8px; border-bottom: 1px solid #ccc;">${item.expense.name}</td>
+            <td style="padding: 4px 8px; border-bottom: 1px solid #ccc;">${item.amount.toLocaleString(
+              "pt-BR",
+              {
+                style: "currency",
+                currency: "BRL",
+              },
+            )}</td>
             <td style="padding: 4px 8px; border-bottom: 1px solid #ccc;">${new Date(item.expense.created_at).toLocaleDateString()}</td>
           </tr>
         `,
@@ -40,6 +47,7 @@ function Header() {
           <thead>
             <tr>
               <th style="text-align: left; padding: 4px 8px; border-bottom: 2px solid #666;">${selectedType === "expense" ? t("expense") : t("income")}</th>
+              <th style="text-align: center; padding: 4px 8px; border-bottom: 2px solid #666;">${t("headers.value")}</th>
               <th style="text-align: left; padding: 4px 8px; border-bottom: 2px solid #666;">${t("date")}</th>
             </tr>
           </thead>
