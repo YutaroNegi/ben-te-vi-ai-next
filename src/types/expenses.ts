@@ -61,6 +61,7 @@ export interface RegisterCategoryBody extends CategoryBody {
 
 export interface InitialExpenseValues {
   name?: string;
+  category_id?: string;
   description?: string;
   created_at?: string;
   amount?: number;
@@ -69,4 +70,5 @@ export interface InitialExpenseValues {
   installmentNumber?: number;
   pluggy_transaction_id?: string;
   pluggy_installments_reference?: string;
+  installment_id?: string;
 }
