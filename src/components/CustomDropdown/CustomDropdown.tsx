@@ -52,6 +52,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editOption, setEditOption] = useState<Option | null>(null);
   const [editCategoryName, setEditCategoryName] = useState("");
+  const [filterText, setFilterText] = useState("");
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -60,6 +61,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         !dropdownRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
+        setFilterText("");
         setIsAdding(false);
         setIsEditing(false);
       }
@@ -73,6 +75,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   const handleSelectOption = (option: Option) => {
     setSelected(option);
     setIsOpen(false);
+    setFilterText("");
     if (onSelectOption) onSelectOption(option);
   };
 
@@ -143,7 +146,11 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       <div
         onClick={() => {
           if (!isAdding && !isEditing) {
-            setIsOpen((prev) => !prev);
+            setIsOpen((prev) => {
+              const newState = !prev;
+              if (newState) setFilterText("");
+              return newState;
+            });
           }
         }}
         className={`cursor-pointer relative flex items-center border border-gray-300 rounded-full overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 ${labelClassName}`}
@@ -215,6 +222,19 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 
             <hr className="my-1" />
 
+            {/* Campo de filtro */}
+            {!isAdding && !isEditing && (
+              <div className="px-4 py-2">
+                <input
+                  type="text"
+                  className="w-full border rounded px-2 py-1"
+                  placeholder={t("filterPlaceholder")}
+                  value={filterText}
+                  onChange={(e) => setFilterText(e.target.value)}
+                />
+              </div>
+            )}
+
             {/* Se estamos editando */}
             {isEditing && editOption && (
               <div className="flex items-center px-4 py-2 border-b border-gray-200 bg-gray-50">
@@ -248,41 +268,45 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
             )}
 
             {/* Lista de opções */}
-            {options.map((option) => (
-              <div
-                key={option.value}
-                className="group flex items-center justify-between px-4 py-2 hover:bg-gray-100"
-              >
+            {options
+              .filter((option) =>
+                option.label.toLowerCase().includes(filterText.toLowerCase()),
+              )
+              .map((option) => (
                 <div
-                  className="cursor-pointer text-gray-700 text-left w-full"
-                  onClick={() => handleSelectOption(option)}
+                  key={option.value}
+                  className="group flex items-center justify-between px-4 py-2 hover:bg-gray-100"
                 >
-                  {option.label}
-                </div>
-
-                {/* Ícone de menu (3 pontinhos) */}
-                <div className="relative flex items-center">
-                  <div className="cursor-pointer p-1 ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
-                    <FaEllipsisV />
+                  <div
+                    className="cursor-pointer text-gray-700 text-left w-full"
+                    onClick={() => handleSelectOption(option)}
+                  >
+                    {option.label}
                   </div>
 
-                  <div className="hidden group-hover:flex flex-col absolute top-0 right-0 bg-white border border-gray-200 rounded shadow-lg z-20">
-                    <div
-                      className="cursor-pointer flex items-center px-4 py-2 text-xs text-matcha-dark hover:bg-gray-100"
-                      onClick={() => handleStartEdit(option)}
-                    >
-                      <FaEdit className="text-[17px]" />
+                  {/* Ícone de menu (3 pontinhos) */}
+                  <div className="relative flex items-center">
+                    <div className="cursor-pointer p-1 ml-2 text-gray-500 hover:text-gray-700 focus:outline-none">
+                      <FaEllipsisV />
                     </div>
-                    <div
-                      className="cursor-pointer flex items-center px-4 py-2 text-xs text-bentenavi-dark hover:bg-gray-100"
-                      onClick={() => handleDeleteClick(option)}
-                    >
-                      <FaTrash className="text-[15px]" />
+
+                    <div className="hidden group-hover:flex flex-col absolute top-0 right-0 bg-white border border-gray-200 rounded shadow-lg z-20">
+                      <div
+                        className="cursor-pointer flex items-center px-4 py-2 text-xs text-matcha-dark hover:bg-gray-100"
+                        onClick={() => handleStartEdit(option)}
+                      >
+                        <FaEdit className="text-[17px]" />
+                      </div>
+                      <div
+                        className="cursor-pointer flex items-center px-4 py-2 text-xs text-bentenavi-dark hover:bg-gray-100"
+                        onClick={() => handleDeleteClick(option)}
+                      >
+                        <FaTrash className="text-[15px]" />
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       )}
