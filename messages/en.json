@@ -79,7 +79,8 @@
     "categoryEditSuccess": "CATEGORY EDITED SUCCESSFULLY!",
     "categoryEditFail": "FAILED TO EDIT CATEGORY",
     "categoryDeleteSuccess": "CATEGORY DELETED SUCCESSFULLY!",
-    "categoryDeleteFail": "FAILED TO DELETE CATEGORY"
+    "categoryDeleteFail": "FAILED TO DELETE CATEGORY",
+    "filterPlaceholder": "...Filter"
   },
   "ExpenseTable": {
     "income": "INCOME",
