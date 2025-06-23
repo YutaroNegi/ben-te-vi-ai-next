@@ -23,6 +23,7 @@ interface CustomDropdownProps {
   onDelete?: (option: Option) => void;
   placeholder?: string;
   labelClassName?: string;
+  initialValue?: Option;
 }
 
 const CustomDropdown: React.FC<CustomDropdownProps> = ({
@@ -34,11 +35,15 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   onDelete,
   placeholder = "Selecione...",
   labelClassName = "bg-matcha-dark",
+  initialValue,
 }) => {
   const t = useTranslations("ExpenseForm");
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<Option | null>(null);
+  const [selected, setSelected] = useState<Option | null>(initialValue ?? null);
+  useEffect(() => {
+    setSelected(initialValue ?? null);
+  }, [initialValue]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [isAdding, setIsAdding] = useState(false);
