@@ -48,7 +48,7 @@ const Input: React.FC<InputProps> = ({
   return (
     <>
       <div
-        className={`flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 ${className} text-xs ${isShaking ? "shake" : ""}`}
+        className={`input-wrapper flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 ${className} text-xs transition-shadow duration-200 ${isShaking ? "shake" : ""}`}
         onAnimationEnd={handleAnimationEnd}
       >
         <span
@@ -116,6 +116,12 @@ const Input: React.FC<InputProps> = ({
         }
         .shake {
           animation: nudge 0.18s ease-out both;
+        }
+        .input-wrapper:focus-within {
+          box-shadow: 0 0 18px rgba(129, 149, 112, 0.45);
+          transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease;
         }
       `}</style>
     </>
