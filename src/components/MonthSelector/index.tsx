@@ -14,6 +14,8 @@ const MonthSelector: React.FC<MonthSelectorProps> = ({
   onChange,
   className = "",
 }) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+
   const handlePrev = () => {
     const y = selectedDate.getFullYear();
     const m = selectedDate.getMonth();
@@ -36,11 +38,40 @@ const MonthSelector: React.FC<MonthSelectorProps> = ({
         <FaArrowLeft />
       </button>
 
-      <div className="px-4 py-2 bg-bentenavi-dark text-white">
+      <button
+        type="button"
+        onClick={() => {
+          if (!inputRef.current) return;
+          if (typeof inputRef.current.showPicker === "function") {
+            inputRef.current.showPicker();
+            inputRef.current.focus();
+          } else {
+            inputRef.current.click();
+          }
+        }}
+        className="relative px-4 py-2 bg-bentenavi-dark text-white focus:outline-none"
+      >
         {selectedDate
           .toLocaleString("default", { month: "long", year: "numeric" })
           .toUpperCase()}
-      </div>
+        <input
+          ref={inputRef}
+          type="month"
+          value={`${selectedDate.getFullYear()}-${(selectedDate.getMonth() + 1)
+            .toString()
+            .padStart(2, "0")}`}
+          required
+          onChange={(e) => {
+            // If the value is cleared, keep the previous month to avoid breaking the component
+            if (!e.target.value) {
+              return;
+            }
+            const [year, month] = e.target.value.split("-");
+            onChange(new Date(parseInt(year, 10), parseInt(month, 10) - 1, 1));
+          }}
+          className="absolute inset-0 opacity-0 cursor-pointer"
+        />
+      </button>
 
       <button
         onClick={handleNext}
