@@ -1,0 +1,18 @@
+thead.sticky {
+  position: sticky;
+  top: 0;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #e5e0d8; /* almond-900 ou outra cor desejada */
+  border-radius: 8px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #819570; /* tom mais escuro para contraste */
+  border-radius: 8px;
+}
