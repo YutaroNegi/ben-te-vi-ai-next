@@ -50,14 +50,16 @@ const Table: React.FC<TableProps> = ({
   return (
     // Adicionamos overflow-hidden para garantir que os cantos arredondados não sejam “vazados”
     <div
-      className={`scrollbar-custom my-4 shadow-lg rounded mb-[50px] bg-almond-900 ${className}`}
+      className={`my-4 shadow-lg rounded mb-[50px] bg-almond-900 ${className}`}
     >
       <h2 className="bg-matcha-light text-white text-sm font-bold p-2 text-center rounded-tl-lg rounded-tr-lg">
         {title}
       </h2>
 
       {/* Área de scroll */}
-      <div className={`${scrollable ? `overflow-y-auto ${maxHeight}` : ""}`}>
+      <div
+        className={`${scrollable ? `scrollbar-custom overflow-y-auto ${maxHeight}` : ""}`}
+      >
         <table className="min-w-full border-separate border-spacing-0">
           <thead className="bg-matcha-lighter sticky top-0 z-10">
             <tr>
