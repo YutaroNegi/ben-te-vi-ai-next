@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NumericFormat, NumberFormatValues } from "react-number-format";
 
 interface InputProps {
@@ -36,56 +36,89 @@ const Input: React.FC<InputProps> = ({
   name,
   maskMilharBr = false,
 }) => {
+  const [isShaking, setIsShaking] = useState(false);
+
+  useEffect(() => {
+    console.log("shaking state:", isShaking);
+  }, [isShaking]);
+
+  const handleFocus = () => setIsShaking(true);
+  const handleAnimationEnd = () => setIsShaking(false);
+
   return (
-    <div
-      className={`flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 ${className} text-xs`}
-    >
-      <span
-        className={`flex items-center justify-center ${labelClassName} ${labelTextClassName} px-4`}
-        style={{ width: "45%" }}
+    <>
+      <div
+        className={`flex items-stretch w-64 rounded-full overflow-hidden border border-gray-300 ${className} text-xs ${isShaking ? "shake" : ""}`}
+        onAnimationEnd={handleAnimationEnd}
       >
-        {label}
-      </span>
-      {maskMilharBr ? (
-        <NumericFormat
-          id={id}
-          name={name}
-          placeholder={placeholder}
-          value={value}
-          defaultValue={initialValue}
-          thousandSeparator="."
-          decimalSeparator=","
-          onValueChange={(values: NumberFormatValues) => {
-            const syntheticEvent = {
-              target: {
-                id,
-                name,
-                value: values.floatValue,
-              },
-            };
-            if (onChange) {
-              onChange(
-                syntheticEvent as unknown as React.ChangeEvent<HTMLInputElement>,
-              );
-            }
-          }}
-          {...(step ? { step } : {})}
-          className={`px-4 py-2 outline-none w-[70%] ${inputClassName} text-black`}
-        />
-      ) : (
-        <input
-          id={id}
-          name={name}
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          defaultValue={initialValue}
-          onChange={onChange}
-          step={step}
-          className={`px-4 py-2 outline-none w-[70%] ${inputClassName} text-black`}
-        />
-      )}
-    </div>
+        <span
+          className={`flex items-center justify-center ${labelClassName} ${labelTextClassName} px-4`}
+          style={{ width: "45%" }}
+        >
+          {label}
+        </span>
+        {maskMilharBr ? (
+          <NumericFormat
+            id={id}
+            name={name}
+            placeholder={placeholder}
+            value={value}
+            defaultValue={initialValue}
+            thousandSeparator="."
+            decimalSeparator=","
+            onValueChange={(values: NumberFormatValues) => {
+              const syntheticEvent = {
+                target: {
+                  id,
+                  name,
+                  value: values.floatValue,
+                },
+              };
+              if (onChange) {
+                onChange(
+                  syntheticEvent as unknown as React.ChangeEvent<HTMLInputElement>,
+                );
+              }
+            }}
+            {...(step ? { step } : {})}
+            className={`px-4 py-2 outline-none w-[70%] ${inputClassName} text-black`}
+            onFocus={handleFocus}
+          />
+        ) : (
+          <input
+            id={id}
+            name={name}
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            defaultValue={initialValue}
+            onChange={onChange}
+            step={step}
+            className={`px-4 py-2 outline-none w-[70%] ${inputClassName} text-black`}
+            onFocus={handleFocus}
+          />
+        )}
+      </div>
+      <style jsx global>{`
+        @keyframes nudge {
+          0% {
+            transform: translateX(0);
+          }
+          40% {
+            transform: translateX(2px);
+          } /* suave para a direita */
+          80% {
+            transform: translateX(-1px);
+          } /* leve compensação para a esquerda */
+          100% {
+            transform: translateX(0);
+          }
+        }
+        .shake {
+          animation: nudge 0.18s ease-out both;
+        }
+      `}</style>
+    </>
   );
 };
 
