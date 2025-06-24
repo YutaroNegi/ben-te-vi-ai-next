@@ -161,6 +161,8 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         columnWidths={["auto", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
         setOpenMenuId={setOpenMenuId}
         openMenuId={openMenuId}
+        scrollable={true}
+        maxHeight="max-h-60"
       />
       <ReactTooltip id="my-tooltip" />
     </>

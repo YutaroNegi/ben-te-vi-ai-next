@@ -99,6 +99,8 @@ const TransactionsTable: React.FC<TransactionsTableProps> = ({
       openMenuId={openMenuId}
       setOpenMenuId={setOpenMenuId}
       rowClasses={rowClasses}
+      scrollable={true}
+      maxHeight="max-h-80"
     />
   );
 };
