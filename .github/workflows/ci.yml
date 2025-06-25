@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      # Instala dependências
+      - name: Install dependencies
+        run: npm i
+
+      # Executa os testes
+      - name: Run tests
+        run: npm run test
+
+      # Executa o check (por exemplo TypeScript, ESLint, etc.)
+      - name: Run checks
+        run: npm run check
