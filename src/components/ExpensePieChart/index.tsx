@@ -49,7 +49,7 @@ const ExpensePieChart: React.FC = () => {
 
   return (
     // Container responsivo: largura total e altura definida de forma flexível
-    <div className="w-full h-64 rounded-lg p-3">
+    <div className="w-full h-64 rounded-lg p-3 mb-4">
       <ResponsiveContainer>
         <PieChart>
           <Pie
