@@ -13,10 +13,17 @@ import {
   Legend,
 } from "recharts";
 import { LoadingSpinner } from "@/components";
-
+import { useTranslations } from "next-intl";
 const ExpensesBarChart: React.FC = () => {
-  const { selectedDate, installmentsByCategory, categories, loading } =
-    useExpensesStore();
+  const {
+    selectedDate,
+    installmentsByCategory,
+    categories,
+    loading,
+    selectedType,
+  } = useExpensesStore();
+
+  const t = useTranslations("Chart");
 
   if (loading) {
     return <LoadingSpinner />;
@@ -49,7 +56,7 @@ const ExpensesBarChart: React.FC = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="day"
-            label={{ value: "Dia", position: "insideBottom", dy: 10 }}
+            label={{ value: t("day"), position: "insideBottom", dy: 10 }}
           />
           <YAxis
             tickFormatter={(value) =>
@@ -74,7 +81,7 @@ const ExpensesBarChart: React.FC = () => {
             }
           />
           <Legend />
-          <Bar dataKey="amount" fill="#8884d8" name="Despesas" />
+          <Bar dataKey="amount" fill="#8884d8" name={t(selectedType)} />
         </BarChart>
       </ResponsiveContainer>
     </div>
