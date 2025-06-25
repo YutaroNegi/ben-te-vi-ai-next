@@ -116,6 +116,9 @@
     }
   },
   "Chart": {
+    "income": "RENDA",
+    "expense": "DESPESA",
+    "day": "Dia",
     "noExpensesFound": "NENHUMA DESPESA ENCONTRADA PARA O MÊS ATUAL"
   },
   "Dashboard": {
