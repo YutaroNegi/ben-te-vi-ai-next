@@ -147,7 +147,7 @@ const ViewExpenses: React.FC = () => {
   return (
     <div className="p-0 m-0 w-full relative">
       <div className="flex items-center justify-around mb-5 flex-row">
-        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded-full">
+        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
           {t("monthTotal")} {monthTotal.toFixed(2)}
         </div>
         <div className="flex items-center justify-center">
@@ -156,7 +156,7 @@ const ViewExpenses: React.FC = () => {
             onChange={setSelectedDate}
           />
         </div>
-        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded-full">
+        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
           {t("monthTotal")} {monthTotal.toFixed(2)}
         </div>
       </div>
