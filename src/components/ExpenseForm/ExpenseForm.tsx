@@ -70,7 +70,6 @@ const ExpenseForm = ({
   const handleSaveEdit = async (expenseData: ExpenseData) => {
     try {
       if (!initialValue?.installment_id) return;
-      console.log("Editing installment with data:", expenseData);
 
       await editOneInstallment(initialValue.installment_id, expenseData);
     } catch (error) {
@@ -188,7 +187,6 @@ const ExpenseForm = ({
   };
 
   const handleSelectCategory = (option: Option) => {
-    console.log("Selected category:", option);
     setSelectedCategory(option);
   };
 

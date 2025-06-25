@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { NumericFormat, NumberFormatValues } from "react-number-format";
 
 interface InputProps {
@@ -37,10 +37,6 @@ const Input: React.FC<InputProps> = ({
   maskMilharBr = false,
 }) => {
   const [isShaking, setIsShaking] = useState(false);
-
-  useEffect(() => {
-    console.log("shaking state:", isShaking);
-  }, [isShaking]);
 
   const handleFocus = () => setIsShaking(true);
   const handleAnimationEnd = () => setIsShaking(false);
