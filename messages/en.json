@@ -116,6 +116,7 @@
     }
   },
   "Chart": {
+    "day": "Day",
     "noExpensesFound": "NO EXPENSES FOUND FOR THE CURRENT MONTH"
   },
   "Dashboard": {
