@@ -119,8 +119,8 @@
     "noExpensesFound": "NO EXPENSES FOUND FOR THE CURRENT MONTH"
   },
   "Dashboard": {
-    "pieChart": "PIE CHART",
-    "barChart": "BAR CHART"
+    "pieChart": "Expenses by Category",
+    "barChart": "Daily Expenses"
   },
 
   "TransactionsTable": {

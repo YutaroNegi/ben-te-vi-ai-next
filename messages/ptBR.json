@@ -119,8 +119,8 @@
     "noExpensesFound": "NENHUMA DESPESA ENCONTRADA PARA O MÊS ATUAL"
   },
   "Dashboard": {
-    "pieChart": "GRÁFICO DE PIZZA",
-    "barChart": "GRÁFICO DE BARRAS"
+    "pieChart": "Gastos por categoria",
+    "barChart": "Gastos diários"
   },
   "TransactionsTable": {
     "title": "TRANSAÇÕES DO MÊS",
