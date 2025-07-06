@@ -113,6 +113,15 @@
       "errorDeleting": "ERRO AO EXCLUIR PARCELA.",
       "updated": "PARCELA ATUALIZADA COM SUCESSO!",
       "errorUpdating": "ERRO AO ATUALIZAR PARCELA."
+    },
+    "editInstallmentForm": "Deseja editar esta parcela?",
+    "confirmDelete": {
+      "message": "Tem certeza de que deseja excluir esta parcela?",
+      "deleteAllCheckbox": "Excluir todas as parcelas relacionadas"
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "delete": "Excluir"
     }
   },
   "Chart": {

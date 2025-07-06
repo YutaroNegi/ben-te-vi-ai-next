@@ -113,6 +113,16 @@
       "errorDeleting": "ERROR DELETING INSTALLMENT.",
       "updated": "INSTALLMENT UPDATED SUCCESSFULLY!",
       "errorUpdating": "ERROR UPDATING INSTALLMENT."
+    },
+    "editInstallmentForm": "Do you want to edit this installment?",
+
+    "confirmDelete": {
+      "message": "Tem certeza de que deseja excluir esta parcela?",
+      "deleteAllCheckbox": "Excluir todas as parcelas relacionadas"
+    },
+    "buttons": {
+      "cancel": "Cancelar",
+      "delete": "Excluir"
     }
   },
   "Chart": {
