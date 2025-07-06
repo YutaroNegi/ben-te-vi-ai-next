@@ -4,32 +4,23 @@ import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Table } from "@/components";
 import { CategoryOption, Installment } from "@/types";
-import { useExpensesStore } from "@/stores/expenseStore";
-import { toast } from "react-toastify";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
 interface InstallmentTableProps {
   category: CategoryOption;
   installments: Installment[];
-  onRefresh: () => void;
   onEdit: (inst: Installment) => void;
+  onRequestDelete: (inst: Installment) => void;
 }
 
 const InstallmentTable: React.FC<InstallmentTableProps> = ({
   category,
   installments,
-  onRefresh,
   onEdit,
+  onRequestDelete,
 }) => {
   const t = useTranslations("ExpenseTable");
-
-  // Calcula o total dos valores das parcelas desta categoria
-  const totalAmount = installments.reduce((sum, inst) => sum + inst.amount, 0);
-
-  // Acesso à store para editar e deletar installments
-  const { deleteOneInstallment } = useExpensesStore();
-
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -59,17 +50,12 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
     onEdit(inst);
   };
 
-  const handleDeleteClick = async (inst: Installment) => {
+  const handleDeleteClick = (inst: Installment) => {
     setOpenMenuId(null);
-    try {
-      await deleteOneInstallment(inst.id);
-      toast.success(t("toast.deleted"));
-      onRefresh();
-    } catch (error) {
-      console.error("Erro ao deletar installment:", error);
-      toast.error(t("toast.errorDeleting"));
-    }
+    onRequestDelete(inst);
   };
+
+  const totalAmount = installments.reduce((sum, inst) => sum + inst.amount, 0);
 
   // Definição dos cabeçalhos da tabela
   const headers = [

@@ -11,6 +11,7 @@ import {
   ExpenseForm,
 } from "@/components";
 import { useTranslations } from "next-intl";
+import { toast } from "react-toastify";
 
 import { Installment } from "@/types";
 
@@ -75,12 +76,19 @@ const ViewExpenses: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedInst, setSelectedInst] = useState<Installment | null>(null);
 
+  // modal de confirmação de exclusão
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteAllChecked, setDeleteAllChecked] = useState(false);
+  const [instToDelete, setInstToDelete] = useState<Installment | null>(null);
+
   const {
     categories,
     installmentsByCategory,
     loading,
     fetchCategories,
     fetchInstallments,
+    deleteOneInstallment,
+    deleteExpense,
     selectedDate,
     setSelectedDate,
     monthTotal,
@@ -122,17 +130,34 @@ const ViewExpenses: React.FC = () => {
     setSelectedInst(null);
   };
 
+  const handleRequestDelete = (inst: Installment) => {
+    setInstToDelete(inst);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!instToDelete) return;
+
+    const deleteFunc = deleteAllChecked
+      ? () => deleteExpense(instToDelete.expense_id)
+      : () => deleteOneInstallment(instToDelete.id);
+
+    try {
+      await deleteFunc();
+      toast.success(t("toast.deleted"));
+      await loadInstallments();
+    } catch (error) {
+      console.error("Erro ao deletar installment:", error);
+      toast.error(t("toast.errorDeleting"));
+    } finally {
+      setDeleteModalOpen(false);
+      setDeleteAllChecked(false);
+      setInstToDelete(null);
+    }
+  };
+
   const initialExpenseValues = selectedInst
-    ? // name?: string;
-      // description?: string;
-      // created_at?: string;
-      // amount?: number;
-      // type: ExpenseType;
-      // installments?: number;
-      // installmentNumber?: number;
-      // pluggy_transaction_id?: string;
-      // pluggy_installments_reference?: string;
-      {
+    ? {
         name: selectedInst.expense?.name ?? "",
         amount: selectedInst.amount,
         description: selectedInst.expense?.description ?? "",
@@ -200,8 +225,8 @@ const ViewExpenses: React.FC = () => {
                   <InstallmentTable
                     category={category}
                     installments={installmentsByCategory[category.value] || []}
-                    onRefresh={loadInstallments}
                     onEdit={handleEditInstallment}
+                    onRequestDelete={handleRequestDelete}
                   />
                 </div>
               ))}
@@ -223,6 +248,43 @@ const ViewExpenses: React.FC = () => {
               onClick={handleCancelEdit}
             >
               {t("cancel") ?? "Cancelar"}
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {deleteModalOpen && (
+        <Modal
+          isOpen={deleteModalOpen}
+          onClose={() => setDeleteModalOpen(false)}
+        >
+          <p>{t("confirmDelete.message")}</p>
+
+          {instToDelete?.total_installments &&
+            instToDelete.total_installments > 1 && (
+              <label className="flex items-center mt-4">
+                <input
+                  type="checkbox"
+                  className="mr-2"
+                  checked={deleteAllChecked}
+                  onChange={(e) => setDeleteAllChecked(e.target.checked)}
+                />
+                {t("confirmDelete.deleteAllCheckbox")}
+              </label>
+            )}
+
+          <div className="mt-6 flex justify-end space-x-2">
+            <button
+              className="px-4 py-2 bg-gray-200 rounded"
+              onClick={() => setDeleteModalOpen(false)}
+            >
+              {t("buttons.cancel")}
+            </button>
+            <button
+              className="px-4 py-2 bg-red-600 text-white rounded"
+              onClick={confirmDelete}
+            >
+              {t("buttons.delete")}
             </button>
           </div>
         </Modal>
