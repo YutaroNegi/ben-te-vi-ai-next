@@ -59,7 +59,14 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // 2. Delete the "expenses" row
+    const { error: errI } = await supabase
+      .from("installments")
+      .delete()
+      .eq("expense_id", id);
+
+    if (errI)
+      return NextResponse.json({ error: errI.message }, { status: 500 });
+
     const { error } = await supabase
       .from("expenses")
       .delete()
