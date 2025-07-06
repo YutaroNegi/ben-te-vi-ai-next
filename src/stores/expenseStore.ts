@@ -8,6 +8,7 @@ import {
   fetchInstallmentsByUserAndDate,
   editInstallment,
   deleteInstallment,
+  deleteExpense,
 } from "@/utils";
 import {
   CategoryOption,
@@ -40,7 +41,7 @@ interface ExpensesState {
   ) => Promise<void>;
   editOneInstallment: (id: string, data: Partial<Installment>) => Promise<void>;
   deleteOneInstallment: (id: string) => Promise<void>;
-
+  deleteExpense: (id: string) => Promise<void>;
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
 
@@ -246,7 +247,36 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
       set({ error: "Erro ao deletar parcela", loading: false });
     }
   },
-
+  deleteExpense: async (id: string) => {
+    set({ loading: true, error: null });
+    try {
+      await deleteExpense(id);
+      set({ loading: false });
+      // Remove localmente:
+      const installmentsByCat = get().installmentsByCategory;
+      let foundCategoryId: string | null = null;
+      for (const catId of Object.keys(installmentsByCat)) {
+        const index = installmentsByCat[catId].findIndex((i) => i.id === id);
+        if (index !== -1) {
+          foundCategoryId = catId;
+          break;
+        }
+      }
+      if (foundCategoryId) {
+        const filteredArr = installmentsByCat[foundCategoryId].filter(
+          (i) => i.id !== id,
+        );
+        set({
+          installmentsByCategory: {
+            ...installmentsByCat,
+            [foundCategoryId]: filteredArr,
+          },
+        });
+      }
+    } catch {
+      set({ error: "Erro ao deletar parcela", loading: false });
+    }
+  },
   selectedDate: new Date(),
   setSelectedDate: (date: Date) => set({ selectedDate: date }),
   monthTotal: 0,
