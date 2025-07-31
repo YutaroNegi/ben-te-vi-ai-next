@@ -20,6 +20,8 @@ import Pluggy from "./Pluggy";
 import TransactionsTable from "./TransactionsTable";
 import MonthSelector from "./MonthSelector";
 import Modal from "./Modal";
+import InputFile from "./InputFile";
+import SyncCSV from "./SyncCSV";
 
 export {
   AuthForm,
@@ -44,4 +46,6 @@ export {
   TransactionsTable,
   MonthSelector,
   Modal,
+  InputFile,
+  SyncCSV,
 };
