@@ -29,7 +29,7 @@ export default {
           800: "#ffed8a",
         },
         bentenavi: {
-          dark: "#262d93",
+          dark: "#556952",
           900: "#5c6092",
         },
         chocolate: {
