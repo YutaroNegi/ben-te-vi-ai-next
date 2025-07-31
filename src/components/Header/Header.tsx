@@ -6,6 +6,7 @@ import { useExpensesStore } from "@/stores/expenseStore";
 import { useTranslations } from "next-intl";
 import { Tooltip } from "react-tooltip";
 import { GrConnectivity } from "react-icons/gr";
+import { BsFiletypeCsv } from "react-icons/bs";
 
 function Header() {
   const { last10Installments, selectedType } = useExpensesStore();
@@ -72,6 +73,9 @@ function Header() {
       </Link>
 
       <div className="flex items-center space-x-4">
+        <Link href="/csv">
+          <BsFiletypeCsv size={27} color="black" className="cursor-pointer" />
+        </Link>
         <Link href="/connect">
           <GrConnectivity size={27} color="black" className="cursor-pointer" />
         </Link>
