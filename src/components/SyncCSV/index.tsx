@@ -8,6 +8,50 @@ import TransactionsTable from "@/components/TransactionsTable";
 import { Transaction, InitialExpenseValues } from "@/types";
 import { useTranslations } from "next-intl";
 
+// Helper utilities --------------------------------------------------------
+const getField = (row: Record<string, unknown>, keys: string[]) => {
+  for (const key of keys) {
+    if (row[key] !== undefined && row[key] !== null && row[key] !== "") {
+      return row[key] as string | number;
+    }
+  }
+  return undefined;
+};
+
+const parseNumber = (value: string | number | undefined): number => {
+  if (typeof value === "number") return value;
+  if (!value) return 0;
+
+  const str = String(value).trim();
+
+  // Case 1: Brazilian format with comma as decimal separator (e.g., 1.234,56)
+  if (str.includes(",")) {
+    const cleaned = str.replace(/\./g, "").replace(",", ".");
+    return Number(cleaned);
+  }
+
+  // Case 2: Standard format with dot as decimal separator (e.g., 168.41)
+  return Number(str.replace(/,/g, ""));
+};
+
+const parseDateString = (value: string | undefined): string => {
+  if (!value) return "";
+  const str = String(value).trim();
+  // ISO / US format YYYY‑MM‑DD or YYYY/MM/DD
+  if (/^\d{4}[-/]\d{2}[-/]\d{2}/.test(str)) {
+    return new Date(str).toISOString();
+  }
+  // Brazilian format DD/MM/YYYY
+  const br = str.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (br) {
+    const [, d, m, y] = br;
+    return new Date(`${y}-${m}-${d}`).toISOString();
+  }
+  // Fallback
+  return new Date(str).toISOString();
+};
+// -------------------------------------------------------------------------
+
 export default function SyncCSV() {
   const t = useTranslations("UploadCSV");
 
@@ -33,15 +77,46 @@ export default function SyncCSV() {
         const parsed: Transaction[] = (results.data as any[]).map((row) => ({
           id: uuidv4(),
           description:
-            row.description ?? row.Description ?? row.title ?? row.Title ?? "",
-          category: row.category ?? "",
-          amount: Number(
-            row.amount ?? row.Amount ?? row.valor ?? row.Valor ?? 0,
+            (getField(row, [
+              "description",
+              "Description",
+              "descricao",
+              "Descrição",
+              "title",
+              "Title",
+              "titulo",
+              "Titulo",
+            ]) as string) ?? "",
+          category:
+            (getField(row, [
+              "category",
+              "Category",
+              "categoria",
+              "Categoria",
+            ]) as string) ?? "",
+          amount: parseNumber(
+            getField(row, [
+              "amount",
+              "Amount",
+              "valor",
+              "Valor",
+              "valor (r$)",
+              "Valor (R$)",
+            ]) as string | number | undefined,
           ),
           imported: false,
-          date: row.date ?? row.Date ?? "",
+          date: parseDateString(
+            getField(row, ["date", "Date", "data", "Data"]) as
+              | string
+              | undefined,
+          ),
           pluggy_installments_reference: undefined,
-          installmentNumber: row.installmentNumber,
+          installmentNumber: getField(row, [
+            "installmentNumber",
+            "installment_number",
+            "parcela",
+            "InstallmentNumber",
+          ]) as number | undefined,
           creditCardMetadata: undefined,
         }));
 
