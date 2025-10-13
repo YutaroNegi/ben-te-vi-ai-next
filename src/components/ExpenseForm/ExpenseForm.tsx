@@ -130,7 +130,7 @@ const ExpenseForm = ({
       const endDate = new Date(year, month + 1, 1).toISOString();
 
       await onSubmit?.();
-      await fetchInstallments(userId, startDate, endDate, type);
+      await fetchInstallments(userId, type, startDate, endDate);
     } catch (error) {
       console.error(error);
       toast.error(tApi("errorSavingExpense"));

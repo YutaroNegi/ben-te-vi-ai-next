@@ -1,4 +1,3 @@
-// stores/useExpensesStore.ts
 import { create } from "zustand";
 import {
   fetchCategories,
@@ -16,6 +15,7 @@ import {
   RegisterCategoryBody,
   Installment,
   ExpenseType,
+  FetchInstallments,
 } from "@/types";
 
 interface ExpensesState {
@@ -33,12 +33,7 @@ interface ExpensesState {
   removeCategory: (id: string) => Promise<void>;
 
   installmentsByCategory: Record<string, Installment[]>;
-  fetchInstallments: (
-    userId: string,
-    startDate: string,
-    endDate: string,
-    type: ExpenseType,
-  ) => Promise<void>;
+  fetchInstallments: FetchInstallments;
   editOneInstallment: (id: string, data: Partial<Installment>) => Promise<void>;
   deleteOneInstallment: (id: string) => Promise<void>;
   deleteExpense: (id: string) => Promise<void>;
@@ -143,17 +138,20 @@ export const useExpensesStore = create<ExpensesState>((set, get) => ({
   installmentsByCategory: {},
   fetchInstallments: async (
     userId: string,
-    startDate: string,
-    endDate: string,
     type: ExpenseType,
+    startDate?: string,
+    endDate?: string,
+    opts?: { categoryId?: string; searchTerm?: string },
   ) => {
     set({ loading: true, error: null });
     try {
       const grouped = await fetchInstallmentsByUserAndDate(
         userId,
+        type,
+        opts?.categoryId,
+        opts?.searchTerm,
         startDate,
         endDate,
-        type,
       );
       set({ installmentsByCategory: grouped, loading: false });
       const monthTotal = Object.values(grouped).reduce(

@@ -8,6 +8,7 @@ import {
   RegisterCategoryBody,
   ExpenseType,
   InitialExpenseValues,
+  FetchInstallments,
 } from "./expenses";
 import { ItemData, Transaction, TransactionsTableProps } from "./pluggy";
 
@@ -25,4 +26,5 @@ export type {
   Transaction,
   TransactionsTableProps,
   InitialExpenseValues,
+  FetchInstallments,
 };
