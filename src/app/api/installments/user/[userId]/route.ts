@@ -17,23 +17,39 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
-    const type = searchParams.get("type");
+    const typeParam = searchParams.get("type");
+    const categoryId = searchParams.get("categoryId");
+    const searchTerm = searchParams.get("searchTerm");
 
-    if (!startDate || !endDate) {
-      return NextResponse.json(
-        { error: "Missing start date or end date" },
-        { status: 400 },
+    let query = supabase
+      .from("installments_extended")
+      .select("*")
+      .eq("user_id", userId)
+      .order("due_date", { ascending: true });
+
+    if (typeParam === "income" || typeParam === "expense") {
+      query = query.eq("type", typeParam);
+    }
+
+    if (startDate) {
+      query = query.gte("due_date", startDate);
+    }
+    if (endDate) {
+      query = query.lte("due_date", endDate);
+    }
+
+    if (categoryId) {
+      query = query.eq("category_id", categoryId);
+    }
+
+    if (searchTerm && searchTerm.trim()) {
+      const t = searchTerm.trim();
+      query = query.or(
+        `expense_name.ilike.%${t}%,expense_description.ilike.%${t}%`,
       );
     }
 
-    const { data, error } = await supabase
-      .from("installments_extended")
-      .select("*")
-      .gte("due_date", startDate)
-      .lt("due_date", endDate)
-      .eq("user_id", userId)
-      .eq("type", type);
-
+    const { data, error } = await query;
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
