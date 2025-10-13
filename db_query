@@ -69,3 +69,44 @@ CREATE INDEX idx_installments_pluggy_tx ON installments(pluggy_transaction_id);
 
 ALTER TABLE expenses
 ADD COLUMN pluggy_installments_reference TEXT;
+
+
+BEGIN;
+
+-- 1) Derruba a antiga
+DROP VIEW IF EXISTS public.installments_extended;
+
+-- 2) Recria com as colunas que você precisa
+CREATE VIEW public.installments_extended AS
+SELECT
+  -- i.* explicitado para evitar surpresas
+  i.id,
+  i.expense_id,
+  i.installment_number,
+  i.due_date,
+  i.amount,
+  i.paid,
+  i.paid_at,
+
+  -- mesmas colunas que já existiam na view antiga
+  e.user_id,
+  to_jsonb(e)                            AS expense,
+  COUNT(i.id) OVER (PARTITION BY i.expense_id) AS total_installments,
+  SUM(i.amount) OVER (PARTITION BY i.expense_id) AS total_purchase_amount,
+  CASE WHEN COUNT(i.id) OVER (PARTITION BY i.expense_id) = 1
+       THEN 'single' ELSE 'multi' END    AS installment_type,
+  e.type,
+
+  -- NOVAS colunas expostas para filtro/uso no front
+  e.category_id,
+  e.name                                 AS expense_name,
+  e.description                          AS expense_description,
+  e.created_at                           AS expense_created_at
+
+FROM installments i
+JOIN expenses e ON i.expense_id = e.id;
+
+-- (Opcional) re-grants, se você usa políticas/grants específicos no Supabase:
+-- GRANT SELECT ON public.installments_extended TO anon, authenticated;
+
+COMMIT;
