@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/authStore";
 import { useExpensesStore } from "@/stores/expenseStore";
 import {
+  Filter,
   InstallmentTable,
   LoadingSpinner,
   MonthSelector,
@@ -20,7 +21,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaFilter } from "react-icons/fa";
 
 interface CustomArrowProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -75,6 +76,19 @@ const ViewExpenses: React.FC = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedInst, setSelectedInst] = useState<Installment | null>(null);
+  const [filterMode, setFilterMode] = useState(false);
+  const [filters, setFilters] = useState<{
+    searchTerm: string;
+    startDate?: string;
+    endDate?: string;
+    categoryId?: string;
+  }>({ searchTerm: "" });
+
+  const updateFilters = React.useCallback(
+    (changes: Partial<typeof filters>) =>
+      setFilters((prev) => ({ ...prev, ...changes })),
+    [],
+  );
 
   // modal de confirmação de exclusão
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -101,18 +115,57 @@ const ViewExpenses: React.FC = () => {
     }
   }, [userId, fetchCategories, selectedType]);
 
+  // loadInstallments (fora do filterMode)
   const loadInstallments = React.useCallback(async () => {
     if (!userId) return;
     const year = selectedDate.getFullYear();
     const month = selectedDate.getMonth();
     const startDate = new Date(year, month, 1).toISOString();
     const endDate = new Date(year, month + 1, 1).toISOString();
-    await fetchInstallments(userId, startDate, endDate, selectedType);
+
+    // ORDEM: (userId, type, startDate, endDate)
+    await fetchInstallments(userId, selectedType, startDate, endDate);
   }, [userId, selectedDate, fetchInstallments, selectedType]);
 
   useEffect(() => {
-    loadInstallments();
-  }, [loadInstallments]);
+    if (!filterMode) {
+      // só atualiza pelo mês quando NÃO está no modo filtro
+      loadInstallments();
+    }
+  }, [loadInstallments, filterMode]);
+
+  useEffect(() => {
+    if (!userId || !filterMode) return;
+
+    // ORDEM: (userId, type, startDate?, endDate?, opts?)
+    fetchInstallments(
+      userId,
+      selectedType,
+      filters.startDate,
+      filters.endDate,
+      {
+        categoryId: filters.categoryId,
+        searchTerm: filters.searchTerm,
+      },
+    ).catch(console.error);
+  }, [
+    userId,
+    filterMode,
+    selectedType,
+    filters.startDate,
+    filters.endDate,
+    filters.categoryId,
+    filters.searchTerm,
+    fetchInstallments,
+  ]);
+  const toggleFilterMode = () => {
+    setFilterMode((prev) => {
+      const next = !prev;
+      // ao sair do modo filtro, volta para a visão mensal
+      if (!next) loadInstallments();
+      return next;
+    });
+  };
 
   const handleEditInstallment = (inst: Installment) => {
     setSelectedInst(inst);
@@ -171,20 +224,38 @@ const ViewExpenses: React.FC = () => {
 
   return (
     <div className="p-0 m-0 w-full relative">
-      <div className="flex items-center justify-around mb-5 flex-row">
-        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
-          {t("monthTotal")} {monthTotal.toFixed(2)}
+      <button
+        className="flex items-center mb-4 px-3 py-1 bg-bentenavi-dark text-white rounded hover:bg-gray-400 transition-colors ml-auto my-0"
+        onClick={toggleFilterMode}
+      >
+        <FaFilter className="mr-2" />
+        {filterMode ? t("buttons.hideFilter") : t("buttons.showFilter")}
+      </button>
+
+      {filterMode && (
+        <Filter
+          categories={categories}
+          values={filters}
+          onChange={updateFilters}
+        />
+      )}
+
+      {!filterMode && (
+        <div className="flex items-center justify-around mb-5 flex-row">
+          <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
+            {t("monthTotal")} {monthTotal.toFixed(2)}
+          </div>
+          <div className="flex items-center justify-center">
+            <MonthSelector
+              selectedDate={selectedDate}
+              onChange={setSelectedDate}
+            />
+          </div>
+          <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
+            {t("monthTotal")} {monthTotal.toFixed(2)}
+          </div>
         </div>
-        <div className="flex items-center justify-center">
-          <MonthSelector
-            selectedDate={selectedDate}
-            onChange={setSelectedDate}
-          />
-        </div>
-        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
-          {t("monthTotal")} {monthTotal.toFixed(2)}
-        </div>
-      </div>
+      )}
 
       {loading && (
         <p className="text-center">
