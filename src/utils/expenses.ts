@@ -126,14 +126,18 @@ export const deleteInstallment = async (id: string) => {
 
 export async function fetchInstallmentsByUserAndDate(
   userId: string,
-  startDate: string,
-  endDate: string,
   type: ExpenseType,
+  categoryId?: string,
+  searchTerm?: string,
+  startDate?: string,
+  endDate?: string,
 ): Promise<Record<string, Installment[]>> {
   const response = await fetch(
     `/api/installments/user/${userId}?startDate=${encodeURIComponent(
-      startDate,
-    )}&endDate=${encodeURIComponent(endDate)}&type=${type}`,
+      startDate ?? "",
+    )}&endDate=${encodeURIComponent(endDate ?? "")}&type=${type}${
+      categoryId ? `&categoryId=${categoryId}` : ""
+    }${searchTerm ? `&searchTerm=${encodeURIComponent(searchTerm)}` : ""}`,
   );
 
   if (!response.ok) {

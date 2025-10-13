@@ -72,3 +72,16 @@ export interface InitialExpenseValues {
   pluggy_installments_reference?: string;
   installment_id?: string;
 }
+
+export interface FetchInstallmentsOptions {
+  categoryId?: string;
+  searchTerm?: string;
+}
+
+export type FetchInstallments = (
+  userId: string,
+  type: ExpenseType,
+  startDate?: string,
+  endDate?: string,
+  opts?: FetchInstallmentsOptions,
+) => Promise<void>;
