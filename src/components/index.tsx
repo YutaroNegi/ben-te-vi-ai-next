@@ -22,6 +22,8 @@ import MonthSelector from "./MonthSelector";
 import Modal from "./Modal";
 import InputFile from "./InputFile";
 import SyncCSV from "./SyncCSV";
+import Filter from "./Filter";
+import InputDateRange from "./InputDateRange";
 
 export {
   AuthForm,
@@ -48,4 +50,6 @@ export {
   Modal,
   InputFile,
   SyncCSV,
+  Filter,
+  InputDateRange,
 };
