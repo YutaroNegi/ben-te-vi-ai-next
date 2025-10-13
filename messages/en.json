@@ -117,12 +117,14 @@
     "editInstallmentForm": "Do you want to edit this installment?",
 
     "confirmDelete": {
-      "message": "Tem certeza de que deseja excluir esta parcela?",
-      "deleteAllCheckbox": "Excluir todas as parcelas relacionadas"
+      "message": "Are you sure you want to delete this installment?",
+      "deleteAllCheckbox": "Delete all related installments"
     },
     "buttons": {
-      "cancel": "Cancelar",
-      "delete": "Excluir"
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "showFilter": "Show Filter",
+      "hideFilter": "Hide Filter"
     }
   },
   "Chart": {
@@ -143,5 +145,12 @@
       "amount": "AMOUNT",
       "actions": "ACTIONS"
     }
+  },
+  "Filter": {
+    "searchPlaceholder": "Search by name or description...",
+    "category": "Category",
+    "search": "Search",
+    "date": "Date",
+    "period": "Period"
   }
 }

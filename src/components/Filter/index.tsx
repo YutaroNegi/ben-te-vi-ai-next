@@ -1,8 +1,8 @@
-// Filter.tsx
 import CustomDropdown from "@/components/CustomDropdown/CustomDropdown";
 import { Input, InputDateRange } from "@/components";
 import { useTranslations } from "next-intl";
 import { CategoryOption } from "@/types";
+import { MdCleaningServices } from "react-icons/md";
 
 type FilterProps = {
   readonly categories: CategoryOption[];
@@ -18,6 +18,21 @@ type FilterProps = {
 export default function Filter({ categories, values, onChange }: FilterProps) {
   const t = useTranslations("Filter");
 
+  const isDirty =
+    !!values.searchTerm?.trim() ||
+    !!values.startDate ||
+    !!values.endDate ||
+    !!values.categoryId;
+
+  const clearFilters = () => {
+    onChange({
+      searchTerm: "",
+      startDate: undefined,
+      endDate: undefined,
+      categoryId: undefined,
+    });
+  };
+
   return (
     <div
       style={{
@@ -28,6 +43,7 @@ export default function Filter({ categories, values, onChange }: FilterProps) {
         alignItems: "center",
         flexWrap: "wrap",
       }}
+      className="w-full"
     >
       <Input
         id="filter-input"
@@ -40,27 +56,33 @@ export default function Filter({ categories, values, onChange }: FilterProps) {
       />
 
       <InputDateRange
-        label={t("period")}
+        label={t("period") ?? "Período"}
         startValue={values.startDate}
         endValue={values.endDate}
         onChangeRange={(r) => onChange({ startDate: r.start, endDate: r.end })}
+        className="min-w-[26rem]"
       />
 
       <CustomDropdown
         options={categories}
         label={t("category")}
         initialValue={
-          // converte string -> Option
           values.categoryId
             ? categories.find((c) => c.value === values.categoryId)
             : undefined
         }
-        onSelectOption={(opt) => {
-          // Option -> string
-          // se quiser permitir "limpar", chame onChange({ categoryId: undefined })
-          if (opt) onChange({ categoryId: opt.value });
-        }}
+        onSelectOption={(opt) => onChange({ categoryId: opt?.value })}
       />
+      <button
+        type="button"
+        onClick={clearFilters}
+        title={t("clear") ?? "Limpar filtros"}
+        aria-label={t("clear") ?? "Limpar filtros"}
+        className="rounded-full p-2 border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed"
+        disabled={!isDirty}
+      >
+        <MdCleaningServices size={20} />
+      </button>
     </div>
   );
 }

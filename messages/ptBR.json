@@ -121,7 +121,9 @@
     },
     "buttons": {
       "cancel": "Cancelar",
-      "delete": "Excluir"
+      "delete": "Excluir",
+      "showFilter": "Mostrar Filtro",
+      "hideFilter": "Ocultar Filtro"
     }
   },
   "Chart": {
@@ -143,5 +145,12 @@
       "amount": "VALOR",
       "actions": "AÇÕES"
     }
+  },
+  "Filter": {
+    "searchPlaceholder": "Buscar por nome ou descrição...",
+    "category": "Categoria",
+    "search": "Buscar",
+    "date": "Data",
+    "period": "Periodo"
   }
 }
