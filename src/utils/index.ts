@@ -1,29 +1,5 @@
-import { signIn, signOut, createAccount } from "./auth";
-import {
-  fetchCategories,
-  registerExpense,
-  fetchInstallmentsByUserAndDate,
-  deleteCategory,
-  editCategory,
-  registerCategory,
-  deleteExpense,
-  editExpense,
-  deleteInstallment,
-  editInstallment,
-} from "./expenses";
+export * from "./auth";
 
-export {
-  signIn,
-  signOut,
-  createAccount,
-  fetchCategories,
-  registerExpense,
-  fetchInstallmentsByUserAndDate,
-  deleteCategory,
-  editCategory,
-  registerCategory,
-  deleteExpense,
-  editExpense,
-  deleteInstallment,
-  editInstallment,
-};
+export * from "./expenses";
+
+export * from "./date";
