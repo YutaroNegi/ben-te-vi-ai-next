@@ -11,6 +11,7 @@ import { registerExpense } from "@/utils";
 import { toast } from "react-toastify";
 import { useTranslations } from "next-intl";
 import { ExpenseType, InitialExpenseValues, ExpenseData } from "@/types";
+import { monthRangeYYYYMMDDUTC } from "@/utils/date";
 
 interface ExpenseFormProps {
   type: ExpenseType;
@@ -124,13 +125,10 @@ const ExpenseForm = ({
 
       toast.success(t("expenseRegisteredSuccess"));
 
-      const year = selectedDate.getFullYear();
-      const month = selectedDate.getMonth();
-      const startDate = new Date(year, month, 1).toISOString();
-      const endDate = new Date(year, month + 1, 1).toISOString();
+      const { start, end } = monthRangeYYYYMMDDUTC(selectedDate);
 
       await onSubmit?.();
-      await fetchInstallments(userId, type, startDate, endDate);
+      await fetchInstallments(userId, type, start, end);
     } catch (error) {
       console.error(error);
       toast.error(tApi("errorSavingExpense"));

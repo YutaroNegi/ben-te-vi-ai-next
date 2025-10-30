@@ -13,6 +13,7 @@ import {
 } from "@/components";
 import { useTranslations } from "next-intl";
 import { toast } from "react-toastify";
+import { monthRangeYYYYMMDDUTC } from "@/utils/date";
 
 import { Installment } from "@/types";
 
@@ -118,13 +119,9 @@ const ViewExpenses: React.FC = () => {
   // loadInstallments (fora do filterMode)
   const loadInstallments = React.useCallback(async () => {
     if (!userId) return;
-    const year = selectedDate.getFullYear();
-    const month = selectedDate.getMonth();
-    const startDate = new Date(year, month, 1).toISOString();
-    const endDate = new Date(year, month + 1, 1).toISOString();
-
+    const { start, end } = monthRangeYYYYMMDDUTC(selectedDate);
     // ORDEM: (userId, type, startDate, endDate)
-    await fetchInstallments(userId, selectedType, startDate, endDate);
+    await fetchInstallments(userId, selectedType, start, end);
   }, [userId, selectedDate, fetchInstallments, selectedType]);
 
   useEffect(() => {
