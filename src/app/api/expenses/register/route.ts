@@ -2,10 +2,16 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { supabase } from "@/lib/supabaseClient";
 
-function addMonths(date: Date, months: number): Date {
-  const d = new Date(date);
-  d.setMonth(d.getMonth() + months);
-  return d;
+function addMonths(yyyyMmDd: string, months: number): string {
+  const [y, m, d] = yyyyMmDd.split("-").map(Number); // m = 1..12
+  const startMonthIdx = m - 1 + months; // 0..∞
+  const year = y + Math.floor(startMonthIdx / 12);
+  const monthIdx = ((startMonthIdx % 12) + 12) % 12; // 0..11
+
+  const lastDay = new Date(Date.UTC(year, monthIdx + 1, 0)).getUTCDate();
+  const day = Math.min(d, lastDay);
+
+  return new Date(Date.UTC(year, monthIdx, day)).toISOString().slice(0, 10);
 }
 
 export async function POST(request: NextRequest) {
@@ -55,26 +61,25 @@ export async function POST(request: NextRequest) {
     }
 
     const numInstallments = parseInt(installments, 10);
+    const dateStr = String(date); // esperado "YYYY-MM-DD"
 
     if (numInstallments > 1) {
       const expenseAmount = parseFloat(amount);
-      const installmentAmount = parseFloat(
+      const installmentAmount = Number(
         (expenseAmount / numInstallments).toFixed(2),
       );
-      const startDate = new Date(date);
 
       const installmentsData = Array.from(
         { length: numInstallments },
         (_, index) => {
-          const dueDate = addMonths(startDate, index);
+          const dueDateStr = addMonths(dateStr, index);
           return {
             expense_id: expense.id,
             installment_number: index + 1,
-            due_date: dueDate.toISOString().split("T")[0], // Formato YYYY-MM-DD
+            due_date: dueDateStr,
             amount: installmentAmount,
             paid: false,
-            pluggy_transaction_id:
-              index + 1 === 1 ? pluggy_transaction_id : null,
+            pluggy_transaction_id: index === 0 ? pluggy_transaction_id : null,
           };
         },
       );
@@ -90,26 +95,16 @@ export async function POST(request: NextRequest) {
         );
       }
     } else {
-      const startDate = new Date(date);
+      const dueDateStr = addMonths(dateStr, 0);
       const installmentRecord = {
         expense_id: expense.id,
         installment_number: 1,
-        due_date: startDate.toISOString().split("T")[0],
-        amount: amount,
+        due_date: dueDateStr,
+        amount,
         paid: false,
         pluggy_transaction_id: pluggy_transaction_id ?? null,
       };
-
-      const { error: installmentError } = await supabase
-        .from("installments")
-        .insert([installmentRecord]);
-
-      if (installmentError) {
-        return NextResponse.json(
-          { error: installmentError.message },
-          { status: 500 },
-        );
-      }
+      await supabase.from("installments").insert([installmentRecord]);
     }
 
     return NextResponse.json(expense, { status: 201 });
