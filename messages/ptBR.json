@@ -151,6 +151,7 @@
     "category": "Categoria",
     "search": "Buscar",
     "date": "Data",
-    "period": "Periodo"
+    "period": "Periodo",
+    "clear": "Limpar Filtros"
   }
 }
