@@ -27,9 +27,9 @@ export default function Filter({ categories, values, onChange }: FilterProps) {
   const clearFilters = () => {
     onChange({
       searchTerm: "",
-      startDate: undefined,
-      endDate: undefined,
-      categoryId: undefined,
+      startDate: "",
+      endDate: "",
+      categoryId: "",
     });
   };
 
@@ -56,10 +56,13 @@ export default function Filter({ categories, values, onChange }: FilterProps) {
       />
 
       <InputDateRange
+        key={`${values.startDate ?? ""}-${values.endDate ?? ""}`}
         label={t("period") ?? "Período"}
-        startValue={values.startDate}
-        endValue={values.endDate}
-        onChangeRange={(r) => onChange({ startDate: r.start, endDate: r.end })}
+        startValue={values.startDate ?? ""}
+        endValue={values.endDate ?? ""}
+        onChangeRange={(r) =>
+          onChange({ startDate: r.start || "", endDate: r.end || "" })
+        }
         className="min-w-[26rem]"
       />
 
