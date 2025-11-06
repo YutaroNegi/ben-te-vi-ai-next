@@ -153,5 +153,9 @@
     "date": "Date",
     "period": "Period",
     "clear": "Clear Filters"
+  },
+  "UploadCSV": {
+    "selectYourCsv": "Upload CSV",
+    "selectYourCsvInfo": "Select your CSV file to upload your transactions."
   }
 }
