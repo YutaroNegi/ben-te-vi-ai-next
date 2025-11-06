@@ -22,7 +22,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-import { FaArrowLeft, FaArrowRight, FaFilter } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 interface CustomArrowProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -221,13 +222,15 @@ const ViewExpenses: React.FC = () => {
 
   return (
     <div className="p-0 m-0 w-full relative">
-      <button
-        className="flex items-center mb-4 px-3 py-1 bg-bentenavi-dark text-white rounded hover:bg-gray-400 transition-colors ml-auto my-0"
-        onClick={toggleFilterMode}
-      >
-        <FaFilter className="mr-2" />
-        {filterMode ? t("buttons.hideFilter") : t("buttons.showFilter")}
-      </button>
+      <div className="grid place-items-center">
+        <button
+          className="flex items-center mb-4 px-3 py-1 bg-bentenavi-dark text-white rounded hover:bg-gray-400 transition-colors my-0"
+          onClick={toggleFilterMode}
+        >
+          <CiSearch className="mr-2" />
+          {filterMode ? t("buttons.hideFilter") : t("buttons.showFilter")}
+        </button>
+      </div>
 
       {filterMode && (
         <Filter
