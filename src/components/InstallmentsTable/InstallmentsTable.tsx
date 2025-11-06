@@ -6,6 +6,7 @@ import { Table } from "@/components";
 import { CategoryOption, Installment } from "@/types";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { Tooltip as ReactTooltip } from "react-tooltip";
+import "./InstallmentsTable.css";
 
 interface InstallmentTableProps {
   category: CategoryOption;
@@ -144,11 +145,12 @@ const InstallmentTable: React.FC<InstallmentTableProps> = ({
         })}`}
         headers={headers}
         rows={rows}
-        columnWidths={["auto", "auto", "auto", "auto", "auto"]} // define larguras para cada coluna
+        columnWidths={["auto", "auto", "auto", "auto", "auto"]}
         setOpenMenuId={setOpenMenuId}
         openMenuId={openMenuId}
         scrollable={true}
         maxHeight="max-h-60"
+        className="it-responsive"
       />
       <ReactTooltip id="my-tooltip" />
     </>
