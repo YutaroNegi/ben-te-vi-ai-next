@@ -122,7 +122,7 @@
     "buttons": {
       "cancel": "Cancelar",
       "delete": "Excluir",
-      "showFilter": "Mostrar Filtro",
+      "showFilter": "Filtrar",
       "hideFilter": "Ocultar Filtro"
     }
   },

@@ -123,7 +123,7 @@
     "buttons": {
       "cancel": "Cancel",
       "delete": "Delete",
-      "showFilter": "Show Filter",
+      "showFilter": "Filter",
       "hideFilter": "Hide Filter"
     }
   },
