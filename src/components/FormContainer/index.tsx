@@ -21,7 +21,9 @@ export default function FormContainer() {
 
   return (
     <>
-      <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      <div className="grid place-items-center">
+        <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      </div>
 
       {activeTab === 0 && (
         <div className="border-2 border-chocolate-800 rounded-lg shadow p-4 h-[360px] flex items-center justify-center flex-col shadow-xl">
