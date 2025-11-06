@@ -240,22 +240,20 @@ const ViewExpenses: React.FC = () => {
         />
       )}
 
-      {!filterMode && (
-        <div className="flex items-center justify-around mb-5 flex-row">
-          <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
-            {t("monthTotal")} {monthTotal.toFixed(2)}
-          </div>
-          <div className="flex items-center justify-center">
-            <MonthSelector
-              selectedDate={selectedDate}
-              onChange={setSelectedDate}
-            />
-          </div>
-          <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
-            {t("monthTotal")} {monthTotal.toFixed(2)}
-          </div>
+      <div className="flex items-center justify-around mb-5 flex-row">
+        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
+          {t("monthTotal")} {monthTotal.toFixed(2)}
         </div>
-      )}
+        <div className="flex items-center justify-center">
+          <MonthSelector
+            selectedDate={selectedDate}
+            onChange={setSelectedDate}
+          />
+        </div>
+        <div className="px-4 py-2 bg-bentenavi-dark text-white rounded">
+          {t("monthTotal")} {monthTotal.toFixed(2)}
+        </div>
+      </div>
 
       {loading && (
         <p className="text-center">
