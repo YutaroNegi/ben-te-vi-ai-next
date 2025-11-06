@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 import TransactionsTable from "@/components/TransactionsTable";
 import { Transaction, InitialExpenseValues } from "@/types";
 import { useTranslations } from "next-intl";
+import { FaCloudUploadAlt } from "react-icons/fa";
 
-// Helper utilities --------------------------------------------------------
 const getField = (row: Record<string, unknown>, keys: string[]) => {
   for (const key of keys) {
     if (row[key] !== undefined && row[key] !== null && row[key] !== "") {
@@ -127,14 +127,21 @@ export default function SyncCSV() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <InputFile
-        className="w-full max-w-md mt-8"
-        id="csv-upload"
-        label="CSV"
-        accept=".csv"
-        placeholder={t("selectYourCsv")}
-        onChange={handleFileChange}
-      />
+      <div className="bg-matcha-dark grid place-items-center pa-5 h-[25em] rounded-lg shadow-md w-[50em] mt-10">
+        <div className="grid place-items-center gap-5">
+          <FaCloudUploadAlt size={100} className="text-white" />
+          <div className="text-center text-white text-2xl">
+            {t("selectYourCsvInfo")}
+          </div>
+          <InputFile
+            // className="w-full max-w-md"
+            id="csv-upload"
+            accept=".csv"
+            label={t("selectYourCsv")}
+            onChange={handleFileChange}
+          />
+        </div>
+      </div>
 
       {transactions.length > 0 && (
         <div className="mt-8 w-full flex justify-center">
